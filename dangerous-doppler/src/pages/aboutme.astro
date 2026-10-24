@@ -12,14 +12,114 @@ import "../styles/global.css";
   <body>
     <main>
         <section id="kikkake">
-            <h1>高専入学のきっかけ</h1>
+            <h2>高専入学のきっかけ</h2>
             <div>
-                <p>私が高専の存在を知ったのは小学校低学年の時でした。もしくはもっと小さいときだったかもしれません。私は高校や大学の存在を知ると同時に高専の存在を認知していました。</p>
-                <p>なぜなら私の母が大阪府立高専の出身だからです。当時は留年生のことを、同じ学年を何度も経験する人がいるという怪談話のように聞かせられていたので、正直高専のことは怖い学校だと思っていました。</p>
-                <p>そんなこんなで無意識に敬遠していたので私は普通高校に通うのだろうと自分でも思っていたのですが、例えばはんだ付けや座学でしたがIoTについての中学の頃の技術の授業が思いの外、興味深くて!</p>
-                <p>ちょうど成績不振にも悩んでいた私は中学3年生にして初めて高専のウェブサイトをしっかりと見ました。</p>
+                <p>母が高専出身であったことから、幼少期より高専という教育機関の存在を身近に認知していました。</p>
+                <p>当初は普通科高校への進学を想定していましたが、中学校の技術の授業で体験した「はんだ付け」や「IoT」の知識に深く興味を持ち、専門的な技術分野への探究心が芽生えました。</p>
+                <p>自身の適性や将来の志向を見つめ直した結果、より実用的かつ高度な工学技術を学べる環境を求め、高専への進学を選択しました。</p>
+            </div>
+        </section>
+        <section id="career">
+            <h2>経歴</h2>
+            <div class="timeline">
+                <ul class="timeline-list">
+                  <li class="timeline-item">
+                    <time class="timeline-date" datetime="2024-03">2024.03</time>
+                    <h3 class="timeline-title">実用英語技能検定2級取得</h3>
+                  </li>
+                  <li class="timeline-item">
+                    <time class="timeline-date" datetime="2025-04">2025.04</time>
+                    <h3 class="timeline-title">大阪公立大学工業高等専門学校に入学</h3>
+                    <p class="timeline-text">プログラミングの独習を始める。</p>
+                    <p class="timeline-text">現代音楽部に入部。</p>
+                  </li>
+
+                  <li class="timeline-item">
+                    <time class="timeline-date" datetime="2025-06">2025.06</time>
+                    <h3 class="timeline-title">学友会執行部に入部</h3>
+                    <p class="timeline-text">音響課に配属され、高専祭でPAを担当する。</p>
+                  </li>
+
+                  <li class="timeline-item">
+                    <time class="timeline-date" datetime="2026-04">2026.04</time>
+                    <h3 class="timeline-title">知能情報コースに進級・配属</h3>
+                    <p class="timeline-text">プログラミングの独習を続ける。</p>
+                  </li>
+
+                  <li class="timeline-item">
+                    <time class="timeline-date" datetime="2026-11">2026.11</time>
+                    <h3 class="timeline-title">学内ハッカソンの成果物を高専祭で展示</h3>
+                    <p class="timeline-text">学内ハッカソンで開発したスケジュール管理アプリを高専祭で展示した。</p>
+                  </li>
+                </ul>
             </div>
         </section>
     </main>
   </body>
 </html>
+<style>
+  .timeline {
+    margin-top: 24px;
+    text-align: left;
+  }
+
+  .timeline h2 {
+    font-size: 18px;
+    margin: 0 0 12px;
+  }
+
+  .timeline-list {
+    list-style: none;
+    padding: 0 0 0 20px; /* 縦線の分だけ左に余白 */
+    margin: 0;
+    position: relative;
+  }
+
+/* 縦線 */
+  .timeline-list::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 2px;
+    bottom: 2px;
+    width: 2px;
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 0 0 16px 0;
+  }
+
+/* 丸（マーカー） */
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: #1d4ed8;
+  }
+
+  .timeline-date {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.7);
+    margin: 0 0 6px;
+  }
+
+  .timeline-title {
+    font-size: 14px;
+    margin: 0 0 6px;
+  }
+
+  .timeline-text {
+    font-size: 13px;
+    margin: 0;
+    opacity: 0.9;
+  }
+
+</style>

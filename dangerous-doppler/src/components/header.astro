@@ -5,7 +5,7 @@
   <div class="logo">ポートフォリオ</div>
 
   <nav class="pc-menu">
-    <a href="/">ホーム</a>
+    <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/`}>ホーム</a>
     <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/aboutme`}>私について</a>
     <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/skills`}>スキル</a>
   </nav>

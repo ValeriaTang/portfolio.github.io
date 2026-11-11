@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Header from '../components/header.astro';
+import { careers } from '../data/careers.ts';
 ---
 <html lang="ja">
   <head>
@@ -12,8 +13,17 @@ import Header from '../components/header.astro';
   </head>
   <body>
     <Header />
-    <main>
-        <section id="kikkake">
+    <main class="container">
+        <section id="profile" class="section">
+            <h2>プロフィール</h2>
+            <div>
+                <p>こんにちは!Valeriaです。</p>
+                <p>大阪公立大学工業高等専門学校 総合工学システム学科 知能情報コース の2年生です。</p>
+                <p>趣味はドラマ鑑賞で、特に時代劇は国籍問わず好んで視聴します。また、スポーツ観戦も好きで、テレビで中継していたら何でも見ます。人間観察やネットサーフィンも好きですね。総じて言えるのは、何かしらの動いているものを見るのが好きだということです。</p>
+                <p>自然言語処理、IoT、VFXなどの分野に興味を持ち、将来的にはこれらの技術を活用したプロジェクトに携わりたいと考えています。（興味があるだけで、触ったことはほとんどないですけどね!）</p>
+            </div>
+        </section>
+        <section id="kikkake" class="section">
             <h2>高専入学のきっかけ</h2>
             <div>
                 <p>母が高専出身であったことから、幼少期より高専という教育機関の存在を身近に認知していました。</p>
@@ -21,53 +31,44 @@ import Header from '../components/header.astro';
                 <p>自身の適性や将来の志向を見つめ直した結果、より実用的かつ高度な工学技術を学べる環境を求め、高専への進学を選択しました。</p>
             </div>
         </section>
-        <section id="career">
-            <h2>経歴</h2>
-            <div class="timeline">
-                <ul class="timeline-list">
-                  <li class="timeline-item">
-                    <time class="timeline-date" datetime="2024-03">2024.03</time>
-                    <h3 class="timeline-title">実用英語技能検定2級取得</h3>
-                  </li>
-                  <li class="timeline-item">
-                    <time class="timeline-date" datetime="2025-04">2025.04</time>
-                    <h3 class="timeline-title">大阪公立大学工業高等専門学校に入学</h3>
-                    <p class="timeline-text">プログラミングの独習を始める。</p>
-                    <p class="timeline-text">現代音楽部に入部。</p>
-                  </li>
-
-                  <li class="timeline-item">
-                    <time class="timeline-date" datetime="2025-06">2025.06</time>
-                    <h3 class="timeline-title">学友会執行部に入部</h3>
-                    <p class="timeline-text">音響課に配属され、高専祭でPAを担当する。</p>
-                  </li>
-
-                  <li class="timeline-item">
-                    <time class="timeline-date" datetime="2026-04">2026.04</time>
-                    <h3 class="timeline-title">知能情報コースに進級・配属</h3>
-                    <p class="timeline-text">プログラミングの独習を続ける。</p>
-                  </li>
-
-                  <li class="timeline-item">
-                    <time class="timeline-date" datetime="2026-11">2026.11</time>
-                    <h3 class="timeline-title">ハッカソンの成果物を高専祭で展示</h3>
-                    <p class="timeline-text">学内ハッカソンで開発したスケジュール管理アプリを高専祭で展示した。</p>
-                  </li>
-                </ul>
-            </div>
+        <section id="career" class="section">
+          <h2>経歴</h2>
+          <div class="timeline">
+            <ul class="timeline-list">
+              {careers.map((item) => (
+                <li class="timeline-item">
+                  <time class="timeline-date" datetime={item.datetime}>{item.date}</time>
+                  <h3 class="timeline-title">{item.title}</h3>
+                  {item.texts.map((text) => (
+                    <p class="timeline-text">{text}</p>
+                  ))}
+                </li>
+              ))}
+            </ul>
+          </div>
         </section>
     </main>
   </body>
 </html>
 <style>
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 20px 40px;
+  }
+
+  .section {
+    margin-bottom: 48px;
+  }
+
   .timeline {
     margin-top: 24px;
     text-align: left;
   }
 
   .timeline h2 {
-    font-size: 18px;
     margin: 0 0 12px;
+    font-size: 18px;
   }
 
   .timeline-list {
@@ -77,7 +78,7 @@ import Header from '../components/header.astro';
     position: relative;
   }
 
-/* 縦線 */
+  /* 縦線 */
   .timeline-list::before {
     content: "";
     position: absolute;
@@ -88,12 +89,12 @@ import Header from '../components/header.astro';
     background: rgba(0, 0, 0, 0.12);
   }
 
+  /* 丸（マーカー） */
   .timeline-item {
     position: relative;
-    padding: 0 0 16px 0;
+    padding-bottom: 16px;
   }
 
-/* 丸（マーカー） */
   .timeline-item::before {
     content: "";
     position: absolute;
@@ -114,14 +115,13 @@ import Header from '../components/header.astro';
   }
 
   .timeline-title {
-    font-size: 14px;
     margin: 0 0 6px;
+    font-size: 14px;
   }
 
   .timeline-text {
-    font-size: 13px;
     margin: 0;
+    font-size: 13px;
     opacity: 0.9;
   }
-
 </style>

@@ -34,7 +34,7 @@ export const works = [
     AI: "開発計画から新機能の実装、セキュリティ監査までAIに任せました。私が担当したのは技術選定、アイデア出し、バグの発見など。",
     start: "2026-04",
     finish: "2026-11",
-    description: "ハッカソンで作成したスケジュール管理アプリ。(バックエンド担当)",
+    description: "ハッカソンで作成したスケジュール管理アプリ。(バックエンド担当",
     tags: ["Vercel", "TypeScript", "PostgreSQL"],
     href: "https://github.com/Hackathon-SAI/schedule"
   },

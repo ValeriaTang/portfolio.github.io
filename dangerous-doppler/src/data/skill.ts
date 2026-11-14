@@ -1,3 +1,4 @@
+import { icons } from '../data/icon';
 export interface Skill {
   name: string;
   level: string;
@@ -12,7 +13,7 @@ export const skills = [
     level: "初級",
     skill: "求める出力形式や文脈を正しくAIに指示し、意図通りのコードやドキュメントを生成させることができる。",
     description: "人工知能（AI）やデータ分析、業務の自動化、Webアプリ開発の分野で活用できる言語。",
-    image: ""
+    image: "{icons.find(icon => icon.name === 'Python')?.lightimage || ''}"
   },
   {
     name: "JavaScript",

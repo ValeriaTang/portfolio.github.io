@@ -39,6 +39,12 @@ export const skills = [
     description: "データベース操作に使われる言語。"
   },
   {
+    name: "LaTeX",
+    level: "入門",
+    skill: "ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。",
+    description: "学術論文やレポートの作成に使われる文書作成システム。"
+  },
+  {
     name: "Git/GitHub",
     level: "初級",
     skill: "必要最低限は使用できていると認識しているが、まだまだ不十分である。",

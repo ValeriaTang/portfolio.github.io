@@ -7,39 +7,11 @@ const identity = {
   birthyear: 2009,
   interests: ["自然言語処理", "IoT", "VFX"],
 };
-const fontWeight = "bold";
-const textCase = "uppercase";
-
 ---
 
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} >
-    <title>{pageTitle}</title>
-    <style define:vars={{fontWeight, textCase}}>
-      h1 {
-        color: purple;
-        font-size: 4rem;
-      }
-      .skill {
-        color: var(--skillColor);
-        font-weight: var(--fontWeight);
-        text-transform: var(--textCase);
-      }
-
-      .profile {
-        display: grid;
-        grid-template-columns: 3em 1fr;
-      }
-</style>
-  </head>
-  <body>
-    <body>
-  <h1>ポートフォリオ</h1>
-  <h2>{pageTitle}</h2>
+<section id="about" aria-labelledby="about-heading">
+  <h2 id="about-heading">ポートフォリオ</h2>
+  <h3>{pageTitle}</h3>
 
   <dl class="profile">
     <dt>名前</dt><dd>{identity.Name}</dd>
@@ -48,11 +20,63 @@ const textCase = "uppercase";
     <dt>趣味</dt><dd>{identity.hobbies.join(", ")}</dd>
     <dt>興味</dt><dd>{identity.interests.join(", ")}</dd>
   </dl>
-  <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/aboutme`} class="more-aboutme">詳しくはこちら</a>
 
-</body>
-  </body>
-</html>
-</body>
-  </body>
-</html>
+  <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/aboutme`} class="more-aboutme">詳しくはこちら</a>
+</section>
+
+<style>
+  /* 自己紹介セクション */
+  #about {
+    margin-block: 3rem;
+  }
+
+  #about h2 {
+    margin: 0 0 0.5rem;
+    color: var(--color-primary);
+  }
+
+  #about h3 {
+    margin: 0 0 1.25rem;
+    color: var(--color-text);
+  }
+
+  /* プロフィール（定義リストを2カラムグリッドで表示） */
+  .profile {
+    display: grid;
+    grid-template-columns: 3em 1fr;
+    gap: 0.25rem 1rem;
+    margin: 0;
+  }
+
+  .profile dt {
+    margin: 0;
+    font-weight: bold;
+    color: var(--color-primary);
+  }
+
+  .profile dd {
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  /* 詳細ページリンク */
+  .more-aboutme {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.5rem 1.25rem;
+    color: var(--color-white);
+    text-decoration: none;
+    background-color: var(--color-primary);
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .more-aboutme:hover {
+    background-color: var(--color-accent);
+  }
+
+  .more-aboutme:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+</style>

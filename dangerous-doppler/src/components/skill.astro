@@ -156,7 +156,7 @@ const normalizedSkills = skills.map((s) => {
   /* スキルグリッド */
   .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
     gap: 1rem;
     list-style: none;
     padding: 0;
@@ -195,6 +195,8 @@ const normalizedSkills = skills.map((s) => {
   .skill-thumb img {
     width: 100%;
     height: 100%;
+    max-width: 48px;
+    max-height: 48px;
     object-fit: contain;
     transition: transform 0.3s ease;
   }
@@ -344,12 +346,16 @@ const normalizedSkills = skills.map((s) => {
     border-radius: 0.75rem;
     margin-bottom: 0.5rem;
     display: none;
+    align-items: center;
+    justify-content: center;
   }
 
   .modal-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    max-width: 64px;
+    max-height: 64px;
+    object-fit: contain;
   }
 
   .modal-header {

@@ -65,6 +65,16 @@
   --accent: #ff9776;
 }
 
+/* Work card thumbnail background - theme aware */
+[data-theme="light"] .work-thumb {
+  background: var(--card-bg);
+}
+
+[data-theme="light"] .work-thumb--text {
+  background: var(--card-bg);
+  color: var(--card-title);
+}
+
 
 /****************************
    Theme Toggle Button

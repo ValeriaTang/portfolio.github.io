@@ -23,31 +23,23 @@ const normalizedSkills = skills.map((s) => {
   <h2 id="skills-heading">スキル</h2>
   <ul class="skills-grid">
     {normalizedSkills.map((s) => (
-      <li class="skill-card" data-name={s.name}>
-        {s.hasImage && (
+      <li
+        class="skill-card open-modal-btn"
+        data-name={s.name}
+        data-level={s.level}
+        data-skill={s.skill}
+        data-desc={s.description}
+        data-image={s.image}
+      >
+        {s.hasImage ? (
           <div class="skill-thumb">
-            <img src={s.image} alt="" loading="lazy" data-light-src={s.image} data-dark-src={s.darkImage} />
+            <img src={s.image} alt={s.name} loading="lazy" data-light-src={s.image} data-dark-src={s.darkImage} />
+          </div>
+        ) : (
+          <div class="skill-thumb skill-thumb--text">
+            <span class="skill-name">{s.name}</span>
           </div>
         )}
-        <div class="skill-body">
-          <header class="skill-header">
-            <h3>{s.name}</h3>
-            <span class="level-badge">{s.level}</span>
-          </header>
-          <p class="skill-desc">{s.description}</p>
-          <button
-            type="button"
-            class="btn btn-secondary open-modal-btn"
-            data-name={s.name}
-            data-level={s.level}
-            data-skill={s.skill}
-            data-desc={s.description}
-            data-image={s.image}
-            aria-label={`${s.name} の詳細を見る`}
-          >
-            詳しく見る
-          </button>
-        </div>
       </li>
     ))}
   </ul>
@@ -67,6 +59,10 @@ const normalizedSkills = skills.map((s) => {
       <p id="skill-modal-desc" class="modal-text"></p>
     </div>
   </dialog>
+
+  <div class="skill-more-link">
+    <a class="btn btn-primary" href="/skills">詳細 HERE →</a>
+  </div>
 </section>
 
 <script>
@@ -102,7 +98,10 @@ const normalizedSkills = skills.map((s) => {
       renderImage(target.dataset.image || '');
 
       modal?.showModal();
-// テーマによる画像切り替えを適用
+    });
+  });
+
+  // テーマによる画像切り替えを適用
   function applyThemeImages() {
     const isDark = !document.documentElement.hasAttribute('data-theme') || document.documentElement.getAttribute('data-theme') === 'dark';
     document.querySelectorAll('img[data-light-src][data-dark-src]').forEach((img) => {
@@ -119,6 +118,13 @@ const normalizedSkills = skills.map((s) => {
   const observer = new MutationObserver(applyThemeImages);
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
+  // 「詳細 HERE」リンクはモーダルを開かない
+  document.querySelectorAll('.skill-more-link a').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  });
+
   closeBtn?.addEventListener('click', () => {
     modal?.close();
   });
@@ -134,8 +140,6 @@ const normalizedSkills = skills.map((s) => {
       modal.close();
     }
   });
- });
-  })
 </script>
 
 <style>
@@ -167,6 +171,7 @@ const normalizedSkills = skills.map((s) => {
     border: 1px solid var(--card-border);
     border-radius: 0.75rem;
     overflow: hidden;
+    cursor: pointer;
     transition:
       transform 0.2s ease,
       box-shadow 0.2s ease,
@@ -181,15 +186,16 @@ const normalizedSkills = skills.map((s) => {
 
   .skill-thumb {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 100%;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: #111;
+    background: transparent;
   }
 
   .skill-thumb img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: transform 0.3s ease;
   }
 
@@ -219,14 +225,15 @@ const normalizedSkills = skills.map((s) => {
     line-height: 1.3;
   }
 
-  .level-badge {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: var(--accent);
-    background: rgba(255, 151, 118, 0.1);
-    padding: 0.125rem 0.5rem;
-    border-radius: 999px;
-    white-space: nowrap;
+  .skill-more-link {
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  .skill-more-link .btn-primary {
+    display: inline-block;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9rem;
   }
 
   .skill-desc {
@@ -267,6 +274,15 @@ const normalizedSkills = skills.map((s) => {
 
   .btn-secondary:hover {
     background-color: #4b5563;
+  }
+
+  .btn-primary {
+    color: #fff;
+    background-color: var(--btn-bg);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--btn-bg-hover);
   }
 
   /* ===== Modal ===== */
@@ -381,4 +397,25 @@ const normalizedSkills = skills.map((s) => {
       transform: none;
     }
   }
+
+  .skill-thumb--text {
+    background: var(--btn-bg);
+  }
+
+  .skill-thumb--text .skill-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-white);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .skill-thumb--text .skill-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-white);
+    text-align: center;
+    line-height: 1.3;
+  }
+
 </style>

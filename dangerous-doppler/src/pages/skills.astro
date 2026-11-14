@@ -1,13 +1,25 @@
 ---
 import "../styles/global.css";
 import { skills } from '../data/skill';
+import { icons } from '../data/icon';
 import Header from '../components/header.astro';
 import BackToTop from '../components/back-to-top.astro';
 
-const normalizedSkills = skills.map((s) => ({
-  ...s,
-  hasImage: Boolean(s.image),
-}));
+const iconMap = Object.fromEntries(
+  icons.map((icon) => [icon.name, { dark: icon.darkimage, light: icon.lightimage }]),
+);
+
+const normalizedSkills = skills.map((s) => {
+  const icon = iconMap[s.name];
+  const lightImage = icon ? icon.light : s.image;
+  const darkImage = icon ? icon.dark : s.image;
+  return {
+    ...s,
+    hasImage: Boolean(lightImage),
+    image: lightImage,
+    darkImage,
+  };
+});
 ---
 
 <Header />
@@ -15,31 +27,23 @@ const normalizedSkills = skills.map((s) => ({
   <h2 id="skills-heading">スキル</h2>
   <ul class="skills-grid">
     {normalizedSkills.map((s) => (
-      <li class="skill-card" data-name={s.name}>
-        {s.hasImage && (
+      <li
+        class="skill-card open-modal-btn"
+        data-name={s.name}
+        data-level={s.level}
+        data-skill={s.skill}
+        data-desc={s.description}
+        data-image={s.image}
+      >
+        {s.hasImage ? (
           <div class="skill-thumb">
-            <img src={s.image} alt="" loading="lazy" />
+            <img src={s.image} alt={s.name} loading="lazy" data-light-src={s.image} data-dark-src={s.darkImage} />
+          </div>
+        ) : (
+          <div class="skill-thumb skill-thumb--text">
+            <span class="skill-name">{s.name}</span>
           </div>
         )}
-        <div class="skill-body">
-          <header class="skill-header">
-            <h3>{s.name}</h3>
-            <span class="level-badge">{s.level}</span>
-          </header>
-          <p class="skill-desc">{s.description}</p>
-          <button
-            type="button"
-            class="btn btn-secondary open-modal-btn"
-            data-name={s.name}
-            data-level={s.level}
-            data-skill={s.skill}
-            data-desc={s.description}
-            data-image={s.image}
-            aria-label={`${s.name} の詳細を見る`}
-          >
-            詳しく見る
-          </button>
-        </div>
       </li>
     ))}
   </ul>
@@ -99,6 +103,23 @@ const normalizedSkills = skills.map((s) => ({
     });
   });
 
+  // テーマによる画像切り替えを適用
+  function applyThemeImages() {
+    const isDark = !document.documentElement.hasAttribute('data-theme') || document.documentElement.getAttribute('data-theme') === 'dark';
+    document.querySelectorAll('img[data-light-src][data-dark-src]').forEach((img) => {
+      const imgEl = img as HTMLImageElement;
+      const src = isDark ? imgEl.dataset.darkSrc : imgEl.dataset.lightSrc;
+      if (src && src !== imgEl.src) {
+        imgEl.src = src;
+      }
+    });
+  }
+  applyThemeImages();
+
+  // テーマ属性の変更を監視（テーマ切り替え時に画像を更新）
+  const observer = new MutationObserver(applyThemeImages);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
   closeBtn?.addEventListener('click', () => {
     modal?.close();
   });
@@ -145,6 +166,7 @@ const normalizedSkills = skills.map((s) => ({
     border: 1px solid var(--card-border);
     border-radius: 0.75rem;
     overflow: hidden;
+    cursor: pointer;
     transition:
       transform 0.2s ease,
       box-shadow 0.2s ease,
@@ -159,41 +181,33 @@ const normalizedSkills = skills.map((s) => ({
 
   .skill-thumb {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 100%;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: #111;
+    background: transparent;
   }
 
   .skill-thumb img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: transform 0.3s ease;
   }
 
   .skill-card:hover .skill-thumb img {
-    transform: scale(1.03);
+    transform: scale(1.05);
   }
 
-  .skill-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1rem;
-    flex: 1;
+  /* テキストフォールバック用 */
+  .skill-thumb--text {
+    background: var(--btn-bg);
   }
 
-  .skill-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 0.5rem;
-  }
-
-  .skill-header h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    color: var(--card-title);
+  .skill-thumb--text .skill-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-white);
+    text-align: center;
     line-height: 1.3;
   }
 
@@ -205,46 +219,6 @@ const normalizedSkills = skills.map((s) => ({
     padding: 0.125rem 0.5rem;
     border-radius: 999px;
     white-space: nowrap;
-  }
-
-  .skill-desc {
-    margin: 0;
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: var(--card-text);
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    text-decoration: none;
-    border-radius: 0.375rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    margin-top: auto;
-  }
-
-  .btn:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  .btn:active {
-    transform: scale(0.98);
-  }
-
-  .btn-secondary {
-    color: #fff;
-    background-color: #374151;
-  }
-
-  .btn-secondary:hover {
-    background-color: #4b5563;
   }
 
   /* ===== Modal ===== */

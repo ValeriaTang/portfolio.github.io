@@ -13,6 +13,9 @@ function getIconUrl(tag: string, isDark: boolean): string | undefined {
 
 const normalizedWorks = works.map((work) => {
   const tags = work.tags ?? [];
+  const firstTagIcon = tags[0] ? iconMap[tags[0]] : undefined;
+  const lightImage = firstTagIcon ? firstTagIcon.light : work.image1;
+  const darkImage = firstTagIcon ? firstTagIcon.dark : work.image1;
   return {
     ...work,
     tags,
@@ -24,6 +27,9 @@ const normalizedWorks = works.map((work) => {
     images: [work.image1, work.image2, work.image3, work.image4, work.image5].filter(
       (src): src is string => Boolean(src),
     ),
+    hasImage: Boolean(lightImage),
+    image: lightImage,
+    darkImage,
   };
 }).slice(0, 3);
 ---
@@ -32,62 +38,29 @@ const normalizedWorks = works.map((work) => {
   <h2 id="works-heading">作品</h2>
   <div class="works-grid">
     {normalizedWorks.map((work) => (
-      <article class="work-card" data-id={work.id}>
-        {work.image1 && (
+      <article
+        class="work-card open-modal-btn"
+        data-id={work.id}
+        data-title={work.title}
+        data-ai={work.aiRatio}
+        data-ai-desc={work.AI}
+        data-detail={work.description}
+        data-start={work.start}
+        data-finish={work.finish}
+        data-tags={JSON.stringify(work.tagDetails)}
+        data-images={JSON.stringify(work.images)}
+        data-url={work.href}
+        aria-label={`${work.title} の詳細を見る`}
+      >
+        {work.hasImage ? (
           <div class="work-thumb">
-            <img src={work.image1} alt="" loading="lazy" />
+            <img src={work.image} alt="" loading="lazy" data-light-src={work.image} data-dark-src={work.darkImage} />
+          </div>
+        ) : (
+          <div class="work-thumb work-thumb--text">
+            <span class="work-name">{work.title}</span>
           </div>
         )}
-        <div class="work-body">
-          <header class="work-header">
-            <h3>{work.title}</h3>
-            <span class="ai-ratio">AI使用率: {work.aiRatio}</span>
-          </header>
-          <p class="work-desc">{work.description}</p>
-          <div class="work-meta">
-            <time datetime={work.start}>{work.start.replace('-', '.')}</time>
-            <span aria-hidden="true">-</span>
-            <time datetime={work.finish}>{work.finish.replace('-', '.')}</time>
-          </div>
-          {work.tagDetails.length > 0 && (
-            <ul class="work-tags" aria-label="使用技術">
-              {work.tagDetails.map((tag) => (
-                <li class="tag-item">
-                  {tag.icon ? (
-                    <img src={tag.icon} alt={tag.name} class="tag-icon" data-light-src={tag.icon} data-dark-src={tag.darkIcon ?? tag.icon} />
-                  ) : (
-                    <span class="tag-text">{tag.name}</span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
-          {work.AI && (
-            <p class="work-ai-note">{work.AI}</p>
-          )}
-          <div class="work-actions">
-            <a href={work.href} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-              GitHub / Demo
-            </a>
-            <button
-              type="button"
-              class="btn btn-secondary open-modal-btn"
-              data-id={work.id}
-              data-title={work.title}
-              data-ai={work.aiRatio}
-              data-ai-desc={work.AI}
-              data-detail={work.description}
-              data-start={work.start}
-              data-finish={work.finish}
-              data-tags={JSON.stringify(work.tagDetails)}
-              data-images={JSON.stringify(work.images)}
-              data-url={work.href}
-              aria-label={`${work.title} の詳細を見る`}
-            >
-              詳しく見る
-            </button>
-          </div>
-        </div>
       </article>
     ))}
   </div>
@@ -149,6 +122,38 @@ const normalizedWorks = works.map((work) => {
       gallery.style.display = 'none';
       return;
     }
+  openBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = btn as HTMLElement;
+      if (modalTitle) modalTitle.textContent = target.dataset.title || '';
+      if (modalAi) modalAi.textContent = `AI使用率: ${target.dataset.ai || ''}`;
+      if (modalAiDesc) modalAiDesc.textContent = target.dataset.aiDesc || '';
+      if (modalDetail) modalDetail.textContent = target.dataset.detail || '';
+      if (modalPeriod) modalPeriod.textContent = formatPeriod(target.dataset.start || '', target.dataset.finish || '');
+      if (modalLink) modalLink.href = target.dataset.url || '#';
+      renderGallery(target.dataset.images ? JSON.parse(target.dataset.images) : []);
+      renderTags(target.dataset.tags || '');
+
+      modal?.showModal();
+    });
+  });
+
+  function applyThemeImages(): void {
+    const isDark =
+      !document.documentElement.hasAttribute('data-theme') ||
+      document.documentElement.getAttribute('data-theme') === 'dark';
+    document.querySelectorAll('img[data-light-src][data-dark-src]').forEach((img) => {
+      const imgEl = img as HTMLImageElement;
+      const src = isDark ? imgEl.dataset.darkSrc : imgEl.dataset.lightSrc;
+      if (src && src !== imgEl.src) {
+        imgEl.src = src;
+      }
+    });
+  }
+  applyThemeImages();
+
+  const themeObserver = new MutationObserver(applyThemeImages);
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     gallery.style.display = 'grid';
     gallery.innerHTML = images
       .map((src, i) => `<img src="${src}" alt="作品画像${i + 1}" loading="lazy" />`)
@@ -243,7 +248,7 @@ const normalizedWorks = works.map((work) => {
 
   .work-thumb {
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     background: #111;
   }
@@ -251,12 +256,28 @@ const normalizedWorks = works.map((work) => {
   .work-thumb img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+    object-fit: contain;
   }
 
   .work-card:hover .work-thumb img {
-    transform: scale(1.03);
+    transform: none;
+  }
+
+  .work-thumb--text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: #111;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--card-text);
+  }
+
+  .work-name {
+    margin: 0;
+    text-align: center;
+    line-height: 1.3;
   }
 
   .work-body {

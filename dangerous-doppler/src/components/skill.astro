@@ -61,7 +61,7 @@ const normalizedSkills = skills.map((s) => {
   </dialog>
 
   <div class="skill-more-link">
-    <a class="btn btn-primary" href="/skills">詳細 HERE →</a>
+    <a class="btn btn-primary" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/skills`}>詳しくはこちら</a>
   </div>
 </section>
 
@@ -118,7 +118,7 @@ const normalizedSkills = skills.map((s) => {
   const observer = new MutationObserver(applyThemeImages);
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
-  // 「詳細 HERE」リンクはモーダルを開かない
+  // 「詳細」リンクはモーダルを開かない
   document.querySelectorAll('.skill-more-link a').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.stopPropagation();

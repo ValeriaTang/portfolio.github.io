@@ -31,13 +31,13 @@ export const icons = [
         lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg"
     },
     {
-        name: "SQL",
+        name: "PostgreSQL",
         darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-plain.svg",
         lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg"
     },
     {
         name: "LaTeX",
-        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-originsl.svg",
+        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-original.svg",
         lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-original.svg"
     },
     {

@@ -1,5 +1,8 @@
 ---
+import "../styles/global.css";
 import { skills } from '../data/skill';
+import Header from '../components/header.astro';
+import BackToTop from '../components/back-to-top.astro';
 
 const normalizedSkills = skills.map((s) => ({
   ...s,
@@ -7,6 +10,7 @@ const normalizedSkills = skills.map((s) => ({
 }));
 ---
 
+<Header />
 <section id="skills" aria-labelledby="skills-heading">
   <h2 id="skills-heading">スキル</h2>
   <ul class="skills-grid">
@@ -56,6 +60,8 @@ const normalizedSkills = skills.map((s) => ({
     </div>
   </dialog>
 </section>
+
+<BackToTop />
 
 <script>
   const root = document.getElementById('skills');

@@ -18,13 +18,25 @@
   --header-height: 56px;
 
   /* Typography / タイポグラフィ */
-  --font-family: sans-serif;
   --line-height: 1.5;
   --heading-line-height: 1.3;
 
   /* Layout / レイアウト */
   --max-width: 80ch;
   --container-padding: 1rem;
+}
+
+/* Font family by language / 言語別のフォント */
+html[lang="en"] {
+  --font-family: "Montserrat", sans-serif;
+}
+
+html[lang="ja"] {
+  --font-family: "Montserrat", "Noto Sans JP", "Hiragino Sans", sans-serif;
+}
+
+html[lang="zh-CN"] {
+  --font-family: "Montserrat", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
 }
 
 /* ========================================

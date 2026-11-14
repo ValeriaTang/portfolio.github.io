@@ -1,11 +1,8 @@
 ---
 
 ---
-
 <header class="site-header">
   <div class="logo">ポートフォリオ</div>
-
-  <button class="theme-toggle" id="theme-toggle" aria-label="テーマを切り替え">🌙</button>
 
   <nav class="pc-menu">
     <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/`}>ホーム</a>
@@ -14,6 +11,8 @@
     <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/works`}>作品</a>
   </nav>
 
+  <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードを切り替える">🌙 ダークモード</button>
+
   <button class="mobile-menu-btn" id="menu-toggle" aria-label="メニューを開く" aria-expanded="false">
     <span class="line"></span>
     <span class="line"></span>
@@ -21,6 +20,7 @@
   </button>
 
   <nav class="mobile-nav" id="mobile-menu">
+    <button class="theme-toggle-mobile" id="theme-toggle-mobile" aria-label="ダークモードを切り替える">🌙 ダークモード</button>
     <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/`} class="mobile-link">ホーム</a>
     <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/aboutme`} class="mobile-link">私について</a>
     <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/skills`} class="mobile-link">スキル</a>
@@ -60,18 +60,33 @@
 
   // テーマ切り替え
   const themeBtn = document.getElementById('theme-toggle');
+  const mobileThemeBtn = document.getElementById('theme-toggle-mobile');
   const html = document.documentElement;
 
-  function setTheme(theme) {
-    if (theme === 'light') {
+  function setTheme(theme: string) {
+    const isLight = theme === 'light';
+    if (isLight) {
       html.setAttribute('data-theme', 'light');
-      themeBtn.textContent = '☀️';
-      localStorage.setItem('theme', 'light');
+      if (themeBtn) {
+        themeBtn.textContent = '☀️ ライトモード';
+        themeBtn.setAttribute('aria-label', 'ダークモードに切り替える');
+      }
+      if (mobileThemeBtn) {
+        mobileThemeBtn.textContent = '☀️ ライトモード';
+        mobileThemeBtn.setAttribute('aria-label', 'ダークモードに切り替える');
+      }
     } else {
       html.removeAttribute('data-theme');
-      themeBtn.textContent = '🌙';
-      localStorage.setItem('theme', 'dark');
+      if (themeBtn) {
+        themeBtn.textContent = '🌙 ダークモード';
+        themeBtn.setAttribute('aria-label', 'ライトモードに切り替える');
+      }
+      if (mobileThemeBtn) {
+        mobileThemeBtn.textContent = '🌙 ダークモード';
+        mobileThemeBtn.setAttribute('aria-label', 'ライトモードに切り替える');
+      }
     }
+    localStorage.setItem('theme', theme);
   }
 
   // 初期テーマの復元
@@ -81,6 +96,11 @@
   setTheme(initialTheme);
 
   themeBtn?.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    setTheme(current === 'light' ? 'dark' : 'light');
+  });
+
+  mobileThemeBtn?.addEventListener('click', () => {
     const current = html.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
     setTheme(current === 'light' ? 'dark' : 'light');
   });

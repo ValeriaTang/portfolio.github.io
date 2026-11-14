@@ -3,11 +3,12 @@ import { works } from '../data/work';
 import { icons } from '../data/icon';
 
 const iconMap = Object.fromEntries(
-  icons.map((icon) => [icon.name, icon.lightimage]),
+  icons.map((icon) => [icon.name, { dark: icon.darkimage, light: icon.lightimage }]),
 );
 
-function getIconUrl(tag: string): string | undefined {
-  return iconMap[tag];
+function getIconUrl(tag: string, isDark: boolean): string | undefined {
+  const icon = iconMap[tag];
+  return icon ? (isDark ? icon.dark : icon.light) : undefined;
 }
 
 const normalizedWorks = works.map((work) => {
@@ -15,12 +16,16 @@ const normalizedWorks = works.map((work) => {
   return {
     ...work,
     tags,
-    tagDetails: tags.map((name) => ({ name, icon: getIconUrl(name) ?? null })),
+    tagDetails: tags.map((name) => ({ 
+      name, 
+      icon: getIconUrl(name, false),
+      darkIcon: getIconUrl(name, true),
+    })),
     images: [work.image1, work.image2, work.image3, work.image4, work.image5].filter(
       (src): src is string => Boolean(src),
     ),
   };
-});
+}).slice(0, 3);
 ---
 
 <section id="works" aria-labelledby="works-heading">
@@ -49,7 +54,7 @@ const normalizedWorks = works.map((work) => {
               {work.tagDetails.map((tag) => (
                 <li class="tag-item">
                   {tag.icon ? (
-                    <img src={tag.icon} alt={tag.name} class="tag-icon" />
+                    <img src={tag.icon} alt={tag.name} class="tag-icon" data-light-src={tag.icon} data-dark-src={tag.darkIcon ?? tag.icon} />
                   ) : (
                     <span class="tag-text">{tag.name}</span>
                   )}

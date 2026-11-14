@@ -17,7 +17,7 @@
   </button>
 
   <nav class="mobile-nav" id="mobile-menu">
-    <a href="/" class="mobile-link">ホーム</a>
+    <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/`} class="mobile-link">ホーム</a>
     <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/aboutme`} class="mobile-link">私について</a>
     <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/skills`} class="mobile-link">スキル</a>
   </nav>

@@ -26,17 +26,61 @@ import { skills } from "../data/skill.ts";
 </style>
   </head>
   <body>
-    <body>
-  <h2>{pageTitle}</h2>
-  <div class="skills-grid">
-    {skills.map((skill) => (
-      <div class="skill-card">
-        <h3>{skill.name} <span class="badge">{skill.level}</span></h3>
-        <p>{skill.skill}</p>
-        <p>{skill.description}</p>
-      </div>
-    ))}
-  </div>
-</body>
+    <h2>{pageTitle}</h2>
+    <article class="work-card">
+      {skills.map((skill) => (
+        <img
+          src={skill.image}
+          alt={`${skill.name}のスクリーンショット`}
+          loading="lazy"
+          width="640"
+          height="360"
+        />
+        <div class="body">
+          <h3>{skill.name}</h3>
+          <p>{skill.description}</p>
+        </div>
+      ))}
+    </article>
   </body>
 </html>
+
+<style>
+  .skill-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 12px;
+  }
+  .icon {
+    font-size: 2rem;
+  }
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #fff;
+  }
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #bbb;
+  }
+  .level {
+    display: flex;
+    gap: 6px;
+    margin-top: auto;
+  }
+  .dot {
+    width: 12px;
+    height: 12px;
+    background-color: #333;
+    border-radius: 50%;
+  }
+  .dot.on {
+    background-color: #2563eb;
+  }
+</style>

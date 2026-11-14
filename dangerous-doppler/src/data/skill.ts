@@ -1,66 +1,81 @@
 import { icons } from '../data/icon';
+
 export interface Skill {
   name: string;
   level: string;
   skill: string;
   description: string;
-  image: string;     // public/ からのパス（例: /images/thumb1.png）
+  image: string; // public/ からのパス（例: /images/thumb1.png）または devicon の lightimage URL
+}
+
+const iconMap = Object.fromEntries(icons.map((icon) => [icon.name, icon.lightimage]));
+
+function skillImage(name: string): string {
+  return iconMap[name] ?? '';
 }
 
 export const skills = [
   {
-    name: "Python",
-    level: "初級",
-    skill: "求める出力形式や文脈を正しくAIに指示し、意図通りのコードやドキュメントを生成させることができる。",
-    description: "人工知能（AI）やデータ分析、業務の自動化、Webアプリ開発の分野で活用できる言語。",
-    image: "{icons.find(icon => icon.name === 'Python')?.lightimage || ''}"
+    name: 'Python',
+    level: '初級',
+    skill: '求める出力形式や文脈を正しくAIに指示し、意図通りのコードやドキュメントを生成させることができる。',
+    description: '人工知能（AI）やデータ分析、業務の自動化、Webアプリ開発の分野で活用できる言語。',
+    image: skillImage('Python'),
   },
   {
-    name: "JavaScript",
-    level: "入門",
-    skill: "ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。",
-    description: "Web開発で広く使われているプログラミング言語。"
+    name: 'JavaScript',
+    level: '入門',
+    skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。',
+    description: 'Web開発で広く使われているプログラミング言語。',
+    image: skillImage('JavaScript'),
   },
   {
-    name: "HTML/CSS",
-    level: "入門",
-    skill: "ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。",
-    description: "Web開発で広く使われているマークアップ言語とスタイルシート言語。"
+    name: 'HTML/CSS',
+    level: '入門',
+    skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。',
+    description: 'Web開発で広く使われているマークアップ言語とスタイルシート言語。',
+    image: skillImage('HTML'),
   },
   {
-    name: "C/C++",
-    level: "初級",
-    skill: "求める出力形式や文脈を正しくAIに指示し、意図通りのコードやドキュメントを生成させることができる。",
-    description: "システムプログラミングや高性能計算に使われる言語。"
+    name: 'C/C++',
+    level: '初級',
+    skill: '求める出力形式や文脈を正しくAIに指示し、意図通りのコードやドキュメントを生成させることができる。',
+    description: 'システムプログラミングや高性能計算に使われる言語。',
+    image: skillImage('C'),
   },
   {
-    name: "SQL",
-    level: "入門",
-    skill: "ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。",
-    description: "データベース操作に使われる言語。"
+    name: 'SQL',
+    level: '入門',
+    skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。',
+    description: 'データベース操作に使われる言語。',
+    image: skillImage('SQL'),
   },
   {
-    name: "LaTeX",
-    level: "入門",
-    skill: "ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。",
-    description: "学術論文やレポートの作成に使われる文書作成システム。"
+    name: 'LaTeX',
+    level: '入門',
+    skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。',
+    description: '学術論文やレポートの作成に使われる文書作成システム。',
+    image: skillImage('LaTeX'),
   },
   {
-    name: "Git/GitHub",
-    level: "初級",
-    skill: "必要最低限は使用できていると認識しているが、まだまだ不十分である。",
-    description: "バージョン管理システム。"
+    name: 'Git/GitHub',
+    level: '初級',
+    skill: '必要最低限は使用できていると認識しているが、まだまだ不十分である。',
+    description: 'バージョン管理システム。',
+    image: skillImage('Git'),
   },
   {
-    name: "Linux(Ubuntu)/WSL",
-    level: "初級",
-    skill: "必要最低限は使用できていると認識しているが、まだまだ不十分である。",
-    description: "Linux操作系統とWindows Subsystem for Linux。"
+    name: 'Linux(Ubuntu)/WSL',
+    level: '初級',
+    skill: '必要最低限は使用できていると認識しているが、まだまだ不十分である。',
+    description: 'Linux操作系統とWindows Subsystem for Linux。',
+    image: skillImage('Linux'),
   },
   {
-    name: "VSCode",
-    level: "初級",
-    skill: "必要最低限は使用できていると認識しているが、まだまだ不十分である。",
-    description: "Microsoftが開発したソースコードエディタ。"
+    name: 'VSCode',
+    level: '初級',
+    skill: 'Microsoftが開発したソースコードエディタ。',
+    description: 'Microsoftが開発したソースコードエディタ。',
+    image: skillImage('VSCode'),
   },
-]
+];

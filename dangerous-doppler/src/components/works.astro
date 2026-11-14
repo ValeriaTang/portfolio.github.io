@@ -66,30 +66,30 @@ const normalizedWorks = works.map((work) => ({
     ))}
   </div>
 
-  <dialog id="work-modal" class="modal-card" aria-modal="true" aria-labelledby="modal-title">
+  <dialog id="work-modal" class="modal-card" aria-modal="true" aria-labelledby="work-modal-title">
     <div class="modal-content">
-      <button id="close-modal-btn" class="close-btn" aria-label="閉じる">×</button>
+      <button id="work-modal-close-btn" class="close-btn" aria-label="閉じる">×</button>
 
-      <div class="modal-gallery" id="modal-gallery"></div>
+      <div class="modal-gallery" id="work-modal-gallery"></div>
 
       <header class="modal-header">
-        <h3 id="modal-title">タイトル</h3>
-        <span id="modal-ai" class="badge">AI使用率</span>
+        <h3 id="work-modal-title">タイトル</h3>
+        <span id="work-modal-ai" class="badge">AI使用率</span>
       </header>
 
       <div class="modal-meta">
         <div>
           <span class="meta-label">期間:</span>
-          <span id="modal-period"></span>
+          <span id="work-modal-period"></span>
         </div>
       </div>
 
-      <p id="modal-ai-desc" class="modal-ai-desc"></p>
-      <p id="modal-detail" class="modal-text"></p>
+      <p id="work-modal-ai-desc" class="modal-ai-desc"></p>
+      <p id="work-modal-detail" class="modal-text"></p>
 
-      <div id="modal-tags" class="modal-tags" aria-label="使用技術"></div>
+      <div id="work-modal-tags" class="modal-tags" aria-label="使用技術"></div>
 
-      <a id="modal-link" href="#" target="_blank" rel="noopener noreferrer" class="github-link">
+      <a id="work-modal-link" href="#" target="_blank" rel="noopener noreferrer" class="github-link">
         GitHubでコードを見る
       </a>
     </div>
@@ -97,18 +97,19 @@ const normalizedWorks = works.map((work) => ({
 </section>
 
 <script>
-  const modal = document.getElementById('work-modal') as HTMLDialogElement;
-  const closeBtn = document.getElementById('close-modal-btn');
-  const openBtns = document.querySelectorAll('.open-modal-btn');
-  const gallery = document.getElementById('modal-gallery');
+  const root = document.getElementById('works');
+  const modal = document.getElementById('work-modal') as HTMLDialogElement | null;
+  const closeBtn = document.getElementById('work-modal-close-btn');
+  const openBtns = root ? root.querySelectorAll('.open-modal-btn') : [];
+  const gallery = document.getElementById('work-modal-gallery');
 
-  const modalTitle = document.getElementById('modal-title');
-  const modalAi = document.getElementById('modal-ai');
-  const modalAiDesc = document.getElementById('modal-ai-desc');
-  const modalDetail = document.getElementById('modal-detail');
-  const modalPeriod = document.getElementById('modal-period');
-  const modalTags = document.getElementById('modal-tags');
-  const modalLink = document.getElementById('modal-link') as HTMLAnchorElement;
+  const modalTitle = document.getElementById('work-modal-title');
+  const modalAi = document.getElementById('work-modal-ai');
+  const modalAiDesc = document.getElementById('work-modal-ai-desc');
+  const modalDetail = document.getElementById('work-modal-detail');
+  const modalPeriod = document.getElementById('work-modal-period');
+  const modalTags = document.getElementById('work-modal-tags');
+  const modalLink = document.getElementById('work-modal-link') as HTMLAnchorElement | null;
 
   function formatPeriod(start: string, finish: string): string {
     const fmt = (s: string) => s.replace('-', '.');

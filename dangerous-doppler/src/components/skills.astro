@@ -40,33 +40,34 @@ const normalizedSkills = skills.map((s) => ({
     ))}
   </ul>
 
-  <dialog id="skill-modal" class="modal-card" aria-modal="true" aria-labelledby="modal-title">
+  <dialog id="skill-modal" class="modal-card" aria-modal="true" aria-labelledby="skill-modal-title">
     <div class="modal-content">
-      <button id="close-modal-btn" class="close-btn" aria-label="閉じる">×</button>
+      <button id="skill-modal-close-btn" class="close-btn" aria-label="閉じる">×</button>
 
-      <div class="modal-image" id="modal-image"></div>
+      <div class="modal-image" id="skill-modal-image"></div>
 
       <header class="modal-header">
-        <h3 id="modal-title">スキル名</h3>
-        <span id="modal-level" class="level-badge">レベル</span>
+        <h3 id="skill-modal-title">スキル名</h3>
+        <span id="skill-modal-level" class="level-badge">レベル</span>
       </header>
 
-      <p id="modal-skill" class="modal-detail"></p>
-      <p id="modal-desc" class="modal-text"></p>
+      <p id="skill-modal-skill" class="modal-detail"></p>
+      <p id="skill-modal-desc" class="modal-text"></p>
     </div>
   </dialog>
 </section>
 
 <script>
-  const modal = document.getElementById('skill-modal') as HTMLDialogElement;
-  const closeBtn = document.getElementById('close-modal-btn');
-  const openBtns = document.querySelectorAll('.open-modal-btn');
-  const imageWrap = document.getElementById('modal-image');
+  const root = document.getElementById('skills');
+  const modal = document.getElementById('skill-modal') as HTMLDialogElement | null;
+  const closeBtn = document.getElementById('skill-modal-close-btn');
+  const openBtns = root ? root.querySelectorAll('.open-modal-btn') : [];
+  const imageWrap = document.getElementById('skill-modal-image');
 
-  const modalTitle = document.getElementById('modal-title');
-  const modalLevel = document.getElementById('modal-level');
-  const modalSkill = document.getElementById('modal-skill');
-  const modalDesc = document.getElementById('modal-desc');
+  const modalTitle = document.getElementById('skill-modal-title');
+  const modalLevel = document.getElementById('skill-modal-level');
+  const modalSkill = document.getElementById('skill-modal-skill');
+  const modalDesc = document.getElementById('skill-modal-desc');
 
   function renderImage(src: string): void {
     if (!imageWrap) return;

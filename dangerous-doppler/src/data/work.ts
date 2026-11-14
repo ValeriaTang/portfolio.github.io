@@ -45,6 +45,11 @@ export const works = [
     finish: "2026-08",
     description: "pythonを使用して、長文の文章からワードクラウドを自動生成するツール。",
     href: "https://colab.research.google.com/drive/1mWGUu8CdHboIM9siL2oQRfEVDMcQbnto?usp=sharing",
-    image1: "https://drive.google.com/uc?export=view&id=1O7jrYRNbLmaMcXshG_Brf24QDCWTQJy1"
+    image1: "https://drive.google.com/uc?export=view&id=1O7jrYRNbLmaMcXshG_Brf24QDCWTQJy1",
+    image2: "",
+    image3: "",
+    image4: "",
+    image5: "",
+    tags: ["Python", "WordCloud"]
   },
 ];

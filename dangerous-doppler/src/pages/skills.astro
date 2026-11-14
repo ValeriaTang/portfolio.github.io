@@ -362,4 +362,12 @@ const groupedSkills = genres.map((genre) => ({
       transform: none;
     }
   }
+
+  /* Dark mode: icons need white visibility */
+  [data-theme="dark"] .skill-thumb img {
+    filter: invert(1);
+  }
+  [data-theme="dark"] .tag-icon {
+    filter: invert(1);
+  }
 </style>

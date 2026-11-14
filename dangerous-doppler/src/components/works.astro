@@ -1,13 +1,26 @@
 ---
 import { works } from '../data/work';
+import { icons } from '../data/icon';
 
-const normalizedWorks = works.map((work) => ({
-  ...work,
-  tags: work.tags ?? [],
-  images: [work.image1, work.image2, work.image3, work.image4, work.image5].filter(
-    (src): src is string => Boolean(src),
-  ),
-}));
+const iconMap = Object.fromEntries(
+  icons.map((icon) => [icon.name, icon.lightimage]),
+);
+
+function getIconUrl(tag: string): string | undefined {
+  return iconMap[tag];
+}
+
+const normalizedWorks = works.map((work) => {
+  const tags = work.tags ?? [];
+  return {
+    ...work,
+    tags,
+    tagDetails: tags.map((name) => ({ name, icon: getIconUrl(name) ?? null })),
+    images: [work.image1, work.image2, work.image3, work.image4, work.image5].filter(
+      (src): src is string => Boolean(src),
+    ),
+  };
+});
 ---
 
 <section id="works" aria-labelledby="works-heading">
@@ -28,12 +41,20 @@ const normalizedWorks = works.map((work) => ({
           <p class="work-desc">{work.description}</p>
           <div class="work-meta">
             <time datetime={work.start}>{work.start.replace('-', '.')}</time>
-            <span aria-hidden="true">–</span>
+            <span aria-hidden="true">-</span>
             <time datetime={work.finish}>{work.finish.replace('-', '.')}</time>
           </div>
-          {work.tags.length > 0 && (
+          {work.tagDetails.length > 0 && (
             <ul class="work-tags" aria-label="使用技術">
-              {work.tags.map((tag) => <li>{tag}</li>)}
+              {work.tagDetails.map((tag) => (
+                <li class="tag-item">
+                  {tag.icon ? (
+                    <img src={tag.icon} alt={tag.name} class="tag-icon" />
+                  ) : (
+                    <span class="tag-text">{tag.name}</span>
+                  )}
+                </li>
+              ))}
             </ul>
           )}
           {work.AI && (
@@ -53,7 +74,7 @@ const normalizedWorks = works.map((work) => ({
               data-detail={work.description}
               data-start={work.start}
               data-finish={work.finish}
-              data-tags={work.tags.join(', ')}
+              data-tags={JSON.stringify(work.tagDetails)}
               data-images={JSON.stringify(work.images)}
               data-url={work.href}
               aria-label={`${work.title} の詳細を見る`}
@@ -129,14 +150,21 @@ const normalizedWorks = works.map((work) => ({
       .join('');
   }
 
-  function renderTags(tags: string): void {
+  function renderTags(raw: string): void {
     if (!modalTags) return;
-    const arr = tags.split(',').map((s) => s.trim()).filter(Boolean);
-    if (arr.length === 0) {
-      modalTags.innerHTML = '';
-      return;
+    let tags: { name: string; icon: string | null }[] = [];
+    try {
+      tags = raw ? JSON.parse(raw) : [];
+    } catch {
+      tags = [];
     }
-    modalTags.innerHTML = arr.map((t) => `<span class="tag">${t}</span>`).join('');
+    modalTags.innerHTML = tags
+      .map((tag) =>
+        tag.icon
+          ? `<span class="tag-item"><img src="${tag.icon}" alt="${tag.name}" class="tag-icon" /></span>`
+          : `<span class="tag-item"><span class="tag-text">${tag.name}</span></span>`,
+      )
+      .join('');
   }
 
   openBtns.forEach((btn) => {
@@ -175,17 +203,6 @@ const normalizedWorks = works.map((work) => ({
 <style>
   /* 作品セクション */
   #works {
-    --card-bg: #1a1a1a;
-    --card-border: #333;
-    --card-text: #bbb;
-    --card-title: #fff;
-    --btn-bg: #2563eb;
-    --btn-bg-hover: #1d4ed8;
-    --btn-secondary: #374151;
-    --btn-secondary-hover: #4b5563;
-    --muted: #888;
-    --accent: #ff9776;
-
     margin-block: 3rem;
   }
 
@@ -291,15 +308,6 @@ const normalizedWorks = works.map((work) => ({
     list-style: none;
     padding: 0;
     margin: 0.25rem 0 0;
-  }
-
-  .work-tags li {
-    font-size: 0.7rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--card-border);
-    color: var(--card-text);
-    padding: 0.125rem 0.5rem;
-    border-radius: 999px;
   }
 
   .work-ai-note {
@@ -529,4 +537,56 @@ const normalizedWorks = works.map((work) => ({
       transform: none;
     }
   }
+
+  .tag-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--card-border);
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .tag-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent);
+  }
+
+  .tag-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  }
+
+  .tag-text {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--card-text);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* Modal tags - smaller, no background */
+  .modal-tags .tag-item {
+    width: auto;
+    height: auto;
+    min-width: 1.75rem;
+    min-height: 1.75rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .modal-tags .tag-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .modal-tags .tag-text {
+    font-size: 0.7rem;
+  }
+
 </style>

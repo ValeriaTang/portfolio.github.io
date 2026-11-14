@@ -5,6 +5,8 @@
 <header class="site-header">
   <div class="logo">ポートフォリオ</div>
 
+  <button class="theme-toggle" id="theme-toggle" aria-label="テーマを切り替え">🌙</button>
+
   <nav class="pc-menu">
     <a href="#home">ホーム</a>
     <a href="#about">私について</a>
@@ -55,4 +57,31 @@
       });
     });
   }
+
+  // テーマ切り替え
+  const themeBtn = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  function setTheme(theme) {
+    if (theme === 'light') {
+      html.setAttribute('data-theme', 'light');
+      themeBtn.textContent = '☀️';
+      localStorage.setItem('theme', 'light');
+    } else {
+      html.removeAttribute('data-theme');
+      themeBtn.textContent = '🌙';
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+
+  // 初期テーマの復元
+  const saved = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initialTheme = saved || (prefersDark ? 'dark' : 'light');
+  setTheme(initialTheme);
+
+  themeBtn?.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    setTheme(current === 'light' ? 'dark' : 'light');
+  });
 </script>

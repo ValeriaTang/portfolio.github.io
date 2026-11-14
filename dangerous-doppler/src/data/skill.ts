@@ -1,9 +1,18 @@
+export interface Skill {
+  name: string;
+  level: string;
+  skill: string;
+  description: string;
+  image: string;     // public/ からのパス（例: /images/thumb1.png）
+}
+
 export const skills = [
   {
     name: "Python",
     level: "初級",
     skill: "求める出力形式や文脈を正しくAIに指示し、意図通りのコードやドキュメントを生成させることができる。",
-    description: "人工知能（AI）やデータ分析、業務の自動化、Webアプリ開発の分野で活用できる言語。"
+    description: "人工知能（AI）やデータ分析、業務の自動化、Webアプリ開発の分野で活用できる言語。",
+    image: ""
   },
   {
     name: "JavaScript",
@@ -30,9 +39,15 @@ export const skills = [
     description: "データベース操作に使われる言語。"
   },
   {
+    name: "LaTeX",
+    level: "入門",
+    skill: "ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。",
+    description: "学術論文やレポートの作成に使われる文書作成システム。"
+  },
+  {
     name: "Git/GitHub",
     level: "初級",
-        skill: "必要最低限は使用できていると認識しているが、まだまだ不十分である。",
+    skill: "必要最低限は使用できていると認識しているが、まだまだ不十分である。",
     description: "バージョン管理システム。"
   },
   {

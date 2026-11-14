@@ -1,42 +1,91 @@
 ---
 const pageTitle = "スキル";
-const skillColor = "crimson";
-const fontWeight = "bold";
-const textCase = "uppercase";
 import { skills } from "../data/skill.ts";
 ---
 
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} >
-    <title>{pageTitle}</title>
-    <style define:vars={{skillColor, fontWeight, textCase}}>
-      h1 {
-        color: purple;
-        font-size: 4rem;
-      }
-      .skill {
-        color: var(--skillColor);
-        font-weight: var(--fontWeight);
-        text-transform: var(--textCase);
-      }
-</style>
-  </head>
-  <body>
-    <body>
-  <h2>{pageTitle}</h2>
-  <div class="skills-grid">
+<section id="skills" aria-labelledby="skills-heading">
+  <h2 id="skills-heading">{pageTitle}</h2>
+  <ul class="skills-grid">
     {skills.map((skill) => (
-      <div class="skill-card">
-        <h3>{skill.name} <span class="badge">{skill.level}</span></h3>
-        <p>{skill.skill}</p>
-        <p>{skill.description}</p>
-      </div>
+      <li class="skill-card">
+        {skill.image ? (
+          <img
+            src={skill.image}
+            alt={`${skill.name}のスクリーンショット`}
+            loading="lazy"
+            width="640"
+            height="360"
+          />
+        ) : null}
+        <div class="skill-body">
+          <h3>{skill.name}</h3>
+          <p>{skill.description}</p>
+        </div>
+      </li>
     ))}
-  </div>
-</body>
-  </body>
-</html>
+  </ul>
+</section>
+
+<style>
+  /* スキルセクション */
+  #skills {
+    margin-block: 3rem;
+  }
+
+  #skills h2 {
+    margin: 0 0 1.25rem;
+    color: var(--color-primary);
+  }
+
+  /* スキルグリッド */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* スキルカード */
+  .skill-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    background-color: var(--card-bg, #1a1a1a);
+    border: 1px solid var(--card-border, #333);
+    border-radius: 0.75rem;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .skill-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .skill-card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--card-title, #fff);
+  }
+
+  .skill-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--card-text, #bbb);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skill-card {
+      transition: none;
+    }
+
+    .skill-card:hover {
+      transform: none;
+    }
+  }
+</style>

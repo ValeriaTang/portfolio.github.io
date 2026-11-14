@@ -41,14 +41,14 @@ export const skills = [
     level: '初級',
     skill: '求める出力形式や文脈を正しくAIに指示し、意図通りのコードやドキュメントを生成させることができる。',
     description: 'システムプログラミングや高性能計算に使われる言語。',
-    image: skillImage('C'),
+    image: skillImage('C++'),
   },
   {
     name: 'SQL',
     level: '入門',
     skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。',
     description: 'データベース操作に使われる言語。',
-    image: skillImage('SQL'),
+    image: skillImage('PostgreSQL'),
   },
   {
     name: 'LaTeX',
@@ -78,4 +78,11 @@ export const skills = [
     description: 'Microsoftが開発したソースコードエディタ。',
     image: skillImage('VSCode'),
   },
+  {
+    name: 'Arduino',
+    level: '入門',
+    skill: 'ゼロから完全なコードを書くことはできないが、',
+    description: 'マイコンボードと開発環境。',
+    image: skillImage('Arduino'),
+  }
 ];

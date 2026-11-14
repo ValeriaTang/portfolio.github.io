@@ -1,9 +1,103 @@
 ---
 import "../styles/global.css";
+
 const platform = "github";
 const username = "ValeriaTang";
+const email = "rg25007u@st.omu.ac.jp";
 ---
 
 <footer>
-  <p>私のプロジェクトについて詳しくは<a href={`https://www.${platform}.com/${username}`}>{platform}</a>をご確認ください！</p>
+  <div class="footer-inner">
+    <div class="footer-contact">
+      <a
+        class="footer-github-icon"
+        href={`https://www.${platform}.com/${username}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${platform} のプロフィールを開く`}
+      >
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="currentColor">
+          <path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.55v-1.94c-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.41-2.69 5.39-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.66.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z" />
+        </svg>
+      </a>
+      <a class="footer-email" href={`mailto:${email}`}>学校用メールアドレス: {email}</a>
+    </div>
+    <p>私のプロジェクトについて詳しくは <a href={`https://www.${platform}.com/${username}`} target="_blank" rel="noopener noreferrer">GitHub</a> をご確認ください！</p>
+  </div>
 </footer>
+
+<style>
+  footer {
+    margin-block: 3rem 2rem;
+    padding: 1.5rem 1rem;
+    border-top: 1px solid var(--card-border);
+  }
+
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-contact {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer-github-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--card-title);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 50%;
+    transition: color 0.2s, border-color 0.2s, transform 0.2s;
+  }
+
+  .footer-github-icon:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .footer-github-icon:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .footer-email {
+    color: var(--card-text);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-email:hover {
+    color: var(--accent);
+  }
+
+  footer p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  footer p a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  footer p a:hover {
+    text-decoration: underline;
+  }
+</style>

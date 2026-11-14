@@ -4,6 +4,7 @@ import { works } from '../data/work';
 import { icons } from '../data/icon';
 import Header from '../components/header.astro';
 import BackToTop from '../components/back-to-top.astro';
+import Footer from '../components/footer.astro';
 
 const iconMap = Object.fromEntries(
   icons.map((icon) => [icon.name, icon.lightimage]),
@@ -120,6 +121,8 @@ const normalizedWorks = works.map((work) => {
     </div>
   </dialog>
 </section>
+
+<Footer />
 
 <BackToTop />
 

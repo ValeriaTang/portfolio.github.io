@@ -15,6 +15,8 @@ export interface Work {
   href: string;       // 詳細ページ
 }
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 export const works = [
   {
     id: "portfolio",
@@ -36,7 +38,12 @@ export const works = [
     finish: "2026-11",
     description: "ハッカソンで作成したスケジュール管理アプリ。(バックエンド担当",
     tags: ["Vercel", "TypeScript", "PostgreSQL"],
-    href: "https://github.com/Hackathon-SAI/schedule"
+    href: "https://github.com/Hackathon-SAI/schedule",
+    image1: `${base}/images/schedule.png`,
+    image2: `${base}/images/schedule2.png`,
+    image3: `${base}/images/schedule3.png`,
+    image4: `${base}/images/schedule4.png`,
+    image5: ""
   },
   {
     id: "wordcloud",
@@ -47,10 +54,10 @@ export const works = [
     finish: "2026-08",
     description: "pythonを使用して、長文の文章からワードクラウドを自動生成するツール。",
     href: "https://colab.research.google.com/drive/1mWGUu8CdHboIM9siL2oQRfEVDMcQbnto?usp=sharing",
-    image1: "src/assets/images/wordcloud.png",
-    image2: "src/assets/images/wordcloud2.png",
-    image3: "src/assets/images/wordcloud3.png",
-    image4: "src/assets/images/wordcloud4.png",
+    image1: `${base}/images/wordcloud.png`,
+    image2: `${base}/images/wordcloud2.png`,
+    image3: `${base}/images/wordcloud3.png`,
+    image4: `${base}/images/wordcloud4.png`,
     image5: "",
     tags: ["Python", "WordCloud"]
   },

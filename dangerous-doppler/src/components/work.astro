@@ -71,7 +71,7 @@ const normalizedWorks = works.map((work) => {
 
   <dialog id="work-modal" class="modal-card" aria-modal="true" aria-labelledby="work-modal-title">
     <div class="modal-content">
-      <button id="work-modal-close-btn" class="close-btn" aria-label="閉じる">×</button>
+      <button id="work-modal-close-btn" class="close-btn" aria-label="閉じる">x</button>
 
       <div class="modal-gallery" id="work-modal-gallery"></div>
 
@@ -219,7 +219,7 @@ const normalizedWorks = works.map((work) => {
 
   .works-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
     gap: 1rem;
   }
 
@@ -253,6 +253,8 @@ const normalizedWorks = works.map((work) => {
   .work-thumb img {
     width: 100%;
     height: 100%;
+    max-width: 48px;
+    max-height: 48px;
     object-fit: contain;
   }
 

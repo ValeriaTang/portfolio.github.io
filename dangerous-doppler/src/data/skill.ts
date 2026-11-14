@@ -4,6 +4,7 @@ export interface Skill {
   name: string;
   level: string;
   skill: string;
+  genre: string;
   description: string;
   image: string; // public/ からのパス（例: /images/thumb1.png）または devicon の lightimage URL
 }
@@ -18,6 +19,7 @@ export const skills = [
   {
     name: 'Python',
     level: '初級',
+    genre: 'バックエンド',
     skill: '求める出力形式や文脈を正しくAIに指示し、意図通りのコードやドキュメントを生成させることができる。',
     description: '人工知能（AI）やデータ分析、業務の自動化、Webアプリ開発の分野で活用できる言語。',
     image: skillImage('Python'),
@@ -25,6 +27,7 @@ export const skills = [
   {
     name: 'JavaScript',
     level: '入門',
+    genre: 'フロントエンド',
     skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。',
     description: 'Web開発で広く使われているプログラミング言語。',
     image: skillImage('JavaScript'),
@@ -32,6 +35,7 @@ export const skills = [
   {
     name: 'HTML/CSS',
     level: '入門',
+    genre: 'フロントエンド',
     skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。',
     description: 'Web開発で広く使われているマークアップ言語とスタイルシート言語。',
     image: skillImage('HTML'),
@@ -39,13 +43,15 @@ export const skills = [
   {
     name: 'C/C++',
     level: '初級',
+    genre: 'バックエンド',
     skill: '求める出力形式や文脈を正しくAIに指示し、意図通りのコードやドキュメントを生成させることができる。',
     description: 'システムプログラミングや高性能計算に使われる言語。',
     image: skillImage('C++'),
   },
   {
-    name: 'SQL',
+    name: 'PostgreSQL',
     level: '入門',
+    genre: 'インフラ',
     skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。',
     description: 'データベース操作に使われる言語。',
     image: skillImage('PostgreSQL'),
@@ -53,6 +59,7 @@ export const skills = [
   {
     name: 'LaTeX',
     level: '入門',
+    genre: 'その他',
     skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。',
     description: '学術論文やレポートの作成に使われる文書作成システム。',
     image: skillImage('LaTeX'),
@@ -60,6 +67,7 @@ export const skills = [
   {
     name: 'Git/GitHub',
     level: '初級',
+    genre: 'その他',
     skill: '必要最低限は使用できていると認識しているが、まだまだ不十分である。',
     description: 'バージョン管理システム。',
     image: skillImage('Git'),
@@ -67,21 +75,64 @@ export const skills = [
   {
     name: 'Linux(Ubuntu)/WSL',
     level: '初級',
+    genre: 'インフラ',
     skill: '必要最低限は使用できていると認識しているが、まだまだ不十分である。',
-    description: 'Linux操作系統とWindows Subsystem for Linux。',
+    description: 'LinuxオペレーティングシステムおよびWSL環境。',
     image: skillImage('Linux'),
   },
   {
     name: 'VSCode',
     level: '初級',
-    skill: 'Microsoftが開発したソースコードエディタ。',
+    genre: 'その他',
+    skill: '必要最低限は使用できていると認識しているが、まだまだ不十分である。',
     description: 'Microsoftが開発したソースコードエディタ。',
     image: skillImage('VSCode'),
   },
   {
+    name: 'Astro',
+    level: '入門',
+    genre: 'フレームワーク',
+    skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。',
+    description: '軽量で高速なマルチページ対応SSGフレームワーク。',
+    image: skillImage('Astro'),
+  },
+  {
+    name: 'Ruby on Rails',
+    level: '入門',
+    genre: 'フレームワーク',
+    skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。',
+    description: 'Ruby製のWebアプリケーションフレームワーク。',
+    image: skillImage('Rails'),
+  },
+  {
+    name: 'Vercel',
+    level: '初級',
+    genre: 'インフラ',
+    skill: '必要最低限は使用できていると認識しているが、まだまだ不十分である。',
+    description: 'フロントエンド向けホスティング・デプロイプラットフォーム。',
+    image: skillImage('Vercel'),
+  },
+  {
+    name: 'Google Cloud Console',
+    level: '初級',
+    genre: 'インフラ',
+    skill: '必要最低限は使用できていると認識しているが、まだまだ不十分である。',
+    description: 'Googleのクラウドコンピューティングプラットフォーム。',
+    image: skillImage('Google Cloud'),
+  },
+  {
+    name: 'zsh',
+    level: '初級',
+    genre: 'インフラ',
+    skill: '必要最低限は使用できていると認識しているが、まだまだ不十分である。',
+    description: 'Unix系シェル。コマンドライン操作を効率化。',
+    image: skillImage('Zsh'),
+  },
+  {
     name: 'Arduino',
     level: '入門',
-    skill: 'ゼロから完全なコードを書くことはできないが、',
+    genre: 'その他',
+    skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。',
     description: 'マイコンボードと開発環境。',
     image: skillImage('Arduino'),
   }

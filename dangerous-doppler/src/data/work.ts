@@ -36,7 +36,7 @@ export const works = [
     AI: "開発計画から新機能の実装、セキュリティ監査までAIに任せました。私が担当したのは技術選定、アイデア出し、バグの発見など。",
     start: "2026-04",
     finish: "2026-11",
-    description: "ハッカソンで作成したスケジュール管理アプリ。(バックエンド担当",
+    description: "ハッカソンで作成したスケジュール管理アプリ。(バックエンド/インフラ担当)",
     tags: ["Vercel", "TypeScript", "PostgreSQL"],
     href: "https://github.com/Hackathon-SAI/schedule",
     image1: `${base}/images/schedule.png`,
@@ -65,11 +65,11 @@ export const works = [
     id: "music-ear-training",
     title: "音楽耳トレーニングアプリ",
     aiRatio: "5%",
-    AI: "",
+    AI: "計画段階のため、アイデアの具体化のために使用した。",
     start: "2026-10",
     finish: "現在",
     description: "楽器ごとの音量を調整する訓練のためのアプリ。計画段階。",
-    href: "",
+    href: "https://github.com/ValeriaTang/pa_ear-training",
     image1: "",
     tags: ["Figma", "Vite", "TypeScript"]
   }

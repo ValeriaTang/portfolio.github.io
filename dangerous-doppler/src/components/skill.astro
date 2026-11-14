@@ -145,19 +145,19 @@ const normalizedSkills = skills.map((s) => {
 <style>
   /* スキルセクション */
   #skills {
-    margin-block: 3rem;
+    margin-block: 2rem;
   }
 
   #skills h2 {
-    margin: 0 0 1.25rem;
+    margin: 0 0 0.75rem;
     color: var(--color-primary);
   }
 
   /* スキルグリッド */
   .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+    gap: 0.75rem;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -209,7 +209,7 @@ const normalizedSkills = skills.map((s) => {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    padding: 1rem;
+    padding: 0.75rem;
     flex: 1;
   }
 
@@ -291,8 +291,8 @@ const normalizedSkills = skills.map((s) => {
   .modal-card {
     border: none;
     border-radius: 1rem;
-    background: #111;
-    color: #eee;
+    background: var(--modal-bg);
+    color: var(--modal-text);
     max-width: 48rem;
     width: calc(100% - 2rem);
     max-height: 90vh;
@@ -322,7 +322,7 @@ const normalizedSkills = skills.map((s) => {
     border: none;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    color: var(--modal-heading);
     font-size: 1.25rem;
     line-height: 1;
     cursor: pointer;
@@ -342,7 +342,7 @@ const normalizedSkills = skills.map((s) => {
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    background: #111;
+    background: var(--modal-bg);
     border-radius: 0.75rem;
     margin-bottom: 0.5rem;
     display: none;
@@ -369,7 +369,7 @@ const normalizedSkills = skills.map((s) => {
   .modal-header h3 {
     margin: 0;
     font-size: 1.5rem;
-    color: #fff;
+    color: var(--modal-heading);
   }
 
   .modal-detail {

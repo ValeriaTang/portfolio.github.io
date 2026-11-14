@@ -21,33 +21,45 @@ const normalizedSkills = skills.map((s) => {
     darkImage,
   };
 });
+
+const genres = ['バックエンド', 'フロントエンド', 'フレームワーク', 'インフラ', 'その他'];
+
+const groupedSkills = genres.map((genre) => ({
+  genre,
+  skills: normalizedSkills.filter((s) => s.genre === genre),
+})).filter((g) => g.skills.length > 0);
 ---
 
 <Header />
 <section id="skills" aria-labelledby="skills-heading">
   <h2 id="skills-heading">スキル</h2>
-  <ul class="skills-grid">
-    {normalizedSkills.map((s) => (
-      <li
-        class="skill-card open-modal-btn"
-        data-name={s.name}
-        data-level={s.level}
-        data-skill={s.skill}
-        data-desc={s.description}
-        data-image={s.image}
-      >
-        {s.hasImage ? (
-          <div class="skill-thumb">
-            <img src={s.image} alt={s.name} loading="lazy" data-light-src={s.image} data-dark-src={s.darkImage} />
-          </div>
-        ) : (
-          <div class="skill-thumb skill-thumb--text">
-            <span class="skill-name">{s.name}</span>
-          </div>
-        )}
-      </li>
-    ))}
-  </ul>
+  {groupedSkills.map((group) => (
+    <div class="genre-section" aria-labelledby={"genre-" + group.genre}>
+      <h3 id={"genre-" + group.genre} class="genre-heading">{group.genre}</h3>
+      <ul class="skills-grid">
+        {group.skills.map((s) => (
+          <li
+            class="skill-card open-modal-btn"
+            data-name={s.name}
+            data-level={s.level}
+            data-skill={s.skill}
+            data-desc={s.description}
+            data-image={s.image}
+          >
+            {s.hasImage ? (
+              <div class="skill-thumb">
+                <img src={s.image} alt={s.name} loading="lazy" data-light-src={s.image} data-dark-src={s.darkImage} />
+              </div>
+            ) : (
+              <div class="skill-thumb skill-thumb--text">
+                <span class="skill-name">{s.name}</span>
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
 
   <dialog id="skill-modal" class="modal-card" aria-modal="true" aria-labelledby="skill-modal-title">
     <div class="modal-content">
@@ -143,7 +155,21 @@ const normalizedSkills = skills.map((s) => {
 <style>
   /* スキルセクション */
   #skills {
-    margin-block: 3rem;
+    margin-block: 2rem;
+  }
+
+  /* ジャンル別セクション */
+  .genre-section {
+    margin-bottom: 2rem;
+  }
+
+  .genre-heading {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.375rem;
+    border-bottom: 2px solid var(--accent);
   }
 
   #skills h2 {
@@ -154,8 +180,8 @@ const normalizedSkills = skills.map((s) => {
   /* スキルグリッド */
   .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+    gap: 0.75rem;
     list-style: none;
     padding: 0;
     margin: 0;

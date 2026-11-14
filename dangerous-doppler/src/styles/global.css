@@ -27,6 +27,13 @@
   --muted: #888888;
   --accent: #ff9776;
 
+  /* Modal theme variables / モーダル */
+  --modal-bg: #111111;
+  --modal-text: #eeeeee;
+  --modal-heading: #ffffff;
+  --modal-muted: #888888;
+  --modal-border: #333333;
+
   /* Typography / タイポグラフィ */
   --line-height: 1.5;
   --heading-line-height: 1.3;
@@ -63,6 +70,13 @@
   --btn-bg-hover: #1e1a7a;
   --muted: #64748b;
   --accent: #ff9776;
+
+  /* Modal theme variables / モーダル */
+  --modal-bg: #f8fafc;
+  --modal-text: #0f172a;
+  --modal-heading: #0d0950;
+  --modal-muted: #64748b;
+  --modal-border: #e2e8f0;
 }
 
 /* Work card thumbnail background - theme aware */

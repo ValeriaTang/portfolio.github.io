@@ -2,20 +2,30 @@
    CSS カスタムプロパティ / Variables
    ======================================== */
 :root {
-  /* Colors / カラー */
-  --color-bg: #f1f5f9;
-  --color-text: #0f172a;
-  --color-primary: #0d0950;
+  /* Dark Theme (default) */
+  --color-bg: #0a0a0a;
+  --color-text: #e2e8f0;
+  --color-primary: #c084fc;
   --color-accent: #ff9776;
   --color-white: #ffffff;
 
   /* Header colors / ヘッダー */
   --header-bg: transparent;
-  --header-bg-scrolled: #000000;
+  --header-bg-scrolled: #111111;
   --header-text: var(--color-white);
   --header-link: rgba(255, 255, 255, 0.75);
   --header-link-hover: var(--color-white);
   --header-height: 56px;
+
+  /* Card colors / カード */
+  --card-bg: #1a1a1a;
+  --card-border: #333333;
+  --card-text: #bbbbbb;
+  --card-title: #ffffff;
+  --btn-bg: #2563eb;
+  --btn-bg-hover: #1d4ed8;
+  --muted: #888888;
+  --accent: #ff9776;
 
   /* Typography / タイポグラフィ */
   --line-height: 1.5;
@@ -24,6 +34,64 @@
   /* Layout / レイアウト */
   --max-width: 80ch;
   --container-padding: 1rem;
+}
+
+/****************************
+   Light Theme
+****************************/
+[data-theme="light"] {
+  /* Colors */
+  --color-bg: #ffffff;
+  --color-text: #0f172a;
+  --color-primary: #0d0950;
+  --color-accent: #ff9776;
+  --color-white: #ffffff;
+
+  /* Header */
+  --header-bg: transparent;
+  --header-bg-scrolled: #ffffff;
+  --header-text: var(--color-primary);
+  --header-link: rgba(13, 9, 80, 0.75);
+  --header-link-hover: var(--color-primary);
+
+  /* Component card overrides (light mode) */
+  --card-bg: #f8fafc;
+  --card-border: #e2e8f0;
+  --card-text: #334155;
+  --card-title: #0f172a;
+  --btn-bg: #0d0950;
+  --btn-bg-hover: #1e1a7a;
+  --muted: #64748b;
+  --accent: #ff9776;
+}
+
+/****************************
+   Theme Toggle Button
+****************************/
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: var(--header-text);
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: rotate(15deg);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* Font family by language / 言語別のフォント */
@@ -50,8 +118,10 @@ html[lang="zh-CN"] {
 
 html {
   background-color: var(--color-bg);
+  color: var(--color-text);
   font-family: var(--font-family);
   scroll-behavior: smooth;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
@@ -60,6 +130,7 @@ body {
   max-width: var(--max-width);
   padding: var(--container-padding);
   line-height: var(--line-height);
+  color: var(--color-text);
 }
 
 /* ========================================

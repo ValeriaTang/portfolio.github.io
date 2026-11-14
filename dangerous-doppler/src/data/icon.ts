@@ -26,24 +26,34 @@ export const icons = [
         lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg"
     },
     {
-        name: "C",
-        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-plain.svg",
-        lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg"
-    },
-    {
         name: "C++",
         darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-plain.svg",
         lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg"
     },
     {
         name: "SQL",
-        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-plain.svg",
-        lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg"
+        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-plain.svg",
+        lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg"
     },
     {
         name: "LaTeX",
-        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-plain.svg",
+        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-originsl.svg",
         lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-original.svg"
+    },
+    {
+        name: "Astro",
+        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/astro/astro-plain.svg",
+        lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/astro/astro-original.svg"
+    },
+    {
+        name: "Arduino",
+        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/arduino/arduino-plain.svg",
+        lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/arduino/arduino-original.svg"
+    },
+    {
+        name: "Rails",
+        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rails/rails-plain.svg",
+        lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rails/rails-original-wordmark.svg"
     },
     {
         name: "Git",
@@ -52,12 +62,27 @@ export const icons = [
     },
     {
         name: "Linux",
-        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-plain.svg",
-        lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg"
+        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/ubuntu/ubuntu-plain.svg",
+        lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/ubuntu/ubuntu-original.svg"
+    },
+    {
+        name: "Vercel",
+        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-line.svg",
+        lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg"
     },
     {
         name: "VSCode",
         darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-plain.svg",
         lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg"
+    },
+    {
+        name: "Google Cloud",
+        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-plain.svg",
+        lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg"
+    },
+    {
+        name: "Zsh",
+        darkimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/zsh/zsh-line.svg",
+        lightimage: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/zsh/zsh-original.svg"
     }
 ]

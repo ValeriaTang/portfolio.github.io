@@ -2,6 +2,7 @@
 import { works } from '../data/work';
 import { icons } from '../data/icon';
 
+const base = import.meta.env.BASE_URL.replace(/\/\$/, "");
 const iconMap = Object.fromEntries(
   icons.map((icon) => [icon.name, { dark: icon.darkimage, light: icon.lightimage }]),
 );

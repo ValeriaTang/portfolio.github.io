@@ -1,6 +1,9 @@
 ---
+import "../styles/global.css";
 import { works } from '../data/work';
 import { icons } from '../data/icon';
+import Header from '../components/header.astro';
+import BackToTop from '../components/back-to-top.astro';
 
 const iconMap = Object.fromEntries(
   icons.map((icon) => [icon.name, icon.lightimage]),
@@ -23,6 +26,7 @@ const normalizedWorks = works.map((work) => {
 });
 ---
 
+<Header />
 <section id="works" aria-labelledby="works-heading">
   <h2 id="works-heading">作品</h2>
   <div class="works-grid">
@@ -89,7 +93,7 @@ const normalizedWorks = works.map((work) => {
 
   <dialog id="work-modal" class="modal-card" aria-modal="true" aria-labelledby="work-modal-title">
     <div class="modal-content">
-      <button id="work-modal-close-btn" class="close-btn" aria-label="閉じる">×</button>
+      <button id="work-modal-close-btn" class="close-btn" aria-label="閉じる">x</button>
 
       <div class="modal-gallery" id="work-modal-gallery"></div>
 
@@ -116,6 +120,8 @@ const normalizedWorks = works.map((work) => {
     </div>
   </dialog>
 </section>
+
+<BackToTop />
 
 <script>
   const root = document.getElementById('works');

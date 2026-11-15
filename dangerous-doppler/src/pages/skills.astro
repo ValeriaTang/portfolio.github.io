@@ -213,12 +213,14 @@ const groupedSkills = genres.map((genre) => ({
     height: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: transparent;
+    background: var(--card-bg);
   }
 
   .skill-thumb img {
     width: 100%;
     height: 100%;
+    max-width: 96px;
+    max-height: 96px;
     object-fit: contain;
     transition: transform 0.3s ease;
   }
@@ -364,8 +366,11 @@ const groupedSkills = genres.map((genre) => ({
   }
 
   /* Dark mode: icons need white visibility */
+  [data-theme="dark"] .skill-thumb {
+    background: #ffffff;
+  }
   [data-theme="dark"] .skill-thumb img {
-    filter: invert(1);
+    filter: none;
   }
   [data-theme="dark"] .tag-icon {
     filter: invert(1);

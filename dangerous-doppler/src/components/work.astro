@@ -719,8 +719,11 @@ const normalizedWorks = works.map((work) => {
 
 
   /* Dark mode: icons need white visibility */
+  [data-theme="dark"] .skill-thumb {
+    background: #ffffff;
+  }
   [data-theme="dark"] .skill-thumb img {
-    filter: invert(1);
+    filter: none;
   }
   [data-theme="dark"] .tag-icon {
     filter: invert(1);

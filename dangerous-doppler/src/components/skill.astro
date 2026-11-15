@@ -189,14 +189,14 @@ const normalizedSkills = skills.map((s) => {
     height: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: transparent;
+    background: var(--card-bg);
   }
 
   .skill-thumb img {
     width: 100%;
     height: 100%;
-    max-width: 48px;
-    max-height: 48px;
+    max-width: 96px;
+    max-height: 96px;
     object-fit: contain;
     transition: transform 0.3s ease;
   }
@@ -426,16 +426,11 @@ const normalizedSkills = skills.map((s) => {
 
 
   /* Dark mode: icons need white visibility */
-  [data-theme="dark"] .skill-thumb img {
-    filter: invert(1);
+  [data-theme="dark"] .skill-thumb {
+    background: #ffffff;
   }
-  [data-theme="dark"] .tag-icon {
-    filter: invert(1);
-  }
-
-  /* Dark mode: icons need white visibility */
   [data-theme="dark"] .skill-thumb img {
-    filter: invert(1);
+    filter: none;
   }
   [data-theme="dark"] .tag-icon {
     filter: invert(1);

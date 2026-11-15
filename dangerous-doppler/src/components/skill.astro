@@ -55,8 +55,15 @@ const normalizedSkills = skills.map((s) => {
         <span id="skill-modal-level" class="level-badge">レベル</span>
       </header>
 
-      <p id="skill-modal-skill" class="modal-detail"></p>
-      <p id="skill-modal-desc" class="modal-text"></p>
+      <div class="modal-section">
+        <h4 class="modal-subheading">できること</h4>
+        <p id="skill-modal-skill" class="modal-detail"></p>
+      </div>
+
+      <div class="modal-section">
+        <h4 class="modal-subheading">説明</h4>
+        <p id="skill-modal-desc" class="modal-text"></p>
+      </div>
     </div>
   </dialog>
 
@@ -385,6 +392,18 @@ const normalizedSkills = skills.map((s) => {
     font-size: 0.9rem;
     line-height: 1.7;
     color: var(--card-text);
+  }
+
+  .modal-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-subheading {
+    margin: 0.5rem 0 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
   }
 
   @media (prefers-reduced-motion: reduce) {

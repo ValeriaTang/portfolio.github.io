@@ -24,8 +24,12 @@
   --card-title: #ffffff;
   --btn-bg: #2563eb;
   --btn-bg-hover: #1d4ed8;
+  --btn-secondary: #374151;
+  --btn-secondary-hover: #4b5563;
   --muted: #888888;
   --accent: #ff9776;
+  --accent-bg: rgba(255, 151, 118, 0.1);
+  --accent-bg-hover: rgba(255, 151, 118, 0.2);
 
   /* Modal theme variables / モーダル */
   --modal-bg: #111111;
@@ -68,6 +72,8 @@
   --card-title: #0f172a;
   --btn-bg: #0d0950;
   --btn-bg-hover: #1e1a7a;
+  --btn-secondary: #4b5563;
+  --btn-secondary-hover: #6b7280;
   --muted: #64748b;
   --accent: #ff9776;
 

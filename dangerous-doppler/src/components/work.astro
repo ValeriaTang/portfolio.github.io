@@ -343,7 +343,7 @@ const normalizedWorks = works.map((work) => {
     font-weight: 600;
     color: var(--accent);
     white-space: nowrap;
-    background: rgba(255, 151, 118, 0.1);
+    background: var(--accent-bg);
     padding: 0.125rem 0.5rem;
     border-radius: 999px;
   }
@@ -423,7 +423,7 @@ const normalizedWorks = works.map((work) => {
   }
 
   .btn-primary {
-    color: #fff;
+    color: var(--color-white);
     background-color: var(--btn-bg);
   }
 
@@ -432,7 +432,7 @@ const normalizedWorks = works.map((work) => {
   }
 
   .btn-secondary {
-    color: #fff;
+    color: var(--color-white);
     background-color: var(--btn-secondary);
   }
 
@@ -576,7 +576,7 @@ const normalizedWorks = works.map((work) => {
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--accent);
-    background: rgba(255, 151, 118, 0.1);
+    background: var(--accent-bg);
     padding: 0.25rem 0.75rem;
     border-radius: 999px;
   }
@@ -590,7 +590,7 @@ const normalizedWorks = works.map((work) => {
 
   .meta-label {
     font-weight: 600;
-    color: #aaa;
+    color: var(--muted);
   }
 
   .modal-ai-desc {
@@ -719,8 +719,11 @@ const normalizedWorks = works.map((work) => {
 
 
   /* Dark mode: icons need white visibility */
-  [data-theme="dark"] .skill-thumb img {
-    filter: invert(1);
+  [data-theme="dark"] .work-thumb {
+    background: #ffffff;
+  }
+  [data-theme="dark"] .work-thumb img {
+    filter: none;
   }
   [data-theme="dark"] .tag-icon {
     filter: invert(1);

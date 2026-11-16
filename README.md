@@ -32,7 +32,3 @@ dangerous-doppler/
 │   └── styles/global.css    # テーマ変数（--btn-bg / --accent など）
 └── package.json
 ```
-
-## デモ
-
-（公開URLがあればここに記載）

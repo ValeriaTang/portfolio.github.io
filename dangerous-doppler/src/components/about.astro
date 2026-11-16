@@ -7,25 +7,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   <h2 id="about-heading"></h2>
   <h3 data-i18n="about.heading">私について</h3>
 
-  <dl class="profile">
-    <dt data-i18n="about.name">名前</dt>
-    <dd>{identity.Name}</dd>
+  <div class="profile-row">
+    <div class="profile-icon">
+      <img src={`${base}/images/monster10.png`} alt={`${identity.Name} のアイコン`} class="profile-icon-img" loading="lazy" />
+    </div>
 
-    <dt data-i18n="about.birth">生年</dt>
-    <dd>{identity.birthyear}</dd>
+    <dl class="profile">
+      <dt data-i18n="about.name">名前</dt>
+      <dd>{identity.Name}</dd>
 
-    <dt data-i18n="about.affiliation">所属</dt>
-    <dd>{identity.Affiliation}</dd>
+      <dt data-i18n="about.birth">生年</dt>
+      <dd>{identity.birthyear}</dd>
 
-    <dt data-i18n="about.hobbies">趣味</dt>
-    <dd id="about-hobbies">{identity.hobbies.join("、")}</dd>
+      <dt data-i18n="about.affiliation">所属</dt>
+      <dd>{identity.Affiliation}</dd>
 
-    <dt data-i18n="about.interests">興味</dt>
-    <dd id="about-interests">{identity.interests.join("、")}</dd>
-  </dl>
+      <dt data-i18n="about.hobbies">趣味</dt>
+      <dd id="about-hobbies">{identity.hobbies.join("、")}</dd>
 
-  <div class="profile-icon">
-    <img src={`${base}/images/monster10.png`} alt={`${identity.Name} のアイコン`} class="profile-icon-img" loading="lazy" />
+      <dt data-i18n="about.interests">興味</dt>
+      <dd id="about-interests">{identity.interests.join("、")}</dd>
+    </dl>
   </div>
 
   <a href={`${base}/aboutme`} class="more-aboutme" data-i18n="about.more">詳しくはこちら</a>
@@ -94,10 +96,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     outline-offset: 3px;
   }
 
-  /* プロフィールアイコン */
+  /* プロフィールアイコン（プロフィール表の左側に配置） */
+  .profile-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .profile-row > .profile {
+    flex: 1;
+    /* Allow the grid to shrink below its content size inside the flex row */
+    min-width: 0;
+  }
+
   .profile-icon {
-    margin: 1rem 0 0;
-    text-align: center;
+    margin: 0;
+    flex-shrink: 0;
   }
 
   .profile-icon-img {

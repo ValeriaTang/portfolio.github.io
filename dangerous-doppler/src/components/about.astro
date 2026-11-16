@@ -1,31 +1,39 @@
 ---
-const pageTitle = "私について";
 const identity = {
   Name: "Valeria",
-  Affiliation: ["大阪公立大学工業高等専門学校", "総合工学システム科", "知能情報コース", "2年"],
-  hobbies: ["ドラマ鑑賞", "スポーツ観戦"],
+  Affiliation: "OMUCT",
   birthyear: 2009,
+  hobbies: ["ドラマ鑑賞", "スポーツ観戦"],
   interests: ["自然言語処理", "IoT", "VFX"],
 };
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <section id="about" aria-labelledby="about-heading">
   <h2 id="about-heading"></h2>
-  <h3>{pageTitle}</h3>
+  <h3 data-i18n="about.heading">私について</h3>
 
   <dl class="profile">
-    <dt>名前</dt><dd>{identity.Name}</dd>
-    <dt>生年</dt><dd>{identity.birthyear}</dd>
-    <dt>所属</dt><dd>OMUCT {identity.Affiliation[2]} {identity.Affiliation[3]}</dd>
-    <dt>趣味</dt><dd>{identity.hobbies.join(", ")}</dd>
-    <dt>興味</dt><dd>{identity.interests.join(", ")}</dd>
+    <dt data-i18n="about.name">名前</dt>
+    <dd>{identity.Name}</dd>
+
+    <dt data-i18n="about.birth">生年</dt>
+    <dd>{identity.birthyear}</dd>
+
+    <dt data-i18n="about.affiliation">所属</dt>
+    <dd>{identity.Affiliation}</dd>
+
+    <dt data-i18n="about.hobbies">趣味</dt>
+    <dd id="about-hobbies">{identity.hobbies.join("、")}</dd>
+
+    <dt data-i18n="about.interests">興味</dt>
+    <dd id="about-interests">{identity.interests.join("、")}</dd>
   </dl>
 
-  <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/aboutme`} class="more-aboutme">詳しくはこちら</a>
+  <a href={`${base}/aboutme`} class="more-aboutme" data-i18n="about.more">詳しくはこちら</a>
 </section>
 
 <style>
-  /* 自己紹介セクション */
   #about {
     margin-block: 3rem;
   }
@@ -40,10 +48,13 @@ const identity = {
     color: var(--color-primary);
   }
 
-  /* プロフィール（定義リストを2カラムグリッドで表示） */
+  /*
+    Profile grid: label column is auto-sized (not fixed 3em)
+    so longer translations like "出生年份" / "School" won't overflow.
+  */
   .profile {
     display: grid;
-    grid-template-columns: 3em 1fr;
+    grid-template-columns: max-content 1fr;
     gap: 0.25rem 1rem;
     margin: 0;
   }
@@ -52,14 +63,17 @@ const identity = {
     margin: 0;
     font-weight: bold;
     color: var(--color-primary);
+    /* Allow wrap for very long labels */
+    word-break: break-word;
   }
 
   .profile dd {
     margin: 0;
     color: var(--color-text);
+    /* Prevent overflow on narrow viewports */
+    overflow-wrap: break-word;
   }
 
-  /* 詳細ページリンク */
   .more-aboutme {
     display: inline-block;
     margin-top: 1.5rem;
@@ -69,6 +83,8 @@ const identity = {
     background-color: var(--btn-bg);
     border-radius: 0.375rem;
     transition: background-color 0.2s ease;
+    /* Don't let translated text wrap awkwardly */
+    white-space: nowrap;
   }
 
   .more-aboutme:hover {

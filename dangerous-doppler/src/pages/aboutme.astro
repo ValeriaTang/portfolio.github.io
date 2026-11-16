@@ -4,6 +4,7 @@ import Header from '../components/header.astro';
 import BackToTop from '../components/back-to-top.astro';
 import Footer from '../components/footer.astro';
 import { careers } from '../data/career.ts';
+import { careerLocales } from '../i18n/multilingual-data';
 const base = import.meta.env.BASE_URL;
 ---
 
@@ -14,8 +15,8 @@ const base = import.meta.env.BASE_URL;
     <link rel="apple-touch-icon" href={`${base}/icon.png`} />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} >
-    <title>私について</title>
-        <script>
+    <title data-i18n="aboutme.title">私について</title>
+    <script>
       (function () {
         var saved = localStorage.getItem('theme');
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -23,6 +24,11 @@ const base = import.meta.env.BASE_URL;
         if (theme === 'light') {
           document.documentElement.setAttribute('data-theme', 'light');
         }
+        // Also restore locale early to avoid flash
+        var locale = localStorage.getItem('locale') || 'ja';
+        document.documentElement.setAttribute('data-locale', locale);
+        var langMap = { 'ja': 'ja', 'en': 'en', 'zh-CN': 'zh-Hans', 'zh-TW': 'zh-Hant' };
+        document.documentElement.setAttribute('lang', langMap[locale] || locale);
       })();
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -32,55 +38,98 @@ const base = import.meta.env.BASE_URL;
   <body>
     <Header />
     <main class="container">
-        <section id="profile" class="section">
-            <h2>プロフィール</h2>
-            <div>
-                <p>こんにちは!Valeriaです。</p>
-                <p>大阪公立大学工業高等専門学校 総合工学システム学科 知能情報コース の2年生です。</p>
-                <p>趣味はドラマ鑑賞で、特に時代劇は国籍問わず好んで視聴します。また、スポーツ観戦も好きで、テレビで中継していたら何でも見ます。人間観察やネットサーフィンも好きですね。総じて言えるのは、何かしらの動いているものを見るのが好きだということです。</p>
-                <p>自然言語処理、IoT、VFXなどの分野に興味を持ち、将来的にはこれらの技術を活用したプロジェクトに携わりたいと考えています。（興味があるだけで、触ったことはほとんどないですけどね!）</p>
-            </div>
-        </section>
-        <section id="mystyle" class="section">
-            <h2>コーディングスタイル</h2>
-            <div>
-                <p>私はプログラミングが得意だといえるほど経験してきたわけでも、特別な才能があるわけでもありません。</p>
-                <p>そのため、何をしたいのかは分かるがそれをどうやって記述すればいいのかが分からない時や、エラーの原因が分からない時は都度調べるという非効率的な行動をしています。</p>
-                <p>このサイトを作る際もたくさん調べました。ホバーやパンくずリスト、ハンバーガーメニューなど、今まで知らなった言葉をたくさん知ることができてとても楽しい時間でした。</p>
-            </div>
-        </section>
-        <section id="kikkake" class="section">
-            <h2>高専入学のきっかけ</h2>
-            <div>
-                <p>母が高専出身であったことから、幼少期より高専という教育機関の存在を身近に認知していました。</p>
-                <p>当初は普通科高校への進学を想定していましたが、中学校の技術の授業で体験した「はんだ付け」や「IoT」の知識に深く興味を持ち、専門的な技術分野への探究心が芽生えました。</p>
-                <p>自身の適性や将来の志向を見つめ直した結果、より実用的かつ高度な工学技術を学べる環境を求め、高専への進学を選択しました。</p>
-            </div>
-        </section>
-        <section id="career" class="section">
-          <h2>経歴</h2>
-          <div class="timeline">
-            <ul class="timeline-list">
-              {careers.map((item) => (
-                <li class="timeline-item">
+      <section id="profile" class="section">
+        <h2 data-i18n="aboutme.profile.heading">プロフィール</h2>
+        <div>
+          <p data-i18n="aboutme.profile.greeting">こんにちは！Valeriaです。</p>
+          <p data-i18n="aboutme.profile.school">大阪公立大学工業高等専門学校 総合工学システム学科 知能情報コース の2年生です。</p>
+          <p data-i18n="aboutme.profile.hobby">趣味はドラマ鑑賞で、特に時代劇は国籍問わず好んで視聴します。また、スポーツ観戦も好きで、テレビで中継していたら何でも見ます。人間観察やネットサーフィンも好きですね。総じて言えるのは、何かしらの動いているものを見るのが好きだということです。</p>
+          <p data-i18n="aboutme.profile.interest">自然言語処理、IoT、VFXなどの分野に興味を持ち、将来的にはこれらの技術を活用したプロジェクトに携わりたいと考えています。（興味があるだけで、触ったことはほとんどないですけどね！）</p>
+        </div>
+      </section>
+      <section id="mystyle" class="section">
+        <h2 data-i18n="aboutme.style.heading">コーディングスタイル</h2>
+        <div>
+          <p data-i18n="aboutme.style.p1">私はプログラミングが得意だといえるほど経験してきたわけでも、特別な才能があるわけでもありません。</p>
+          <p data-i18n="aboutme.style.p2">そのため、何をしたいのかは分かるがそれをどうやって記述すればいいのかが分からない時や、エラーの原因が分からない時は都度調べるという非効率的な行動をしています。</p>
+          <p data-i18n="aboutme.style.p3">このサイトを作る際もたくさん調べました。ホバーやパンくずリスト、ハンバーガーメニューなど、今まで知らなかった言葉をたくさん知ることができてとても楽しい時間でした。</p>
+        </div>
+      </section>
+      <section id="kikkake" class="section">
+        <h2 data-i18n="aboutme.kikkake.heading">高専入学のきっかけ</h2>
+        <div>
+          <p data-i18n="aboutme.kikkake.p1">母が高専出身であったことから、幼少期より高専という教育機関の存在を身近に認知していました。</p>
+          <p data-i18n="aboutme.kikkake.p2">当初は普通科高校への進学を想定していましたが、中学校の技術の授業で体験した「はんだ付け」や「IoT」の知識に深く興味を持ち、専門的な技術分野への探究心が芽生えました。</p>
+          <p data-i18n="aboutme.kikkake.p3">自身の適性や将来の志向を見つめ直した結果、より実用的かつ高度な工学技術を学べる環境を求め、高専への進学を選択しました。</p>
+        </div>
+      </section>
+      <section id="career" class="section">
+        <h2 data-i18n="aboutme.career.heading">経歴</h2>
+        <div class="timeline">
+          <ul class="timeline-list">
+            {careers.map((item) => {
+              const localeData = careerLocales[item.datetime];
+              return (
+                <li
+                  class="timeline-item"
+                  data-career-id={item.datetime}
+                  data-locales={JSON.stringify(localeData)}
+                >
                   <time class="timeline-date" datetime={item.datetime}>{item.date}</time>
-                  <h3 class="timeline-title">{item.title}</h3>
-                  {item.texts.map((text) => (
-                    <p class="timeline-text">{text}</p>
+                  <h3 class="timeline-title career-title">{localeData?.ja?.title ?? item.title}</h3>
+                  {(localeData?.ja?.texts ?? item.texts).map((text) => (
+                    <p class="timeline-text career-text">{text}</p>
                   ))}
                 </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
     </main>
     <Footer />
-
     <BackToTop />
   </body>
 </html>
+
+<script>
+  import { getSavedLocale, applyTranslations, initLocale } from '../i18n/lang-switcher';
+  import type { Locale } from '../i18n/translations';
+
+  function updateCareers(): void {
+    const locale = getSavedLocale();
+    document.querySelectorAll<HTMLElement>('[data-career-id]').forEach((item) => {
+      let locales: Record<Locale, { title: string; texts: string[] }> | null = null;
+      try { locales = item.dataset.locales ? JSON.parse(item.dataset.locales) : null; } catch {}
+      const loc = locales?.[locale] ?? locales?.['ja'] ?? null;
+      if (!loc) return;
+
+      const titleEl = item.querySelector<HTMLElement>('.career-title');
+      if (titleEl) titleEl.textContent = loc.title;
+
+      // Remove old text paragraphs and re-render
+      item.querySelectorAll<HTMLElement>('.career-text').forEach((p) => p.remove());
+      const timelineTitle = item.querySelector('.timeline-title');
+      loc.texts.forEach((text) => {
+        const p = document.createElement('p');
+        p.className = 'timeline-text career-text';
+        p.textContent = text;
+        item.appendChild(p);
+      });
+    });
+  }
+
+  document.addEventListener('i18n:update', () => {
+    updateCareers();
+  });
+
+  // Init
+  const locale = initLocale();
+  applyTranslations(locale);
+  updateCareers();
+</script>
+
 <style>
-  /* コンテナ・セクション */
   .container {
     max-width: 800px;
     margin: 0 auto;
@@ -91,25 +140,31 @@ const base = import.meta.env.BASE_URL;
     margin-bottom: 48px;
   }
 
-  /* タイムライン */
+  /* Paragraphs: allow long translated text to wrap */
+  .section p {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.8;
+  }
+
+  /* Section headings */
+  .section h2 {
+    overflow-wrap: break-word;
+  }
+
+  /* Timeline */
   .timeline {
     margin-top: 24px;
     text-align: left;
   }
 
-  .timeline h2 {
-    margin: 0 0 12px;
-    font-size: 18px;
-  }
-
   .timeline-list {
     list-style: none;
-    padding: 0 0 0 20px; /* 縦線の分だけ左に余白 */
+    padding: 0 0 0 20px;
     margin: 0;
     position: relative;
   }
 
-  /* 縦線 */
   .timeline-list::before {
     content: "";
     position: absolute;
@@ -120,19 +175,10 @@ const base = import.meta.env.BASE_URL;
     background: rgba(0, 0, 0, 0.12);
   }
 
-  [data-theme="light"] .timeline-list::before {
-    background: rgba(0, 0, 0, 0.25);
-  }
+  [data-theme="light"] .timeline-list::before { background: rgba(0, 0, 0, 0.25); }
+  [data-theme="light"] .timeline-item::before { background: #7c3aed; }
+  [data-theme="light"] .timeline-date { color: rgba(15, 23, 42, 0.8); }
 
-  [data-theme="light"] .timeline-item::before {
-    background: #7c3aed;
-  }
-
-  [data-theme="light"] .timeline-date {
-    color: rgba(15, 23, 42, 0.8);
-  }
-
-  /* 丸（マーカー） */
   .timeline-item {
     position: relative;
     padding-bottom: 16px;
@@ -160,11 +206,15 @@ const base = import.meta.env.BASE_URL;
   .timeline-title {
     margin: 0 0 6px;
     font-size: 14px;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .timeline-text {
     margin: 0;
     font-size: 13px;
     opacity: 0.9;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 </style>

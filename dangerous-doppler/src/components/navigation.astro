@@ -1,17 +1,22 @@
 ---
-
+import LangSelector from './lang-selector.astro';
 ---
 <header class="site-header">
   <div class="logo"></div>
 
   <nav class="pc-menu">
-    <a href="#home">ホーム</a>
-    <a href="#about">私について</a>
-    <a href="#skills">スキル</a>
-    <a href="#works">作品</a>
+    <a href="#home"  data-i18n="nav.home">ホーム</a>
+    <a href="#about" data-i18n="nav.about">私について</a>
+    <a href="#skills" data-i18n="nav.skills">スキル</a>
+    <a href="#works"  data-i18n="nav.works">作品</a>
   </nav>
 
-  <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードを切り替える">🌙 ダークモード</button>
+  <div class="header-controls">
+    <LangSelector />
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードを切り替える" data-i18n-aria="theme.toggle">
+      <span data-i18n="theme.dark">🌙 ダークモード</span>
+    </button>
+  </div>
 
   <button class="mobile-menu-btn" id="menu-toggle" aria-label="メニューを開く" aria-expanded="false">
     <span class="line"></span>
@@ -20,35 +25,37 @@
   </button>
 
   <nav class="mobile-nav" id="mobile-menu">
-    <button class="theme-toggle-mobile" id="theme-toggle-mobile" aria-label="ダークモードを切り替える">🌙 ダークモード</button>
-    <a href="#home" class="mobile-link">ホーム</a>
-    <a href="#about" class="mobile-link">私について</a>
-    <a href="#skills" class="mobile-link">スキル</a>
-    <a href="#works" class="mobile-link">作品</a>
+    <div class="mobile-top-controls">
+      <LangSelector />
+      <button class="theme-toggle-mobile" id="theme-toggle-mobile" aria-label="ダークモードを切り替える" data-i18n-aria="theme.toggle">
+        <span data-i18n="theme.dark">🌙 ダークモード</span>
+      </button>
+    </div>
+    <a href="#home"   class="mobile-link" data-i18n="nav.home">ホーム</a>
+    <a href="#about"  class="mobile-link" data-i18n="nav.about">私について</a>
+    <a href="#skills" class="mobile-link" data-i18n="nav.skills">スキル</a>
+    <a href="#works"  class="mobile-link" data-i18n="nav.works">作品</a>
   </nav>
 </header>
 
 <script>
+  import { getSavedLocale, applyTranslations, initLocale } from '../i18n/lang-switcher';
+
+  /* ── Scroll shadow ── */
   const header = document.querySelector('.site-header');
-  const toggle = document.getElementById('menu-toggle');
-  const menu = document.getElementById('mobile-menu');
-
-  // スクロールしたらヘッダーを黒くする
-  const onScroll = () => {
-    header?.classList.toggle('scrolled', window.scrollY > 10);
-  };
+  const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 10);
   window.addEventListener('scroll', onScroll);
-  onScroll(); // 読み込み時にも一度チェック
+  onScroll();
 
+  /* ── Mobile menu ── */
+  const toggle = document.getElementById('menu-toggle');
+  const menu   = document.getElementById('mobile-menu');
   if (toggle && menu) {
-    // ボタンでメニューを開閉
     toggle.addEventListener('click', () => {
       const isOpen = toggle.classList.toggle('is-active');
       menu.classList.toggle('is-active', isOpen);
       toggle.setAttribute('aria-expanded', String(isOpen));
     });
-
-    // リンクを押したらメニューを閉じる
     menu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
         toggle.classList.remove('is-active');
@@ -58,40 +65,34 @@
     });
   }
 
-  // テーマ切り替え
-  const themeBtn = document.getElementById('theme-toggle');
+  /* ── Theme toggle ── */
+  const themeBtn       = document.getElementById('theme-toggle');
   const mobileThemeBtn = document.getElementById('theme-toggle-mobile');
-  const html = document.documentElement;
+  const html           = document.documentElement;
 
   function setTheme(theme: string) {
     const isLight = theme === 'light';
     if (isLight) {
       html.setAttribute('data-theme', 'light');
-      if (themeBtn) {
-        themeBtn.textContent = '☀️ ライトモード';
-        themeBtn.setAttribute('aria-label', 'ダークモードに切り替える');
-      }
-      if (mobileThemeBtn) {
-        mobileThemeBtn.textContent = '☀️ ライトモード';
-        mobileThemeBtn.setAttribute('aria-label', 'ダークモードに切り替える');
-      }
+      themeBtn?.setAttribute('aria-label', 'ダークモードに切り替える');
+      mobileThemeBtn?.setAttribute('aria-label', 'ダークモードに切り替える');
+      document.querySelectorAll<HTMLElement>('[data-i18n="theme.dark"], [data-i18n="theme.light"]').forEach((el) => {
+        el.dataset.i18n = 'theme.light';
+      });
     } else {
       html.removeAttribute('data-theme');
-      if (themeBtn) {
-        themeBtn.textContent = '🌙 ダークモード';
-        themeBtn.setAttribute('aria-label', 'ライトモードに切り替える');
-      }
-      if (mobileThemeBtn) {
-        mobileThemeBtn.textContent = '🌙 ダークモード';
-        mobileThemeBtn.setAttribute('aria-label', 'ライトモードに切り替える');
-      }
+      themeBtn?.setAttribute('aria-label', 'ライトモードに切り替える');
+      mobileThemeBtn?.setAttribute('aria-label', 'ライトモードに切り替える');
+      document.querySelectorAll<HTMLElement>('[data-i18n="theme.dark"], [data-i18n="theme.light"]').forEach((el) => {
+        el.dataset.i18n = 'theme.dark';
+      });
     }
     localStorage.setItem('theme', theme);
+    applyTranslations(getSavedLocale());
   }
 
-  // 初期テーマの復元
-  const saved = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const saved        = localStorage.getItem('theme');
+  const prefersDark  = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const initialTheme = saved || (prefersDark ? 'dark' : 'light');
   setTheme(initialTheme);
 
@@ -99,9 +100,34 @@
     const current = html.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
     setTheme(current === 'light' ? 'dark' : 'light');
   });
+  mobileThemeBtn?.addEventListener('click', () => themeBtn?.click());
 
-  // モバイル用テーマ切り替えボタン
-  mobileThemeBtn?.addEventListener('click', () => {
-    themeBtn?.click();
-  });
+  /* ── Init locale ── */
+  initLocale();
 </script>
+
+<style>
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+
+  .mobile-top-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 0.25rem;
+  }
+
+  /* On mobile, hide the PC header-controls block */
+  @media (max-width: 800px) {
+    .header-controls {
+      display: none;
+    }
+  }
+</style>

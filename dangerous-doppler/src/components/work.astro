@@ -1,8 +1,8 @@
 ---
 import { works } from '../data/work';
 import { icons } from '../data/icon';
+import { workLocales } from '../i18n/multilingual-data';
 
-const base = import.meta.env.BASE_URL.replace(/\/\$/, "");
 const iconMap = Object.fromEntries(
   icons.map((icon) => [icon.name, { dark: icon.darkimage, light: icon.lightimage }]),
 );
@@ -12,11 +12,9 @@ function getIconUrl(tag: string, isDark: boolean): string | undefined {
   return icon ? (isDark ? icon.dark : icon.light) : undefined;
 }
 
+// Embed all locale data into each card so JS can swap without re-fetching
 const normalizedWorks = works.map((work) => {
   const tags = work.tags ?? [];
-  const firstTagIcon = tags[0] ? iconMap[tags[0]] : undefined;
-  const lightImage = firstTagIcon ? firstTagIcon.light : work.image1;
-  const darkImage = firstTagIcon ? firstTagIcon.dark : work.image1;
   return {
     ...work,
     tags,
@@ -28,73 +26,79 @@ const normalizedWorks = works.map((work) => {
     images: [work.image1, work.image2, work.image3, work.image4, work.image5].filter(
       (src): src is string => Boolean(src),
     ),
-    hasImage: Boolean(lightImage),
-    image: lightImage,
-    darkImage,
+    // All locale data embedded as JSON for client-side use
+    locales: workLocales[work.id] ?? null,
   };
 }).slice(0, 3);
 ---
 
 <section id="works" aria-labelledby="works-heading">
-  <h2 id="works-heading">作品</h2>
+  <h2 id="works-heading" data-i18n="works.heading">作品</h2>
   <div class="works-grid">
-    {normalizedWorks.map((work) => (
-      <article
-        class="work-card open-modal-btn"
-        data-id={work.id}
-        data-title={work.title}
-        data-ai={work.aiRatio}
-        data-ai-desc={work.AI}
-        data-detail={work.description}
-        data-start={work.start}
-        data-finish={work.finish}
-        data-tags={JSON.stringify(work.tagDetails)}
-        data-images={JSON.stringify(work.images)}
-        data-url={work.href}
-        aria-label={`${work.title} の詳細を見る`}
-      >
-        <div class="work-body">
-          <header class="work-header">
-            <h3>{work.title}</h3>
-            <span class="ai-ratio">AI使用率: {work.aiRatio}</span>
-          </header>
-          <p class="work-desc">{work.description}</p>
-          <div class="work-meta">
-            <time datetime={work.start}>{work.start.replace('-', '.')}</time>
-            <span aria-hidden="true">-</span>
-            <time datetime={work.finish}>{work.finish.replace('-', '.')}</time>
-          </div>
-          {work.tagDetails.length > 0 && (
-            <ul class="work-tags" aria-label="使用技術">
-              {work.tagDetails.map((tag) => (
-                <li class="tag-item">
-                  {tag.icon ? (
-                    <img src={tag.icon} alt={tag.name} class="tag-icon" />
-                  ) : (
-                    <span class="tag-text">{tag.name}</span>
-                  )}
-                </li>
-              ))}
-            </ul>
+    {normalizedWorks.map((work) => {
+      const ja = work.locales?.ja;
+      return (
+        <article
+          class="work-card open-modal-btn"
+          data-id={work.id}
+          data-ai={work.aiRatio}
+          data-start={work.start}
+          data-finish={work.finish}
+          data-tags={JSON.stringify(work.tagDetails)}
+          data-images={JSON.stringify(work.images)}
+          data-url={work.href}
+          data-locales={JSON.stringify(work.locales)}
+          aria-label={`${ja?.title ?? work.id} の詳細を見る`}
+          role="button"
+          tabindex="0"
+        >
+          {work.images[0] && (
+            <div class="work-thumb">
+              <img src={work.images[0]} alt="" loading="lazy" />
+            </div>
           )}
-        </div>
-
-        {work.hasImage && work.images.length > 0 ? (
-          <div class="work-thumb">
-            <img src={work.images[0]} alt={`${work.title} image 1`} loading="lazy" data-light-src={work.images[0]} data-dark-src={work.images[0]} />
+          <div class="work-body">
+            <header class="work-header">
+              <h3 class="work-title">{ja?.title ?? work.id}</h3>
+              <span class="ai-ratio">
+                <span data-i18n="works.aiRatio">AI使用率</span>: {work.aiRatio}
+              </span>
+            </header>
+            <p class="work-desc">{ja?.description ?? ''}</p>
+            <div class="work-meta">
+              <time datetime={work.start}>{work.start.replace('-', '.')}</time>
+              <span aria-hidden="true">-</span>
+              <time datetime={work.finish}>{work.finish.replace('-', '.')}</time>
+            </div>
+            {work.tagDetails.length > 0 && (
+              <ul class="work-tags" aria-label="使用技術" data-i18n-aria="works.tags">
+                {work.tagDetails.map((tag) => (
+                  <li class="tag-item">
+                    {tag.icon ? (
+                      <img src={tag.icon} alt={tag.name} class="tag-icon" />
+                    ) : (
+                      <span class="tag-text">{tag.name}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-        ) : null}
-      </article>
-    ))}
+        </article>
+      );
+    })}
   </div>
 
   <div class="work-more-link">
-    <a class="btn btn-primary" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/works`}>詳しくはこちら</a>
+    <a class="btn btn-primary" href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/works`} data-i18n="works.more">
+      詳しくはこちら
+    </a>
   </div>
 
+  <!-- Modal -->
   <dialog id="work-modal" class="modal-card" aria-modal="true" aria-labelledby="work-modal-title">
     <div class="modal-content">
-      <button id="work-modal-close-btn" class="close-btn" aria-label="閉じる">x</button>
+      <button id="work-modal-close-btn" class="close-btn" aria-label="閉じる" data-i18n-aria="works.modal.close">×</button>
 
       <div class="modal-gallery" id="work-modal-gallery"></div>
 
@@ -105,7 +109,7 @@ const normalizedWorks = works.map((work) => {
 
       <div class="modal-meta">
         <div>
-          <span class="meta-label">期間:</span>
+          <span class="meta-label" data-i18n="works.modal.period">期間</span>:
           <span id="work-modal-period"></span>
         </div>
       </div>
@@ -113,9 +117,9 @@ const normalizedWorks = works.map((work) => {
       <p id="work-modal-ai-desc" class="modal-ai-desc"></p>
       <p id="work-modal-detail" class="modal-text"></p>
 
-      <div id="work-modal-tags" class="modal-tags" aria-label="使用技術"></div>
+      <div id="work-modal-tags" class="modal-tags" aria-label="使用技術" data-i18n-aria="works.tags"></div>
 
-      <a id="work-modal-link" href="#" target="_blank" rel="noopener noreferrer" class="github-link">
+      <a id="work-modal-link" href="#" target="_blank" rel="noopener noreferrer" class="github-link" data-i18n="works.modal.github">
         GitHubでコードを見る
       </a>
     </div>
@@ -123,19 +127,28 @@ const normalizedWorks = works.map((work) => {
 </section>
 
 <script>
-  const root = document.getElementById('works');
-  const modal = document.getElementById('work-modal') as HTMLDialogElement | null;
-  const closeBtn = document.getElementById('work-modal-close-btn');
-  const openBtns = root ? root.querySelectorAll('.open-modal-btn') : [];
-  const gallery = document.getElementById('work-modal-gallery');
+  import { getSavedLocale } from '../i18n/lang-switcher';
+  import { translations } from '../i18n/translations';
+  import type { Locale } from '../i18n/translations';
 
-  const modalTitle = document.getElementById('work-modal-title');
-  const modalAi = document.getElementById('work-modal-ai');
-  const modalAiDesc = document.getElementById('work-modal-ai-desc');
-  const modalDetail = document.getElementById('work-modal-detail');
-  const modalPeriod = document.getElementById('work-modal-period');
-  const modalTags = document.getElementById('work-modal-tags');
-  const modalLink = document.getElementById('work-modal-link') as HTMLAnchorElement | null;
+  const root     = document.getElementById('works');
+  const modal    = document.getElementById('work-modal') as HTMLDialogElement | null;
+  const closeBtn = document.getElementById('work-modal-close-btn');
+  const gallery  = document.getElementById('work-modal-gallery');
+  const modalTitle   = document.getElementById('work-modal-title');
+  const modalAi      = document.getElementById('work-modal-ai');
+  const modalAiDesc  = document.getElementById('work-modal-ai-desc');
+  const modalDetail  = document.getElementById('work-modal-detail');
+  const modalPeriod  = document.getElementById('work-modal-period');
+  const modalTags    = document.getElementById('work-modal-tags');
+  const modalLink    = document.getElementById('work-modal-link') as HTMLAnchorElement | null;
+
+  // Track last opened card for locale refresh
+  let lastCard: HTMLElement | null = null;
+
+  function getLocale(): Locale { return getSavedLocale(); }
+
+  function getDict(locale: Locale) { return translations[locale]; }
 
   function formatPeriod(start: string, finish: string): string {
     const fmt = (s: string) => s.replace('-', '.');
@@ -144,25 +157,17 @@ const normalizedWorks = works.map((work) => {
 
   function renderGallery(images: string[]): void {
     if (!gallery) return;
-    if (images.length === 0) {
-      gallery.innerHTML = '';
-      gallery.style.display = 'none';
-      return;
-    }
+    if (images.length === 0) { gallery.innerHTML = ''; gallery.style.display = 'none'; return; }
     gallery.style.display = 'flex';
     gallery.innerHTML = images
-      .map((src, i) => `<img src="${src}" alt="作品画像${i + 1}" loading="lazy" />`)
+      .map((src, i) => `<img src="${src}" alt="Work image ${i + 1}" loading="lazy" />`)
       .join('');
   }
 
   function renderTags(raw: string): void {
     if (!modalTags) return;
     let tags: { name: string; icon: string | null }[] = [];
-    try {
-      tags = raw ? JSON.parse(raw) : [];
-    } catch {
-      tags = [];
-    }
+    try { tags = raw ? JSON.parse(raw) : []; } catch { tags = []; }
     modalTags.innerHTML = tags
       .map((tag) =>
         tag.icon
@@ -172,61 +177,94 @@ const normalizedWorks = works.map((work) => {
       .join('');
   }
 
+  function populateModal(card: HTMLElement): void {
+    const locale = getLocale();
+    const dict   = getDict(locale);
+
+    // Get localised text from embedded JSON
+    let locales: Record<string, { title: string; description: string; AI: string }> | null = null;
+    try { locales = card.dataset.locales ? JSON.parse(card.dataset.locales) : null; } catch {}
+    const localised = locales?.[locale] ?? locales?.['ja'] ?? null;
+
+    if (modalTitle) modalTitle.textContent = localised?.title ?? '';
+    if (modalAi)    modalAi.textContent = `${dict['works.aiRatio']}: ${card.dataset.ai ?? ''}`;
+    if (modalAiDesc) modalAiDesc.textContent = localised?.AI ?? '';
+    if (modalDetail) modalDetail.textContent = localised?.description ?? '';
+    if (modalPeriod) modalPeriod.textContent = formatPeriod(card.dataset.start ?? '', card.dataset.finish ?? '');
+    if (modalLink) {
+      modalLink.href = card.dataset.url ?? '#';
+      modalLink.textContent = dict['works.modal.github'];
+    }
+    renderGallery(card.dataset.images ? JSON.parse(card.dataset.images) : []);
+    renderTags(card.dataset.tags ?? '');
+  }
+
+  // ── Open modal ──
+  const openBtns = root ? root.querySelectorAll<HTMLElement>('.open-modal-btn') : [];
   openBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const target = btn as HTMLElement;
-      if (modalTitle) modalTitle.textContent = target.dataset.title || '';
-      if (modalAi) modalAi.textContent = `AI使用率: ${target.dataset.ai || ''}`;
-      if (modalAiDesc) modalAiDesc.textContent = target.dataset.aiDesc || '';
-      if (modalDetail) modalDetail.textContent = target.dataset.detail || '';
-      if (modalPeriod) modalPeriod.textContent = formatPeriod(target.dataset.start || '', target.dataset.finish || '');
-      if (modalLink) modalLink.href = target.dataset.url || '#';
-      renderGallery(target.dataset.images ? JSON.parse(target.dataset.images) : []);
-      renderTags(target.dataset.tags || '');
-
+      lastCard = btn;
+      populateModal(btn);
       modal?.showModal();
+    });
+    // Keyboard accessibility
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        btn.click();
+      }
     });
   });
 
-  closeBtn?.addEventListener('click', () => {
-    modal?.close();
-  });
+  closeBtn?.addEventListener('click', () => modal?.close());
+  modal?.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal?.open) modal.close(); });
 
-  modal?.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.close();
-    }
-  });
+  // ── Update card text on locale change ──
+  function updateCards(): void {
+    const locale = getLocale();
+    const dict   = getDict(locale);
+    openBtns.forEach((btn) => {
+      let locales: Record<string, { title: string; description: string; AI: string }> | null = null;
+      try { locales = btn.dataset.locales ? JSON.parse(btn.dataset.locales) : null; } catch {}
+      const localised = locales?.[locale] ?? locales?.['ja'] ?? null;
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal?.open) {
-      modal.close();
-    }
-  });
+      const titleEl = btn.querySelector<HTMLElement>('.work-title');
+      const descEl  = btn.querySelector<HTMLElement>('.work-desc');
+      const aiEl    = btn.querySelector<HTMLElement>('.ai-ratio');
+      const tagsAria = btn.querySelector<HTMLElement>('.work-tags');
 
-  // テーマによる画像切り替え
-  function applyThemeImages(): void {
-    const isDark =
-      !document.documentElement.hasAttribute('data-theme') ||
-      document.documentElement.getAttribute('data-theme') === 'dark';
-    document.querySelectorAll('img[data-light-src][data-dark-src]').forEach((img) => {
-      const imgEl = img as HTMLImageElement;
-      const src = isDark ? imgEl.dataset.darkSrc : imgEl.dataset.lightSrc;
-      if (src && src !== imgEl.src) {
-        imgEl.src = src;
+      if (titleEl && localised) titleEl.textContent = localised.title;
+      if (descEl  && localised) descEl.textContent  = localised.description;
+      if (aiEl) {
+        const aiRatio = btn.dataset.ai ?? '';
+        aiEl.innerHTML = `<span data-i18n="works.aiRatio">${dict['works.aiRatio']}</span>: ${aiRatio}`;
       }
+      if (tagsAria) tagsAria.setAttribute('aria-label', dict['works.tags']);
+      btn.setAttribute('aria-label', `${localised?.title ?? ''} の詳細を見る`);
+    });
+    // If modal is open, refresh its content too
+    if (modal?.open && lastCard) populateModal(lastCard);
+  }
+
+  document.addEventListener('i18n:update', updateCards);
+
+  // ── More-link click guard ──
+  document.querySelectorAll('.work-more-link a').forEach((link) => {
+    link.addEventListener('click', (e) => e.stopPropagation());
+  });
+
+  // ── Theme-aware images ──
+  function applyThemeImages(): void {
+    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+    document.querySelectorAll<HTMLImageElement>('img[data-light-src][data-dark-src]').forEach((img) => {
+      const src = isDark ? img.dataset.darkSrc : img.dataset.lightSrc;
+      if (src && src !== img.src) img.src = src;
     });
   }
   applyThemeImages();
-
-  const themeObserver = new MutationObserver(applyThemeImages);
-  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-
-  //リンクはモーダルを開かない
-  document.querySelectorAll('.work-more-link a').forEach((link) => {
-    link.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
+  new MutationObserver(applyThemeImages).observe(document.documentElement, {
+    attributes: true, attributeFilter: ['data-theme'],
   });
 </script>
 
@@ -247,6 +285,10 @@ const normalizedWorks = works.map((work) => {
     gap: 0.75rem;
   }
 
+  @media (max-width: 600px) {
+    .works-grid { grid-template-columns: 1fr; }
+  }
+
   .work-card {
     position: relative;
     display: flex;
@@ -255,64 +297,39 @@ const normalizedWorks = works.map((work) => {
     border: 1px solid var(--card-border);
     border-radius: 0.75rem;
     overflow: hidden;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease,
-      border-color 0.2s ease;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   }
 
-  .work-card:hover {
+  .work-card:hover,
+  .work-card:focus-visible {
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     border-color: var(--accent);
+    outline: none;
   }
 
   .work-thumb {
     width: 100%;
-    height: auto;
-    aspect-ratio: none;
-    overflow: visible;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
     background: var(--card-bg);
-    margin-top: auto;
   }
 
   .work-thumb img {
     width: 100%;
-    height: auto;
-    max-width: none;
-    max-height: none;
-    object-fit: contain;
-  }
-
-  .work-card:hover .work-thumb img {
-    transform: none;
-  }
-
-  .work-thumb--text {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     height: 100%;
-    background: var(--card-bg);
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--card-text);
+    object-fit: cover;
+    transition: transform 0.3s ease;
   }
 
-  .work-name {
-    margin: 0;
-    text-align: center;
-    line-height: 1.3;
-  }
+  .work-card:hover .work-thumb img { transform: scale(1.03); }
 
   .work-body {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding: 0.75rem;
+    gap: 0.375rem;
+    padding: 0.5rem;
     flex: 1;
   }
 
@@ -321,6 +338,7 @@ const normalizedWorks = works.map((work) => {
     justify-content: space-between;
     align-items: flex-start;
     gap: 0.5rem;
+    flex-wrap: wrap; /* Long titles wrap without pushing badge off */
   }
 
   .work-header h3 {
@@ -328,6 +346,10 @@ const normalizedWorks = works.map((work) => {
     font-size: 1.05rem;
     color: var(--card-title);
     line-height: 1.3;
+    /* Ensure long CJK titles break properly */
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0; /* Allow flex shrink */
   }
 
   .ai-ratio {
@@ -338,6 +360,7 @@ const normalizedWorks = works.map((work) => {
     background: var(--accent-bg);
     padding: 0.125rem 0.5rem;
     border-radius: 999px;
+    flex-shrink: 0;
   }
 
   .work-desc {
@@ -345,6 +368,11 @@ const normalizedWorks = works.map((work) => {
     font-size: 0.85rem;
     line-height: 1.6;
     color: var(--card-text);
+    /* Clamp to 3 lines regardless of language verbosity */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .work-meta {
@@ -362,33 +390,13 @@ const normalizedWorks = works.map((work) => {
     list-style: none;
     padding: 0;
     margin: 0.25rem 0 0;
-  }
-
-  .work-ai-note {
-    margin: 0.25rem 0 0;
-    font-size: 0.75rem;
-    line-height: 1.5;
-    color: var(--muted);
-    font-style: italic;
-  }
-
-  .work-actions {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: auto;
-    padding-top: 0.5rem;
-    flex-wrap: wrap;
+    max-height: calc(2 * (1.5rem + 0.375rem));
+    overflow: hidden;
   }
 
   .work-more-link {
     margin-top: 1rem;
     text-align: center;
-  }
-
-  .work-more-link .btn-primary {
-    display: inline-block;
-    padding: 0.625rem 1.25rem;
-    font-size: 0.9rem;
   }
 
   .btn {
@@ -403,34 +411,14 @@ const normalizedWorks = works.map((work) => {
     border: none;
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.1s ease;
+    white-space: nowrap;
   }
 
-  .btn:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn:active { transform: scale(0.98); }
 
-  .btn:active {
-    transform: scale(0.98);
-  }
-
-  .btn-primary {
-    color: var(--color-white);
-    background-color: var(--btn-bg);
-  }
-
-  .btn-primary:hover {
-    background-color: var(--accent);
-  }
-
-  .btn-secondary {
-    color: var(--color-white);
-    background-color: var(--btn-secondary);
-  }
-
-  .btn-secondary:hover {
-    background-color: var(--btn-secondary-hover);
-  }
+  .btn-primary { color: var(--color-white); background-color: var(--btn-bg); }
+  .btn-primary:hover { background-color: var(--accent); }
 
   /* ===== Modal ===== */
   .modal-card {
@@ -474,14 +462,8 @@ const normalizedWorks = works.map((work) => {
     transition: background 0.2s;
   }
 
-  .close-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  .close-btn:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+  .close-btn:hover { background: rgba(255, 255, 255, 0.2); }
+  .close-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   .modal-gallery {
     display: none;
@@ -495,7 +477,6 @@ const normalizedWorks = works.map((work) => {
     height: auto;
     object-fit: contain;
     border-radius: 0.5rem;
-    background: var(--modal-bg);
   }
 
   .modal-header {
@@ -510,6 +491,9 @@ const normalizedWorks = works.map((work) => {
     margin: 0;
     font-size: 1.5rem;
     color: var(--modal-heading);
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0;
   }
 
   .badge {
@@ -519,6 +503,8 @@ const normalizedWorks = works.map((work) => {
     background: var(--accent-bg);
     padding: 0.25rem 0.75rem;
     border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .modal-meta {
@@ -526,12 +512,10 @@ const normalizedWorks = works.map((work) => {
     gap: 1.5rem;
     font-size: 0.85rem;
     color: var(--muted);
+    flex-wrap: wrap;
   }
 
-  .meta-label {
-    font-weight: 600;
-    color: var(--muted);
-  }
+  .meta-label { font-weight: 600; }
 
   .modal-ai-desc {
     margin: 0.5rem 0;
@@ -539,6 +523,7 @@ const normalizedWorks = works.map((work) => {
     line-height: 1.6;
     color: var(--muted);
     font-style: italic;
+    overflow-wrap: break-word;
   }
 
   .modal-text {
@@ -546,6 +531,7 @@ const normalizedWorks = works.map((work) => {
     font-size: 0.9rem;
     line-height: 1.7;
     color: var(--card-text);
+    overflow-wrap: break-word;
   }
 
   .modal-tags {
@@ -553,15 +539,6 @@ const normalizedWorks = works.map((work) => {
     flex-wrap: wrap;
     gap: 0.375rem;
     margin-bottom: 1rem;
-  }
-
-  .modal-tags .tag {
-    font-size: 0.75rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--card-border);
-    color: var(--card-text);
-    padding: 0.25rem 0.75rem;
-    border-radius: 999px;
   }
 
   .github-link {
@@ -574,41 +551,17 @@ const normalizedWorks = works.map((work) => {
     border-radius: 0.375rem;
     font-weight: 500;
     transition: background-color 0.2s;
+    white-space: nowrap;
   }
 
-  .github-link:hover {
-    background-color: var(--accent);
-  }
+  .github-link:hover { background-color: var(--accent); }
+  .github-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  .github-link:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .work-card,
-    .work-thumb img,
-    .btn,
-    .close-btn,
-    .github-link {
-      transition: none;
-    }
-
-    .work-card:hover {
-      transform: none;
-    }
-
-    .work-card:hover .work-thumb img {
-      transform: none;
-    }
-  }
-
+  /* Tags */
   .tag-item {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: fit-content;
-    max-width: 3rem;
     min-width: 1.5rem;
     padding: 0 0.5rem;
     aspect-ratio: 1;
@@ -618,60 +571,27 @@ const normalizedWorks = works.map((work) => {
     transition: background 0.2s, border-color 0.2s;
   }
 
-  .tag-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--accent);
-  }
+  .tag-item:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--accent); }
 
-  .tag-icon {
-    width: 1.1rem;
-    height: 1.1rem;
-    object-fit: contain;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
-  }
+  .tag-icon { width: 1.1rem; height: 1.1rem; object-fit: contain; }
+  .tag-text { font-size: 0.7rem; font-weight: 500; color: var(--card-text); white-space: nowrap; }
 
-  .tag-text {
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: var(--card-text);
-    line-height: 1;
-    white-space: nowrap;
-  }
-
-  /* Modal tags - smaller, no background */
   .modal-tags .tag-item {
-    width: auto;
-    height: auto;
+    aspect-ratio: unset;
     min-width: 1.75rem;
     min-height: 1.75rem;
     padding: 0.2rem 0.5rem;
     background: rgba(255, 255, 255, 0.05);
   }
 
-  .modal-tags .tag-icon {
-    width: 1.1rem;
-    height: 1.1rem;
+  @media (prefers-reduced-motion: reduce) {
+    .work-card, .work-thumb img, .btn, .close-btn, .github-link { transition: none; }
+    .work-card:hover { transform: none; }
+    .work-card:hover .work-thumb img { transform: none; }
   }
 
-  .modal-tags .tag-text {
-    font-size: 0.7rem;
-  }
-
-
-  @media (max-width: 600px) {
-    .works-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* Dark mode: icons need white visibility */
-  [data-theme="dark"] .work-thumb {
-    background: #ffffff;
-  }
-  [data-theme="dark"] .work-thumb img {
-    filter: none;
-  }
-  [data-theme="dark"] .tag-icon {
-    filter: invert(1);
-  }
+  /* Dark mode */
+  [data-theme="dark"] .work-thumb { background: #ffffff; }
+  [data-theme="dark"] .work-thumb img { filter: none; }
+  [data-theme="dark"] .tag-icon { filter: invert(1); }
 </style>

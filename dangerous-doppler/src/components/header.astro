@@ -1,7 +1,16 @@
 ---
 import { navItems } from '../data/nav';
+import LangSelector from './lang-selector.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+function getNavI18nKey(href: string): string {
+  if (href === '/' || href === '') return 'nav.home';
+  if (href === '/aboutme') return 'nav.about';
+  if (href === '/skills') return 'nav.skills';
+  if (href === '/works') return 'nav.works';
+  return 'nav.home';
+}
 ---
 
 <header class="site-header">
@@ -9,11 +18,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
   <nav class="pc-menu">
     {navItems.map((item) => (
-      <a href={`${base}${item.href}`}>{item.label}</a>
+      <a href={`${base}${item.href}`} data-i18n={getNavI18nKey(item.href)}>{item.label}</a>
     ))}
   </nav>
 
-  <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードを切り替える">🌙 ダークモード</button>
+  <div class="header-controls">
+    <LangSelector />
+    <button class="theme-toggle" id="theme-toggle" aria-label="ダークモードを切り替える" data-i18n-aria="theme.toggle">
+      <span data-i18n="theme.dark">🌙 ダークモード</span>
+    </button>
+  </div>
 
   <button class="mobile-menu-btn" id="menu-toggle" aria-label="メニューを開く" aria-expanded="false">
     <span class="line"></span>
@@ -22,24 +36,31 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   </button>
 
   <nav class="mobile-nav" id="mobile-menu">
-    <button class="theme-toggle-mobile" id="theme-toggle-mobile" aria-label="ダークモードを切り替える">🌙 ダークモード</button>
+    <div class="mobile-top-controls">
+      <LangSelector />
+      <button class="theme-toggle-mobile" id="theme-toggle-mobile" aria-label="ダークモードを切り替える" data-i18n-aria="theme.toggle">
+        <span data-i18n="theme.dark">🌙 ダークモード</span>
+      </button>
+    </div>
     {navItems.map((item) => (
-      <a href={`${base}${item.href}`} class="mobile-link">{item.label}</a>
+      <a href={`${base}${item.href}`} class="mobile-link" data-i18n={getNavI18nKey(item.href)}>{item.label}</a>
     ))}
   </nav>
 </header>
 
 <script>
+  import { getSavedLocale, applyTranslations, initLocale } from '../i18n/lang-switcher';
+
   const header = document.querySelector('.site-header');
   const toggle = document.getElementById('menu-toggle');
   const menu = document.getElementById('mobile-menu');
 
-  // スクロールしたらヘッダーを黒くする
+  // スクロール時にヘッダーのスタイルを変更
   const onScroll = () => {
     header?.classList.toggle('scrolled', window.scrollY > 10);
   };
   window.addEventListener('scroll', onScroll);
-  onScroll(); // 読み込み時にも一度チェック
+  onScroll();
 
   if (toggle && menu) {
     // ボタンでメニューを開閉
@@ -68,29 +89,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     const isLight = theme === 'light';
     if (isLight) {
       html.setAttribute('data-theme', 'light');
-      if (themeBtn) {
-        themeBtn.textContent = '☀️ ライトモード';
-        themeBtn.setAttribute('aria-label', 'ダークモードに切り替える');
-      }
-      if (mobileThemeBtn) {
-        mobileThemeBtn.textContent = '☀️ ライトモード';
-        mobileThemeBtn.setAttribute('aria-label', 'ダークモードに切り替える');
-      }
+      themeBtn?.setAttribute('aria-label', 'ダークモードに切り替える');
+      mobileThemeBtn?.setAttribute('aria-label', 'ダークモードに切り替える');
+      document.querySelectorAll<HTMLElement>('[data-i18n="theme.dark"], [data-i18n="theme.light"]').forEach((el) => {
+        el.dataset.i18n = 'theme.light';
+      });
     } else {
       html.removeAttribute('data-theme');
-      if (themeBtn) {
-        themeBtn.textContent = '🌙 ダークモード';
-        themeBtn.setAttribute('aria-label', 'ライトモードに切り替える');
-      }
-      if (mobileThemeBtn) {
-        mobileThemeBtn.textContent = '🌙 ダークモード';
-        mobileThemeBtn.setAttribute('aria-label', 'ライトモードに切り替える');
-      }
+      themeBtn?.setAttribute('aria-label', 'ライトモードに切り替える');
+      mobileThemeBtn?.setAttribute('aria-label', 'ライトモードに切り替える');
+      document.querySelectorAll<HTMLElement>('[data-i18n="theme.dark"], [data-i18n="theme.light"]').forEach((el) => {
+        el.dataset.i18n = 'theme.dark';
+      });
     }
     localStorage.setItem('theme', theme);
+    applyTranslations(getSavedLocale());
   }
 
-  // 初期テーマの復元
   const saved = localStorage.getItem('theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const initialTheme = saved || (prefersDark ? 'dark' : 'light');
@@ -102,7 +117,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   });
 
   mobileThemeBtn?.addEventListener('click', () => {
-    const current = html.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-    setTheme(current === 'light' ? 'dark' : 'light');
+    themeBtn?.click();
   });
+
+  // 言語初期化と翻訳適用
+  initLocale();
 </script>

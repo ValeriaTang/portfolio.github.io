@@ -37,7 +37,7 @@ const normalizedWorks = works.map((work) => {
       const ja = work.locales?.ja;
       return (
         <article
-          class="work-card"
+          class="work-card open-modal-btn"
           data-id={work.id}
           data-ai={work.aiRatio}
           data-start={work.start}
@@ -46,6 +46,8 @@ const normalizedWorks = works.map((work) => {
           data-images={JSON.stringify(work.images)}
           data-url={work.href}
           data-locales={JSON.stringify(work.locales)}
+          role="button"
+          tabindex="0"
         >
           {work.image1 && (
             <div class="work-thumb">
@@ -208,11 +210,21 @@ const normalizedWorks = works.map((work) => {
 
   const openBtns = root ? root.querySelectorAll<HTMLElement>('.open-modal-btn') : [];
   openBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
       lastCard = btn;
       populateModal(btn);
       modal?.showModal();
     });
+    // Keyboard accessibility for article cards
+    if (btn.tagName === 'ARTICLE') {
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    }
   });
 
   closeBtn?.addEventListener('click', () => modal?.close());
@@ -412,10 +424,10 @@ const normalizedWorks = works.map((work) => {
   .btn:active { transform: scale(0.98); }
 
   .btn-primary { color: var(--color-white); background-color: var(--btn-bg); }
-  .btn-primary:hover { background-color: var(--btn-bg-hover); }
+  .btn-primary:hover { background-color: var(--accent); }
 
   .btn-secondary { color: var(--color-white); background-color: var(--btn-secondary); }
-  .btn-secondary:hover { background-color: var(--btn-secondary-hover); }
+  .btn-secondary:hover { background-color: var(--accent); }
 
   /* ===== Modal ===== */
   .modal-card {

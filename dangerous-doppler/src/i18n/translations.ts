@@ -37,7 +37,7 @@ export type TranslationKey =
   // Skill levels
   | 'level.beginner' | 'level.intro'
   // Works
-  | 'works.heading' | 'works.aiRatio' | 'works.tags' | 'works.detail'
+  | 'works.heading' | 'works.aiRatio' | 'works.tags' | 'works.detail' | 'works.more'
   | 'works.modal.period' | 'works.modal.github' | 'works.modal.close' | 'works.link'
   // Footer
   | 'footer.email'
@@ -97,7 +97,7 @@ const ja: Translations = {
   'works.tags': '使用技術',
   'works.detail': '詳しく見る',
   'works.more': '詳しくはこちら',
-  'works.modal.period': '期間',
+  'works.modal.period': '開発期間',
   'works.modal.github': 'GitHubでコードを見る',
   'works.modal.close': '閉じる',
   'works.link': 'GitHub / Demo',
@@ -126,13 +126,13 @@ const en: Translations = {
   'aboutme.title': 'About Me',
   'aboutme.profile.heading': 'Profile',
   'aboutme.profile.greeting': "Hi! I'm Valeria.",
-  'aboutme.profile.school': "I'm a 2nd-year student in the Intelligent Information Course, Department of Integrated Engineering Systems, Osaka Prefecture University College of Technology (OMUCT).",
+  'aboutme.profile.school': "I'm a 2nd-year student in the Intelligent Information Course, Department of Integrated Engineering Systems, Osaka Metropolitan University College of Technology (OMUCT).",
   'aboutme.profile.hobby': "My hobby is watching dramas — especially period pieces from any country. I also enjoy watching sports on TV. I love people-watching and surfing the web. In short, I love watching things in motion.",
   'aboutme.profile.interest': "I'm interested in Natural Language Processing, IoT, and VFX, and I hope to work on projects using these technologies in the future. (I'm just interested — I've barely touched them yet!)",
   'aboutme.style.heading': 'Coding Style',
   'aboutme.style.p1': "I'm not particularly experienced or talented in programming.",
   'aboutme.style.p2': "So when I know what I want to do but not how to write it, or when I can't find the cause of an error, I look it up every time — which is inefficient.",
-  'aboutme.style.p3': "While building this site, I researched a lot. I learned many new terms like hover, breadcrumb lists, and hamburger menus — it was a really fun experience.",
+  'aboutme.style.p3': "While building this site, I researched a lot. I learned many new terms like hover effects, breadcrumbs, and hamburger menus — it was a really fun experience.",
   'aboutme.kikkake.heading': 'Why I Chose a Kosen',
   'aboutme.kikkake.p1': 'Because my mother attended a kosen, I had been familiar with this type of institution from an early age.',
   'aboutme.kikkake.p2': "I had originally planned to go to a regular high school, but during middle school I became deeply interested in soldering and IoT during technology class, and my curiosity for specialized fields began to grow.",
@@ -155,7 +155,7 @@ const en: Translations = {
   'works.tags': 'Technologies',
   'works.detail': 'Details',
   'works.more': 'See more',
-  'works.modal.period': 'Period',
+  'works.modal.period': 'Timeline',
   'works.modal.github': 'View code on GitHub',
   'works.modal.close': 'Close',
   'works.link': 'GitHub / Demo',
@@ -185,11 +185,11 @@ const zhCN: Translations = {
   'aboutme.profile.heading': '个人简介',
   'aboutme.profile.greeting': '大家好！我是 Valeria。',
   'aboutme.profile.school': '目前就读于大阪公立大学工业高等专门学校综合工程系统学科智能信息课程二年级。',
-  'aboutme.profile.hobby': '我的爱好是看剧，尤其喜欢各国的古装历史剧。我也爱看各类体育比赛的电视直播，喜欢观察人，也爱在网上冲浪。总的来说，我喜欢看一切"动起来的东西"。',
+  'aboutme.profile.hobby': '我的爱好是看剧，尤其喜欢各国的古装历史剧。我也爱看各类体育比赛的电视直播，喜欢观察人，也爱在网上冲浪。总的来说，我喜欢看一切「动起来的东西」。',
   'aboutme.profile.interest': '我对自然语言处理、物联网（IoT）和视觉特效（VFX）等领域很感兴趣，希望将来能参与运用这些技术的项目。（只是感兴趣，实际上几乎没有动手实践过！）',
   'aboutme.style.heading': '编程风格',
   'aboutme.style.p1': '我在编程方面既没有丰富的经验，也没有特别的天赋。',
-  'aboutme.style.p2': '所以每当我知道自己想做什么却不知道如何编写代码，或者找不到报错原因时，我都会逐一查阅——虽然效率不高。',
+  'aboutme.style.p2': '所以每当我知道自己想做什么却不知道如何编写代码，或是找不到报错原因时，我都会逐一查阅——虽然效率不高。',
   'aboutme.style.p3': '在制作这个网站的过程中，我查阅了大量资料，学到了悬停（hover）、面包屑导航、汉堡菜单等很多之前不知道的概念，非常有趣。',
   'aboutme.kikkake.heading': '为何选择高专',
   'aboutme.kikkake.p1': '由于母亲毕业于高专，我从小就对这种教育机构有所了解。',
@@ -242,9 +242,9 @@ const zhTW: Translations = {
   'aboutme.title': '關於我',
   'aboutme.profile.heading': '個人簡介',
   'aboutme.profile.greeting': '大家好！我是 Valeria。',
-  'aboutme.profile.school': '目前就讀於大阪公立大學工業高等專門學校綜合工程系統學科智能資訊課程二年級。',
+  'aboutme.profile.school': '目前就讀於大阪公立大學工業高等專門學校綜合工程系統學科智慧資訊課程二年級。',
   'aboutme.profile.hobby': '我的愛好是看劇，尤其喜歡各國的古裝歷史劇。我也愛看各類體育賽事的電視轉播，喜歡觀察人，也愛上網瀏覽。總的來說，我喜歡看一切「動起來的東西」。',
-  'aboutme.profile.interest': '我對自然語言處理、物聯網（IoT）和視覺特效（VFX）等領域很感興趣，希望將來能參與運用這些技術的專案。（只是感興趣，實際上幾乎沒有動手實踐過！）',
+  'aboutme.profile.interest': '我對自然語言處理、物聯網（IoT）和視覺特效（VFX）等領域很感興趣，希望將來能參與運用這些技術的專案。（只是感興趣，實際上幾乎沒有動手實作過！）',
   'aboutme.style.heading': '程式設計風格',
   'aboutme.style.p1': '我在程式設計方面既沒有豐富的經驗，也沒有特別的天賦。',
   'aboutme.style.p2': '所以每當我知道自己想做什麼卻不知道如何撰寫程式，或是找不到錯誤原因時，我都會逐一查閱——雖然效率不高。',
@@ -262,7 +262,7 @@ const zhTW: Translations = {
   'genre.backend': '後端',
   'genre.frontend': '前端',
   'genre.framework': '框架',
-  'genre.infra': '基礎設施',
+  'genre.infra': '基礎架構',
   'genre.other': '其他',
   'level.beginner': '初級',
   'level.intro': '入門',

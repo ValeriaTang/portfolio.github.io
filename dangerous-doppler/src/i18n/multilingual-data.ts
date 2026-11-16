@@ -50,12 +50,12 @@ export const workLocales: Record<string, Record<Locale, WorkLocale>> = {
     'zh-CN': {
       title: '日程管理应用',
       description: '在黑客马拉松中开发的日程管理应用。（负责后端与基础设施）',
-      AI: '将从开发规划、新功能实现到安全审计的工作全部交给 AI。我负责技术选型、创意提出和 Bug 发现等。',
+      AI: '将从开发规划、新功能实现到安全审计的工作全部交给 AI。我负责技术选型、创意提出和 Bug 修复等。',
     },
     'zh-TW': {
       title: '行程管理應用',
       description: '在黑客松中開發的行程管理應用程式。（負責後端與基礎設施）',
-      AI: '將從開發規劃、新功能實作到安全審計的工作全部交給 AI。我負責技術選型、創意提出和 Bug 發現等。',
+      AI: '將從開發規劃、新功能實作到安全審計的工作全部交給 AI。我負責技術選型、創意提出和 Bug 修复等。',
     },
   },
   wordcloud: {
@@ -145,13 +145,13 @@ export const skillLocales: Record<string, Record<Locale, SkillLocale>> = {
   },
   JavaScript: {
     ja: { level: '入門', genre: 'フロントエンド', skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。', description: 'Web開発で広く使われているプログラミング言語。' },
-    en: { level: 'Introductory', genre: 'Frontend', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'A programming language widely used in web development.' },
+    en: { level: 'Beginner', genre: 'Frontend', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'A programming language widely used in web development.' },
     'zh-CN': { level: '入门', genre: '前端', skill: '无法从零开始编写完整代码，但能大致理解现有代码或 AI 生成代码的含义和结构。', description: 'Web 开发中广泛使用的编程语言。' },
     'zh-TW': { level: '入門', genre: '前端', skill: '無法從零開始撰寫完整程式碼，但能大致理解現有程式碼或 AI 生成程式碼的含義和結構。', description: 'Web 開發中廣泛使用的程式語言。' },
   },
   'HTML/CSS': {
     ja: { level: '入門', genre: 'フロントエンド', skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。', description: 'Web開発で広く使われているマークアップ言語とスタイルシート言語。' },
-    en: { level: 'Introductory', genre: 'Frontend', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'Markup and stylesheet languages widely used in web development.' },
+    en: { level: 'Beginner', genre: 'Frontend', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'Markup and stylesheet languages widely used in web development.' },
     'zh-CN': { level: '入门', genre: '前端', skill: '无法从零开始编写完整代码，但能大致理解现有代码或 AI 生成代码的含义和结构。', description: 'Web 开发中广泛使用的标记语言和样式表语言。' },
     'zh-TW': { level: '入門', genre: '前端', skill: '無法從零開始撰寫完整程式碼，但能大致理解現有程式碼或 AI 生成程式碼的含義和結構。', description: 'Web 開發中廣泛使用的標記語言和樣式表語言。' },
   },
@@ -163,13 +163,13 @@ export const skillLocales: Record<string, Record<Locale, SkillLocale>> = {
   },
   PostgreSQL: {
     ja: { level: '入門', genre: 'インフラ', skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。', description: 'データベース操作に使われる言語。' },
-    en: { level: 'Introductory', genre: 'Infrastructure', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'A language used for database operations.' },
+    en: { level: 'Beginner', genre: 'Infrastructure', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'A language used for database operations.' },
     'zh-CN': { level: '入门', genre: '基础设施', skill: '无法从零开始编写完整代码，但能大致理解现有代码或 AI 生成代码的含义和结构。', description: '用于数据库操作的语言。' },
     'zh-TW': { level: '入門', genre: '基礎設施', skill: '無法從零開始撰寫完整程式碼，但能大致理解現有程式碼或 AI 生成程式碼的含義和結構。', description: '用於資料庫操作的語言。' },
   },
   LaTeX: {
     ja: { level: '入門', genre: 'その他', skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。', description: '学術論文やレポートの作成に使われる文書作成システム。' },
-    en: { level: 'Introductory', genre: 'Other', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'A document preparation system used for academic papers and reports.' },
+    en: { level: 'Beginner', genre: 'Other', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'A document preparation system used for academic papers and reports.' },
     'zh-CN': { level: '入门', genre: '其他', skill: '无法从零开始编写完整代码，但能大致理解现有代码或 AI 生成代码的含义和结构。', description: '用于撰写学术论文和报告的文档排版系统。' },
     'zh-TW': { level: '入門', genre: '其他', skill: '無法從零開始撰寫完整程式碼，但能大致理解現有程式碼或 AI 生成程式碼的含義和結構。', description: '用於撰寫學術論文和報告的文件排版系統。' },
   },
@@ -193,21 +193,21 @@ export const skillLocales: Record<string, Record<Locale, SkillLocale>> = {
   },
   Astro: {
     ja: { level: '入門', genre: 'フレームワーク', skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。', description: '軽量で高速なマルチページ対応SSGフレームワーク。' },
-    en: { level: 'Introductory', genre: 'Framework', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'A lightweight, fast SSG framework with multi-page support.' },
+    en: { level: 'Beginner', genre: 'Framework', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'A lightweight, fast SSG framework with multi-page support.' },
     'zh-CN': { level: '入门', genre: '框架', skill: '无法从零开始编写完整代码，但能大致理解现有代码或 AI 生成代码的含义和结构。', description: '轻量级、高速的多页面 SSG 框架。' },
     'zh-TW': { level: '入門', genre: '框架', skill: '無法從零開始撰寫完整程式碼，但能大致理解現有程式碼或 AI 生成程式碼的含義和結構。', description: '輕量、高速的多頁面 SSG 框架。' },
   },
   'Ruby on Rails': {
     ja: { level: '入門', genre: 'フレームワーク', skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。', description: 'Ruby製のWebアプリケーションフレームワーク。' },
-    en: { level: 'Introductory', genre: 'Framework', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'A web application framework written in Ruby.' },
+    en: { level: 'Beginner', genre: 'Framework', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'A web application framework written in Ruby.' },
     'zh-CN': { level: '入门', genre: '框架', skill: '无法从零开始编写完整代码，但能大致理解现有代码或 AI 生成代码的含义和结构。', description: '使用 Ruby 编写的 Web 应用框架。' },
     'zh-TW': { level: '入門', genre: '框架', skill: '無法從零開始撰寫完整程式碼，但能大致理解現有程式碼或 AI 生成程式碼的含義和結構。', description: '使用 Ruby 撰寫的 Web 應用程式框架。' },
   },
   Vercel: {
     ja: { level: '初級', genre: 'インフラ', skill: '必要最低限は使用できていると認識しているが、まだまだ不十分である。', description: 'フロントエンド向けホスティング・デプロイプラットフォーム。' },
     en: { level: 'Beginner', genre: 'Infrastructure', skill: 'I believe I can use the basics, but there is still much room for improvement.', description: 'A hosting and deployment platform for frontend applications.' },
-    'zh-CN': { level: '初级', genre: '基础设施', skill: '认为自己能使用基本功能，但仍有很大的提升空间。', description: '面向前端的托管与部署平台。' },
-    'zh-TW': { level: '初級', genre: '基礎設施', skill: '認為自己能使用基本功能，但仍有很大的提升空間。', description: '面向前端的託管與部署平台。' },
+    'zh-CN': { level: '初级', genre: '运维', skill: '认为自己能使用基本功能，但仍有很大的提升空间。', description: '面向前端的托管与部署平台。' },
+    'zh-TW': { level: '初級', genre: '运维', skill: '認為自己能使用基本功能，但仍有很大的提升空間。', description: '面向前端的託管與部署平台。' },
   },
   'Google Cloud Console': {
     ja: { level: '初級', genre: 'インフラ', skill: '必要最低限は使用できていると認識しているが、まだまだ不十分である。', description: 'Googleのクラウドコンピューティングプラットフォーム。' },
@@ -223,7 +223,7 @@ export const skillLocales: Record<string, Record<Locale, SkillLocale>> = {
   },
   Arduino: {
     ja: { level: '入門', genre: 'その他', skill: 'ゼロから完全なコードを書くことはできないが、既存コードやAI生成コードの大体の意味・構造を理解できる。', description: 'マイコンボードと開発環境。' },
-    en: { level: 'Introductory', genre: 'Other', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'Microcontroller board and development environment.' },
+    en: { level: 'Beginner', genre: 'Other', skill: 'Cannot write complete code from scratch, but can understand the general meaning and structure of existing or AI-generated code.', description: 'Microcontroller board and development environment.' },
     'zh-CN': { level: '入门', genre: '其他', skill: '无法从零开始编写完整代码，但能大致理解现有代码或 AI 生成代码的含义和结构。', description: '微控制器开发板与开发环境。' },
     'zh-TW': { level: '入門', genre: '其他', skill: '無法從零開始撰寫完整程式碼，但能大致理解現有程式碼或 AI 生成程式碼的含義和結構。', description: '微控制器開發板與開發環境。' },
   },
@@ -247,7 +247,7 @@ export const careerLocales: Record<string, Record<Locale, CareerLocale>> = {
   '2025-04': {
     ja: { title: '大阪公立大学工業高等専門学校に入学', texts: ['プログラミングの独習を始める。', '現代音楽部に入部。'] },
     en: { title: 'Enrolled at OMUCT', texts: ['Began self-studying programming.', 'Joined the Contemporary Music Club.'] },
-    'zh-CN': { title: '入学大阪公立大学工业高等专门学校', texts: ['开始自学编程。', '加入当代音乐部。'] },
+    'zh-CN': { title: '入学大阪公立大学工业高等专科学校', texts: ['开始自学编程。', '加入当代音乐部。'] },
     'zh-TW': { title: '入學大阪公立大學工業高等專門學校', texts: ['開始自學程式設計。', '加入當代音樂部。'] },
   },
   '2025-06': {
@@ -259,8 +259,8 @@ export const careerLocales: Record<string, Record<Locale, CareerLocale>> = {
   '2026-04': {
     ja: { title: '知能情報コースに進級・配属', texts: ['プログラミングの独習を続ける。'] },
     en: { title: 'Assigned to the Intelligent Information Course', texts: ['Continued self-studying programming.'] },
-    'zh-CN': { title: '升入智能信息课程', texts: ['继续自学编程。'] },
-    'zh-TW': { title: '升入智能資訊課程', texts: ['繼續自學程式設計。'] },
+    'zh-CN': { title: '升入智能信息专业', texts: ['继续自学编程。'] },
+    'zh-TW': { title: '升入智能資訊專業', texts: ['繼續自學程式設計。'] },
   },
   '2026-11': {
     ja: { title: 'ハッカソンの成果物を高専祭で展示', texts: ['学内ハッカソンで開発したスケジュール管理アプリを高専祭で展示した。'] },

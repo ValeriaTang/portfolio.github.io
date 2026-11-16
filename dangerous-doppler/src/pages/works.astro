@@ -65,12 +65,28 @@ const normalizedWorks = works.map((work) => {
                 <span data-i18n="works.aiRatio">AI使用率</span>: {work.aiRatio}
               </span>
             </header>
-            <p class="work-desc">{ja?.description ?? ''}</p>
-            <div class="work-meta">
-              <time datetime={work.start}>{work.start.replace('-', '.')}</time>
-              <span aria-hidden="true">-</span>
-              <time datetime={work.finish}>{work.finish.replace('-', '.')}</time>
+
+            <div class="work-section">
+              <h4 class="work-subheading" data-i18n="works.card.period">開発期間</h4>
+              <div class="work-meta">
+                <time datetime={work.start}>{work.start.replace('-', '.')}</time>
+                <span aria-hidden="true">-</span>
+                <time datetime={work.finish}>{work.finish.replace('-', '.')}</time>
+              </div>
             </div>
+
+            {work.locales?.ja?.AI && (
+              <div class="work-section">
+                <h4 class="work-subheading" data-i18n="works.card.aiLocation">AIの使用場所</h4>
+                <p class="work-ai-note work-ai-note-text">{work.locales.ja.AI}</p>
+              </div>
+            )}
+
+            <div class="work-section">
+              <h4 class="work-subheading" data-i18n="works.card.overview">概要</h4>
+              <p class="work-desc">{ja?.description ?? ''}</p>
+            </div>
+
             {work.tagDetails.length > 0 && (
               <ul class="work-tags" aria-label="使用技術" data-i18n-aria="works.tags">
                 {work.tagDetails.map((tag) => (
@@ -89,9 +105,6 @@ const normalizedWorks = works.map((work) => {
                   </li>
                 ))}
               </ul>
-            )}
-            {work.locales?.ja?.AI && (
-              <p class="work-ai-note work-ai-note-text">{work.locales.ja.AI}</p>
             )}
             <div class="work-actions">
               <a href={work.href} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
@@ -423,6 +436,22 @@ const normalizedWorks = works.map((work) => {
     color: var(--muted);
     font-style: italic;
     overflow-wrap: break-word;
+  }
+
+  .work-subheading {
+    margin: 0.5rem 0 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .work-subheading::after {
+    content: ":";
+  }
+
+  .work-section {
+    display: flex;
+    flex-direction: column;
   }
 
   .work-actions {

@@ -40,6 +40,7 @@ export type TranslationKey =
   | 'works.heading' | 'works.aiRatio' | 'works.tags' | 'works.detail' | 'works.more'
   | 'works.modal.period' | 'works.modal.github' | 'works.modal.close' | 'works.link'
   | 'works.modal.ai' | 'works.modal.detail'
+  | 'works.card.period' | 'works.card.aiLocation' | 'works.card.overview'
   // Footer
   | 'footer.email'
   | 'footer.github'
@@ -104,6 +105,9 @@ const ja: Translations = {
   'works.modal.ai': 'AI使用率',
   'works.modal.detail': '詳細',
   'works.link': 'GitHub / Demo',
+  'works.card.period': '開発期間',
+  'works.card.aiLocation': 'AIの使用場所',
+  'works.card.overview': '概要',
   'footer.email': '学校用メールアドレス',
   'footer.github': 'GitHubのプロフィールを開く',
   'menu.open': 'メニュー',
@@ -164,6 +168,9 @@ const en: Translations = {
   'works.modal.ai': 'AI usage',
   'works.modal.detail': 'Details',
   'works.link': 'GitHub / Demo',
+  'works.card.period': 'Development Period',
+  'works.card.aiLocation': 'AI Usage',
+  'works.card.overview': 'Overview',
   'footer.email': 'School email',
   'footer.github': 'Open GitHub profile',
   'menu.open': 'Menu',
@@ -224,6 +231,9 @@ const zhCN: Translations = {
   'works.modal.ai': 'AI 使用率',
   'works.modal.detail': '详情',
   'works.link': 'GitHub / Demo',
+  'works.card.period': '开发周期',
+  'works.card.aiLocation': 'AI使用位置',
+  'works.card.overview': '概述',
   'footer.email': '学校邮箱',
   'footer.github': '打开 GitHub 个人资料',
   'menu.open': '菜单',
@@ -284,11 +294,15 @@ const zhTW: Translations = {
   'works.modal.ai': 'AI 使用率',
   'works.modal.detail': '詳情',
   'works.link': 'GitHub / Demo',
+  'works.card.period': '開發期間',
+  'works.card.aiLocation': 'AI使用位置',
+  'works.card.overview': '概述',
   'footer.email': '學校信箱',
   'footer.github': '開啟 GitHub 個人資料',
   'menu.open': '選單',
   'backtotop': '回到頂部',
 };
+
 
 export const translations: Record<Locale, Translations> = { ja, en, 'zh-CN': zhCN, 'zh-TW': zhTW };
 

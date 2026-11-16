@@ -1,43 +1,38 @@
-# Astro Starter Kit: Minimal
+# Portfolio by Valeria
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Astro 製のポートフォリオサイト。プロフィール・スキル・作品をまとめています。
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 概要
 
-## 🚀 Project Structure
+- **フレームワーク**: Astro（静的サイト生成）
+- **ページ**: ホーム / 私について / スキル / 作品
+- **テーマ**: ダーク・ライト切り替え（localStorage に保存、システム設定フォールバック）
+- **多言語**: 日本語 / English / 简体中文 / 繁體中文
+- **レスポンシブ**: PCナビ + モバイル用ハンバーガーメニュー
 
-Inside of your Astro project, you'll see the following folders and files:
+## 主な機能
+
+- **ナビゲーション**: ホーム・私について・スキル・作品へのリンク、モバイルメニュー
+- **テーマ切替**: ダーク/ライト切替、ホバー時に `--accent` へ色変更
+- **作品**: カード一覧 + 詳細モーダル（画像ギャラリー・タグ・期間・AI使用率）
+- **スキル**: カード一覧 + 詳細モーダル（できること・説明・レベル）
+- **タグアイコン**: ライト/ダークで画像を自動切替（.devicon）
+- **言語切替**: `src/i18n/translations.ts` ベース
+
+## ディレクトリ構成
 
 ```text
-/
-├── public/
+dangerous-doppler/
+├── public/                  # 静的アセット
 ├── src/
-│   └── pages/
-│       └── index.astro
+│   ├── pages/               # index / aboutme / skills / works
+│   ├── components/          # header, navigation, about, skill, work, footer など
+│   ├── data/                # work.ts / skill.ts / icon.ts
+│   ├── i18n/                # translations, lang-switcher, multilingual-data
+│   └── styles/global.css    # テーマ変数（--btn-bg / --accent など）
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## デモ
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+（公開URLがあればここに記載）

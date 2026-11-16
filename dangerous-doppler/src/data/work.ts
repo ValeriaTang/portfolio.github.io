@@ -27,7 +27,8 @@ export const works = [
     finish: "2026-11",
     description: "Astroを使用した軽量シングルページに見せかけたマルチページのポートフォリオサイト。",
     tags: ["Astro"],
-    href: "https://github.com/ValeriaTang/portfolio.github.io"
+    href: "https://github.com/ValeriaTang/portfolio.github.io",
+    image1: `${base}/images/portfolio.png`
   },
   {
     id: "schedule",
@@ -60,6 +61,18 @@ export const works = [
     image4: `${base}/images/wordcloud4.png`,
     image5: "",
     tags: ["Python", "WordCloud"]
+  },
+  {
+    id: "termin",
+    title: "自作テルミン",
+    aiRatio: "25%",
+    AI: "デバッグに使用した。",
+    start: "2026-10",
+    finish: "2026-11",
+    description: "テルミンという電子楽器を超音波距離センサとCdSで再現した。",
+    href: "https://github.com/ValeriaTang/Tyermyenvoks",
+    image1: `${base}/images/termin.jpg`,
+    tags: ["C++", "Arduino"]
   },
   {
     id: "music-ear-training",

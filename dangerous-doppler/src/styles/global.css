@@ -155,8 +155,14 @@ html[lang="ja"] {
   --font-family: "Montserrat", "Noto Sans JP", "Hiragino Sans", sans-serif;
 }
 
-html[lang="zh-CN"] {
+html[lang="zh-CN"],
+html[lang="zh-Hans"] {
   --font-family: "Montserrat", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+
+html[lang="zh-TW"],
+html[lang="zh-Hant"] {
+  --font-family: "Montserrat", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
 }
 
 /* ========================================

@@ -168,12 +168,12 @@ const normalizedWorks = works.map((work) => {
 
   function renderTags(raw: string): void {
     if (!modalTags) return;
-    let tags: { name: string; icon: string | null }[] = [];
+    let tags: { name: string; icon: string | null; darkIcon: string | null }[] = [];
     try { tags = raw ? JSON.parse(raw) : []; } catch { tags = []; }
     modalTags.innerHTML = tags
       .map((tag) =>
         tag.icon
-          ? `<span class="tag-item"><img src="${tag.icon}" alt="${tag.name}" class="tag-icon" /></span>`
+          ? `<span class="tag-item"><img src="${tag.icon}" alt="${tag.name}" class="tag-icon" data-light-src="${tag.icon}" data-dark-src="${tag.darkIcon ?? tag.icon}" /></span>`
           : `<span class="tag-item"><span class="tag-text">${tag.name}</span></span>`,
       )
       .join('');
@@ -199,6 +199,8 @@ const normalizedWorks = works.map((work) => {
     }
     renderGallery(card.dataset.images ? JSON.parse(card.dataset.images) : []);
     renderTags(card.dataset.tags ?? '');
+    // Ensure newly rendered tag icons match current theme
+    applyThemeImages();
   }
 
   // ── Open modal ──

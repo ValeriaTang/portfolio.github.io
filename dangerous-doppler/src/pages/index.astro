@@ -5,6 +5,7 @@ import Footer from '../components/footer.astro';
 import Skills from '../components/skill.astro';
 import Works from '../components/work.astro';
 import BackToTop from '../components/back-to-top.astro';
+import LoadingSpinner from '../components/loading-spinner.astro';
 import "../styles/global.css";
 const base = import.meta.env.BASE_URL;
 ---
@@ -37,6 +38,7 @@ const base = import.meta.env.BASE_URL;
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet" />
   </head>
   <body>
+    <LoadingSpinner />
     <Navigation />
 
     <main>

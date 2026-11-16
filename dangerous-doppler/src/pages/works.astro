@@ -6,6 +6,7 @@ import { workLocales } from '../i18n/multilingual-data';
 import Header from '../components/header.astro';
 import BackToTop from '../components/back-to-top.astro';
 import Footer from '../components/footer.astro';
+import LoadingSpinner from '../components/loading-spinner.astro';
 
 const iconMap = Object.fromEntries(
   icons.map((icon) => [icon.name, { light: icon.lightimage, dark: icon.darkimage }]),
@@ -33,6 +34,7 @@ const normalizedWorks = works.map((work) => {
 });
 ---
 
+<LoadingSpinner />
 <Header />
 <section id="works" aria-labelledby="works-heading">
   <h2 id="works-heading" data-i18n="works.heading">作品</h2>

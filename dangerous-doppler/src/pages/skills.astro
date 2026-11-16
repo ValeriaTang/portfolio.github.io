@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import LoadingSpinner from '../components/loading-spinner.astro';
 import { skills } from '../data/skill';
 import { icons } from '../data/icon';
 import { skillLocales } from '../i18n/multilingual-data';
@@ -66,7 +67,8 @@ const groupedSkills = genres.map((genre) => ({
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <Header />
+    <LoadingSpinner />
+<Header />
     <section id="skills" aria-labelledby="skills-heading">
       <h2 id="skills-heading" data-i18n="skills.heading">スキル</h2>
       {groupedSkills.map((group) => (

@@ -2,8 +2,6 @@
 import { works } from '../data/work';
 import { icons } from '../data/icon';
 import { workLocales } from '../i18n/multilingual-data';
-import { skills } from "../data/skill";
-import { skillLocales } from "../i18n/multilingual-data";
 
 const iconMap = Object.fromEntries(
   icons.map((icon) => [icon.name, { dark: icon.darkimage, light: icon.lightimage }]),
@@ -14,7 +12,6 @@ function getIconUrl(tag: string, isDark: boolean): string | undefined {
   return icon ? (isDark ? icon.dark : icon.light) : undefined;
 }
 
-// Embed all locale data into each card so JS can swap without re-fetching
 const normalizedWorks = works.map((work) => {
   const tags = work.tags ?? [];
   return {
@@ -28,10 +25,9 @@ const normalizedWorks = works.map((work) => {
     images: [work.image1, work.image2, work.image3, work.image4, work.image5].filter(
       (src): src is string => Boolean(src),
     ),
-    // All locale data embedded as JSON for client-side use
     locales: workLocales[work.id] ?? null,
   };
-}).slice(0, 3);
+}).slice(0, 4); // トップページでバランスよく表示
 ---
 
 <section id="works" aria-labelledby="works-heading">
@@ -41,7 +37,7 @@ const normalizedWorks = works.map((work) => {
       const ja = work.locales?.ja;
       return (
         <article
-          class="work-card open-modal-btn"
+          class="work-card"
           data-id={work.id}
           data-ai={work.aiRatio}
           data-start={work.start}
@@ -50,15 +46,18 @@ const normalizedWorks = works.map((work) => {
           data-images={JSON.stringify(work.images)}
           data-url={work.href}
           data-locales={JSON.stringify(work.locales)}
-          aria-label={`${ja?.title ?? work.id} の詳細を見る`}
-          role="button"
-          tabindex="0"
         >
-          {work.images[0] && (
-            <div class="work-thumb">
+          <div class="work-thumb">
+            {work.images[0] ? (
               <img src={work.images[0]} alt="" loading="lazy" />
-            </div>
-          )}
+            ) : (
+              <div class="work-thumb-placeholder">
+                <span class="placeholder-icon">💻</span>
+                <span class="placeholder-text">{ja?.title ?? work.id}</span>
+              </div>
+            )}
+          </div>
+
           <div class="work-body">
             <header class="work-header">
               <h3 class="work-title">{ja?.title ?? work.id}</h3>
@@ -66,18 +65,40 @@ const normalizedWorks = works.map((work) => {
                 <span data-i18n="works.aiRatio">AI使用率</span>: {work.aiRatio}
               </span>
             </header>
-            <p class="work-desc">{ja?.description ?? ''}</p>
-            <div class="work-meta">
-              <time datetime={work.start}>{work.start.replace('-', '.')}</time>
-              <span aria-hidden="true">-</span>
-              <time datetime={work.finish}>{work.finish.replace('-', '.')}</time>
+
+            <div class="work-section">
+              <h4 class="work-subheading" data-i18n="works.card.period">開発期間</h4>
+              <div class="work-meta">
+                <time datetime={work.start}>{work.start.replace('-', '.')}</time>
+                <span aria-hidden="true">-</span>
+                <time datetime={work.finish}>{work.finish.replace('-', '.')}</time>
+              </div>
             </div>
+
+            {work.locales?.ja?.AI && (
+              <div class="work-section">
+                <h4 class="work-subheading" data-i18n="works.card.aiLocation">AIの使用場所</h4>
+                <p class="work-ai-note work-ai-note-text">{work.locales.ja.AI}</p>
+              </div>
+            )}
+
+            <div class="work-section">
+              <h4 class="work-subheading" data-i18n="works.card.overview">概要</h4>
+              <p class="work-desc">{ja?.description ?? ''}</p>
+            </div>
+
             {work.tagDetails.length > 0 && (
               <ul class="work-tags" aria-label="使用技術" data-i18n-aria="works.tags">
                 {work.tagDetails.map((tag) => (
                   <li class="tag-item">
                     {tag.icon ? (
-                      <img src={tag.icon} alt={tag.name} class="tag-icon" data-skill-name={tag.name} role="button" tabindex="0" aria-label={`${tag.name} のスキル詳細を見る`} />
+                      <img
+                        src={tag.icon}
+                        alt={tag.name}
+                        class="tag-icon"
+                        data-light-src={tag.icon}
+                        data-dark-src={tag.darkIcon}
+                      />
                     ) : (
                       <span class="tag-text">{tag.name}</span>
                     )}
@@ -85,6 +106,27 @@ const normalizedWorks = works.map((work) => {
                 ))}
               </ul>
             )}
+
+            <div class="work-actions">
+              <a href={work.href} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                GitHub / Demo
+              </a>
+              <button
+                type="button"
+                class="btn btn-secondary open-modal-btn"
+                data-id={work.id}
+                data-ai={work.aiRatio}
+                data-start={work.start}
+                data-finish={work.finish}
+                data-tags={JSON.stringify(work.tagDetails)}
+                data-images={JSON.stringify(work.images)}
+                data-url={work.href}
+                data-locales={JSON.stringify(work.locales)}
+                aria-label={`${ja?.title ?? work.id} の詳細を見る`}
+              >
+                <span data-i18n="works.detail">詳しく見る</span>
+              </button>
+            </div>
           </div>
         </article>
       );
@@ -110,15 +152,19 @@ const normalizedWorks = works.map((work) => {
       </header>
 
       <div class="modal-meta">
+        <h4 class="modal-subheading" data-i18n="works.modal.period">開発期間</h4>
         <div>
-          <span class="meta-label" data-i18n="works.modal.period">期間</span>:
           <span id="work-modal-period"></span>
         </div>
       </div>
 
+      <h4 class="modal-subheading" data-i18n="works.modal.ai">AI使用場所</h4>
       <p id="work-modal-ai-desc" class="modal-ai-desc"></p>
+
+      <h4 class="modal-subheading" data-i18n="works.modal.detail">詳細</h4>
       <p id="work-modal-detail" class="modal-text"></p>
 
+      <h4 class="modal-subheading" data-i18n="works.tags">使用技術</h4>
       <div id="work-modal-tags" class="modal-tags" aria-label="使用技術" data-i18n-aria="works.tags"></div>
 
       <a id="work-modal-link" href="#" target="_blank" rel="noopener noreferrer" class="github-link" data-i18n="works.modal.github">
@@ -145,7 +191,6 @@ const normalizedWorks = works.map((work) => {
   const modalTags    = document.getElementById('work-modal-tags');
   const modalLink    = document.getElementById('work-modal-link') as HTMLAnchorElement | null;
 
-  // Track last opened card for locale refresh
   let lastCard: HTMLElement | null = null;
 
   function getLocale(): Locale { return getSavedLocale(); }
@@ -183,7 +228,6 @@ const normalizedWorks = works.map((work) => {
     const locale = getLocale();
     const dict   = getDict(locale);
 
-    // Get localised text from embedded JSON
     let locales: Record<string, { title: string; description: string; AI: string }> | null = null;
     try { locales = card.dataset.locales ? JSON.parse(card.dataset.locales) : null; } catch {}
     const localised = locales?.[locale] ?? locales?.['ja'] ?? null;
@@ -199,24 +243,32 @@ const normalizedWorks = works.map((work) => {
     }
     renderGallery(card.dataset.images ? JSON.parse(card.dataset.images) : []);
     renderTags(card.dataset.tags ?? '');
-    // Ensure newly rendered tag icons match current theme
     applyThemeImages();
   }
 
-  // ── Open modal ──
-  const openBtns = root ? root.querySelectorAll<HTMLElement>('.open-modal-btn') : [];
-  openBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      lastCard = btn;
-      populateModal(btn);
+  // ── カード全体をクリック可能に（中の a や button をクリックした時はバブリングをガード） ──
+  const cards = root ? root.querySelectorAll<HTMLElement>('.work-card') : [];
+  cards.forEach((card) => {
+    card.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a') || target.closest('button')) {
+        return; // ボタンやリンクのクリック時はスルー
+      }
+      lastCard = card;
+      populateModal(card);
       modal?.showModal();
     });
-    // Keyboard accessibility
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        btn.click();
-      }
+  });
+
+  // ── 「詳しく見る」ボタンのクリック ──
+  const openBtns = root ? root.querySelectorAll<HTMLElement>('.open-modal-btn') : [];
+  openBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest<HTMLElement>('.work-card') ?? btn;
+      lastCard = card;
+      populateModal(card);
+      modal?.showModal();
     });
   });
 
@@ -224,31 +276,49 @@ const normalizedWorks = works.map((work) => {
   modal?.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal?.open) modal.close(); });
 
-  // ── Update card text on locale change ──
+  // ── 言語変更時のテキスト更新 ──
   function updateCards(): void {
     const locale = getLocale();
     const dict   = getDict(locale);
-    openBtns.forEach((btn) => {
+
+    cards.forEach((card) => {
       let locales: Record<string, { title: string; description: string; AI: string }> | null = null;
-      try { locales = btn.dataset.locales ? JSON.parse(btn.dataset.locales) : null; } catch {}
+      try { locales = card.dataset.locales ? JSON.parse(card.dataset.locales) : null; } catch {}
       const localised = locales?.[locale] ?? locales?.['ja'] ?? null;
 
-      const titleEl = btn.querySelector<HTMLElement>('.work-title');
-      const descEl  = btn.querySelector<HTMLElement>('.work-desc');
-      const aiEl    = btn.querySelector<HTMLElement>('.ai-ratio');
-      const tagsAria = btn.querySelector<HTMLElement>('.work-tags');
+      const titleEl    = card.querySelector<HTMLElement>('.work-title');
+      const descEl     = card.querySelector<HTMLElement>('.work-desc');
+      const aiNoteEl   = card.querySelector<HTMLElement>('.work-ai-note-text');
+      const aiEl       = card.querySelector<HTMLElement>('.ai-ratio');
+      const tagsAria   = card.querySelector<HTMLElement>('.work-tags');
+      const btnDetail  = card.querySelector<HTMLElement>('.open-modal-btn');
 
       if (titleEl && localised) titleEl.textContent = localised.title;
       if (descEl  && localised) descEl.textContent  = localised.description;
+      if (aiNoteEl && localised) aiNoteEl.textContent = localised.AI;
+
       if (aiEl) {
-        const aiRatio = btn.dataset.ai ?? '';
+        const aiRatio = card.dataset.ai ?? '';
         aiEl.innerHTML = `<span data-i18n="works.aiRatio">${dict['works.aiRatio']}</span>: ${aiRatio}`;
       }
       if (tagsAria) tagsAria.setAttribute('aria-label', dict['works.tags']);
-      btn.setAttribute('aria-label', `${localised?.title ?? ''} の詳細を見る`);
+      if (btnDetail && localised) {
+        btnDetail.setAttribute('aria-label', `${localised.title} の詳細を見る`);
+        const span = btnDetail.querySelector<HTMLElement>('[data-i18n="works.detail"]');
+        if (span) span.textContent = dict['works.detail'];
+      }
     });
-    // If modal is open, refresh its content too
+
     if (modal?.open && lastCard) populateModal(lastCard);
+
+    // 見出しテキストの翻訳更新
+    document.querySelectorAll<HTMLElement>('[data-i18n="works.card.period"]').forEach((el) => { el.textContent = dict['works.card.period']; });
+    document.querySelectorAll<HTMLElement>('[data-i18n="works.card.aiLocation"]').forEach((el) => { el.textContent = dict['works.card.aiLocation']; });
+    document.querySelectorAll<HTMLElement>('[data-i18n="works.card.overview"]').forEach((el) => { el.textContent = dict['works.card.overview']; });
+    document.querySelectorAll<HTMLElement>('[data-i18n="works.modal.period"]').forEach((el) => { el.textContent = dict['works.modal.period']; });
+    document.querySelectorAll<HTMLElement>('[data-i18n="works.modal.ai"]').forEach((el) => { el.textContent = dict['works.modal.ai']; });
+    document.querySelectorAll<HTMLElement>('[data-i18n="works.modal.detail"]').forEach((el) => { el.textContent = dict['works.modal.detail']; });
+    document.querySelectorAll<HTMLElement>('[data-i18n="works.tags"]').forEach((el) => { el.textContent = dict['works.tags']; });
   }
 
   document.addEventListener('i18n:update', updateCards);
@@ -279,18 +349,14 @@ const normalizedWorks = works.map((work) => {
   }
 
   #works h2 {
-    margin: 0 0 0.75rem;
+    margin: 0 0 1rem;
     color: var(--color-primary);
   }
 
   .works-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-  }
-
-  @media (max-width: 600px) {
-    .works-grid { grid-template-columns: 1fr; }
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 1rem;
   }
 
   .work-card {
@@ -303,21 +369,23 @@ const normalizedWorks = works.map((work) => {
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    height: 100%;
   }
 
-  .work-card:hover,
-  .work-card:focus-visible {
+  .work-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
     border-color: var(--accent);
-    outline: none;
   }
 
+  /* サムネイル画像領域 */
   .work-thumb {
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.03);
+    position: relative;
+    border-bottom: 1px solid var(--card-border);
   }
 
   .work-thumb img {
@@ -327,13 +395,41 @@ const normalizedWorks = works.map((work) => {
     transition: transform 0.3s ease;
   }
 
-  .work-card:hover .work-thumb img { transform: scale(1.03); }
+  .work-card:hover .work-thumb img {
+    transform: scale(1.03);
+  }
 
+  /* 画像がない場合のプレースホルダー */
+  .work-thumb-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(192, 132, 252, 0.15) 100%);
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .placeholder-icon {
+    font-size: 2rem;
+  }
+
+  .placeholder-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--card-title);
+    opacity: 0.8;
+  }
+
+  /* カードコンテンツ本文 */
   .work-body {
     display: flex;
     flex-direction: column;
-    gap: 0.375rem;
-    padding: 0.5rem;
+    gap: 0.6rem;
+    padding: 1rem;
     flex: 1;
   }
 
@@ -342,29 +438,65 @@ const normalizedWorks = works.map((work) => {
     justify-content: space-between;
     align-items: flex-start;
     gap: 0.5rem;
-    flex-wrap: wrap; /* Long titles wrap without pushing badge off */
+    flex-wrap: wrap;
+    margin-bottom: 0.25rem;
   }
 
-  .work-header h3 {
+  .work-title {
     margin: 0;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
+    font-weight: 700;
     color: var(--card-title);
-    line-height: 1.3;
-    /* Ensure long CJK titles break properly */
+    line-height: 1.35;
     overflow-wrap: break-word;
     word-break: break-word;
-    min-width: 0; /* Allow flex shrink */
+    min-width: 0;
+    flex: 1;
   }
 
   .ai-ratio {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: var(--accent);
     white-space: nowrap;
     background: var(--accent-bg);
-    padding: 0.125rem 0.5rem;
+    padding: 0.15rem 0.55rem;
     border-radius: 999px;
     flex-shrink: 0;
+  }
+
+  /* 各情報セクション */
+  .work-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .work-subheading {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .work-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .work-ai-note {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--muted);
+    font-style: italic;
+    overflow-wrap: break-word;
   }
 
   .work-desc {
@@ -372,19 +504,10 @@ const normalizedWorks = works.map((work) => {
     font-size: 0.85rem;
     line-height: 1.6;
     color: var(--card-text);
-    /* Clamp to 3 lines regardless of language verbosity */
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-  }
-
-  .work-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-    font-size: 0.75rem;
-    color: var(--muted);
   }
 
   .work-tags {
@@ -394,12 +517,18 @@ const normalizedWorks = works.map((work) => {
     list-style: none;
     padding: 0;
     margin: 0.25rem 0 0;
-    max-height: calc(2 * (1.5rem + 0.375rem));
-    overflow: hidden;
+  }
+
+  .work-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    flex-wrap: wrap;
   }
 
   .work-more-link {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     text-align: center;
   }
 
@@ -407,7 +536,7 @@ const normalizedWorks = works.map((work) => {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.5rem 1rem;
+    padding: 0.45rem 0.9rem;
     font-size: 0.8rem;
     font-weight: 500;
     text-decoration: none;
@@ -423,6 +552,9 @@ const normalizedWorks = works.map((work) => {
 
   .btn-primary { color: var(--color-white); background-color: var(--btn-bg); }
   .btn-primary:hover { background-color: var(--accent); }
+
+  .btn-secondary { color: var(--color-white); background-color: var(--btn-secondary); }
+  .btn-secondary:hover { background-color: var(--accent); }
 
   /* ===== Modal ===== */
   .modal-card {
@@ -446,7 +578,7 @@ const normalizedWorks = works.map((work) => {
   .modal-content {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.85rem;
     padding: 1.5rem;
     max-height: 90vh;
     overflow-y: auto;
@@ -513,16 +645,21 @@ const normalizedWorks = works.map((work) => {
 
   .modal-meta {
     display: flex;
-    gap: 1.5rem;
+    flex-direction: column;
+    gap: 0.25rem;
     font-size: 0.85rem;
     color: var(--muted);
-    flex-wrap: wrap;
   }
 
-  .meta-label { font-weight: 600; }
+  .modal-subheading {
+    margin: 0.6rem 0 0.2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
 
   .modal-ai-desc {
-    margin: 0.5rem 0;
+    margin: 0.25rem 0;
     font-size: 0.85rem;
     line-height: 1.6;
     color: var(--muted);
@@ -531,7 +668,7 @@ const normalizedWorks = works.map((work) => {
   }
 
   .modal-text {
-    margin: 0.5rem 0 1rem;
+    margin: 0.25rem 0 0.5rem;
     font-size: 0.9rem;
     line-height: 1.7;
     color: var(--card-text);
@@ -542,7 +679,7 @@ const normalizedWorks = works.map((work) => {
     display: flex;
     flex-wrap: wrap;
     gap: 0.375rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   .github-link {
@@ -595,7 +732,10 @@ const normalizedWorks = works.map((work) => {
   }
 
   /* Dark mode */
-  [data-theme="dark"] .work-thumb { background: #ffffff; }
+  [data-theme="dark"] .work-thumb { background: #111111; }
   [data-theme="dark"] .work-thumb img { filter: none; }
   [data-theme="dark"] .tag-icon { filter: invert(1); }
+
+  /* Light mode */
+  [data-theme="light"] .work-thumb { background: #f1f5f9; }
 </style>

@@ -24,6 +24,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     <dd id="about-interests">{identity.interests.join("、")}</dd>
   </dl>
 
+  <div class="profile-icon">
+    <img src={`${base}/images/monster10.png`} alt={`${identity.Name} のアイコン`} class="profile-icon-img" loading="lazy" />
+  </div>
+
   <a href={`${base}/aboutme`} class="more-aboutme" data-i18n="about.more">詳しくはこちら</a>
 </section>
 
@@ -88,5 +92,25 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   .more-aboutme:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
+  }
+
+  /* プロフィールアイコン */
+  .profile-icon {
+    margin: 1rem 0 0;
+    text-align: center;
+  }
+
+  .profile-icon-img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--card-border);
+    transition: border-color 0.2s ease, transform 0.1s ease;
+  }
+
+  .profile-icon-img:hover {
+    border-color: var(--color-accent);
+    transform: scale(1.03);
   }
 </style>

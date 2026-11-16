@@ -48,6 +48,9 @@ const base = import.meta.env.BASE_URL;
           <p data-i18n="aboutme.profile.hobby">趣味はドラマ鑑賞で、特に時代劇は国籍問わず好んで視聴します。また、スポーツ観戦も好きで、テレビで中継していたら何でも見ます。人間観察やネットサーフィンも好きですね。総じて言えるのは、何かしらの動いているものを見るのが好きだということです。</p>
           <p data-i18n="aboutme.profile.interest">自然言語処理、IoT、VFXなどの分野に興味を持ち、将来的にはこれらの技術を活用したプロジェクトに携わりたいと考えています。（興味があるだけで、触ったことはほとんどないですけどね！）</p>
         </div>
+        <div class="profile-icon">
+          <img src={`${base}/images/monster10.png`} alt="Valeria のアイコン" class="profile-icon-img" loading="lazy" />
+        </div>
       </section>
       <section id="mystyle" class="section">
         <h2 data-i18n="aboutme.style.heading">コーディングスタイル</h2>
@@ -226,5 +229,25 @@ const base = import.meta.env.BASE_URL;
   [data-theme="dark"] .timeline-text {
     opacity: 1;
     color: var(--color-text);
+  }
+
+  /* プロフィールアイコン */
+  .profile-icon {
+    margin: 1rem 0 0;
+    text-align: center;
+  }
+
+  .profile-icon-img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--card-border);
+    transition: border-color 0.2s ease, transform 0.1s ease;
+  }
+
+  .profile-icon-img:hover {
+    border-color: var(--color-accent);
+    transform: scale(1.03);
   }
 </style>

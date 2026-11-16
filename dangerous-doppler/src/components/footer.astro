@@ -24,8 +24,23 @@ const email = "rg25007u@st.omu.ac.jp";
         <span data-i18n="footer.email">学校用メールアドレス</span>: {email}
       </a>
     </div>
+
+    <p class="footer-copyright">© <span id="copyright-year">2026</span> ValeriaTang</p>
+
+    <p class="footer-credit">
+      <span data-i18n="footer.devicon">アイコン</span>:
+      <a href="https://devicon.dev/" target="_blank" rel="noopener noreferrer">Devicon</a>
+      <span class="footer-dot" aria-hidden="true">·</span>
+      <span data-i18n="footer.irasutoya">イラスト</span>:
+      <a href="https://irasutoya.com/" target="_blank" rel="noopener noreferrer">いらすとや</a>
+    </p>
   </div>
 </footer>
+
+<script>
+  const year = document.getElementById('copyright-year');
+  if (year) year.textContent = String(new Date().getFullYear());
+</script>
 
 <style>
   footer {
@@ -90,18 +105,34 @@ const email = "rg25007u@st.omu.ac.jp";
     color: var(--accent);
   }
 
-  footer p {
+  .footer-copyright {
     margin: 0;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--muted);
   }
 
-  footer p a {
+  .footer-credit {
+    margin: 0.5rem 0 0;
+    font-size: 0.75rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-credit a {
     color: var(--accent);
     text-decoration: none;
   }
 
-  footer p a:hover {
+  .footer-credit a:hover {
     text-decoration: underline;
+  }
+
+  .footer-dot {
+    color: var(--muted);
+    opacity: 0.5;
   }
 </style>

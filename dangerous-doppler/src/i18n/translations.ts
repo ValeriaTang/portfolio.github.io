@@ -41,8 +41,11 @@ export type TranslationKey =
   | 'works.modal.period' | 'works.modal.github' | 'works.modal.close' | 'works.link'
   // Footer
   | 'footer.email'
+  | 'footer.github'
   // Back to top
-  | 'backtotop';
+  | 'backtotop'
+  // Menu
+  | 'menu.open';
 
 type Translations = Record<TranslationKey, string>;
 
@@ -98,6 +101,8 @@ const ja: Translations = {
   'works.modal.close': '閉じる',
   'works.link': 'GitHub / Demo',
   'footer.email': '学校用メールアドレス',
+  'footer.github': 'GitHubのプロフィールを開く',
+  'menu.open': 'メニュー',
   'backtotop': 'トップへ戻る',
 };
 
@@ -153,6 +158,8 @@ const en: Translations = {
   'works.modal.close': 'Close',
   'works.link': 'GitHub / Demo',
   'footer.email': 'School email',
+  'footer.github': 'Open GitHub profile',
+  'menu.open': 'Menu',
   'backtotop': 'Back to top',
 };
 
@@ -208,6 +215,8 @@ const zhCN: Translations = {
   'works.modal.close': '关闭',
   'works.link': 'GitHub / Demo',
   'footer.email': '学校邮箱',
+  'footer.github': '打开 GitHub 个人资料',
+  'menu.open': '菜单',
   'backtotop': '回到顶部',
 };
 
@@ -263,6 +272,8 @@ const zhTW: Translations = {
   'works.modal.close': '關閉',
   'works.link': 'GitHub / Demo',
   'footer.email': '學校信箱',
+  'footer.github': '開啟 GitHub 個人資料',
+  'menu.open': '選單',
   'backtotop': '回到頂部',
 };
 

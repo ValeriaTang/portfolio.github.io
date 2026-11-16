@@ -3,16 +3,16 @@ import { LOCALES } from '../i18n/translations';
 ---
 
 <div class="lang-selector" role="group" aria-label="言語選択 / Language">
-  {LOCALES.map((locale) => (
-    <button
-      class="lang-btn"
-      data-locale-btn={locale.code}
-      aria-pressed="false"
-      type="button"
-    >
-      {locale.label}
-    </button>
-  ))}
+  <label for="locale-select" class="lang-label">🌐</label>
+  <select
+    id="locale-select"
+    class="lang-select"
+    aria-label="言語選択 / Language"
+  >
+    {LOCALES.map((locale) => (
+      <option value={locale.code}>{locale.label}</option>
+    ))}
+  </select>
 </div>
 
 <script>
@@ -20,49 +20,48 @@ import { LOCALES } from '../i18n/translations';
   import { getSavedLocale, setLocale, applyTranslations } from '../i18n/lang-switcher';
   import type { Locale } from '../i18n/translations';
 
-  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-locale-btn]');
+  const select = document.querySelector<HTMLSelectElement>('#locale-select');
 
-  function updateButtons(locale: Locale) {
-    buttons.forEach((btn) => {
-      const pressed = btn.dataset.localeBtn === locale;
-      btn.setAttribute('aria-pressed', String(pressed));
-      btn.classList.toggle('is-active', pressed);
-    });
+  function updateSelect(locale: Locale) {
+    if (select) select.value = locale;
   }
 
   function handleChange(locale: Locale) {
     setLocale(locale);
     applyTranslations(locale);
-    updateButtons(locale);
-    // Dispatch for work/skill components that listen
+    updateSelect(locale);
     document.dispatchEvent(new CustomEvent('i18n:update', { detail: { locale } }));
   }
 
-  buttons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const locale = btn.dataset.localeBtn as Locale;
-      if (locale && LOCALES.some((l) => l.code === locale)) {
-        handleChange(locale);
-      }
-    });
+  select?.addEventListener('change', () => {
+    const locale = select.value as Locale;
+    if (locale && LOCALES.some((l) => l.code === locale)) {
+      handleChange(locale);
+    }
   });
 
-  // Init
   const initial = getSavedLocale();
-  updateButtons(initial);
+  updateSelect(initial);
   applyTranslations(initial);
 </script>
 
 <style>
   .lang-selector {
     display: flex;
-    gap: 0.25rem;
     align-items: center;
-    flex-wrap: wrap;
+    gap: 0.35rem;
   }
 
-  .lang-btn {
-    padding: 0.2rem 0.6rem;
+  .lang-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    user-select: none;
+  }
+
+  .lang-select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0.3rem 1.6rem 0.3rem 0.6rem;
     font-size: 0.75rem;
     font-weight: 500;
     background: rgba(255, 255, 255, 0.07);
@@ -70,27 +69,20 @@ import { LOCALES } from '../i18n/translations';
     border-radius: 999px;
     color: var(--header-text);
     cursor: pointer;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
-    white-space: nowrap;
-    /* Prevent layout shift when font-weight changes on active */
-    min-width: 3.5em;
-    text-align: center;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='currentColor' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    transition: background 0.15s, border-color 0.15s;
   }
 
-  .lang-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-  }
-
-  .lang-btn.is-active,
-  .lang-btn[aria-pressed="true"] {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-    font-weight: 700;
-  }
-
-  .lang-btn:focus-visible {
+  .lang-select:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
+  }
+
+  [data-theme="light"] .lang-select {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.15);
+    color: var(--color-primary);
   }
 </style>

@@ -21,8 +21,8 @@ export const works = [
   {
     id: "portfolio",
     title: "ポートフォリオサイト",
-    aiRatio: "25%",
-    AI: "cssを殆ど任せた。",
+    aiRatio: "50%",
+    AI: "cssと翻訳を殆ど任せた。",
     start: "2026-10",
     finish: "2026-11",
     description: "Astroを使用した軽量シングルページに見せかけたマルチページのポートフォリオサイト。",

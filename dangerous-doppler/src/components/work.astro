@@ -2,6 +2,8 @@
 import { works } from '../data/work';
 import { icons } from '../data/icon';
 import { workLocales } from '../i18n/multilingual-data';
+import { skills } from "../data/skill";
+import { skillLocales } from "../i18n/multilingual-data";
 
 const iconMap = Object.fromEntries(
   icons.map((icon) => [icon.name, { dark: icon.darkimage, light: icon.lightimage }]),
@@ -75,7 +77,7 @@ const normalizedWorks = works.map((work) => {
                 {work.tagDetails.map((tag) => (
                   <li class="tag-item">
                     {tag.icon ? (
-                      <img src={tag.icon} alt={tag.name} class="tag-icon" />
+                      <img src={tag.icon} alt={tag.name} class="tag-icon" data-skill-name={tag.name} role="button" tabindex="0" aria-label={`${tag.name} のスキル詳細を見る`} />
                     ) : (
                       <span class="tag-text">{tag.name}</span>
                     )}

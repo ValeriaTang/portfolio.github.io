@@ -176,6 +176,7 @@ const base = import.meta.env.BASE_URL;
   }
 
   [data-theme="light"] .timeline-list::before { background: rgba(13, 9, 80, 0.12); }
+  [data-theme="dark"] .timeline-list::before { background: rgba(255, 255, 255, 0.25); }
 
   .timeline-item {
     position: relative;
@@ -201,6 +202,10 @@ const base = import.meta.env.BASE_URL;
     margin: 0 0 6px;
   }
 
+  [data-theme="dark"] .timeline-date {
+    color: #b8b8d0;
+  }
+
   .timeline-title {
     margin: 0 0 6px;
     font-size: 14px;
@@ -214,5 +219,10 @@ const base = import.meta.env.BASE_URL;
     opacity: 0.9;
     overflow-wrap: break-word;
     word-break: break-word;
+  }
+
+  [data-theme="dark"] .timeline-text {
+    opacity: 1;
+    color: var(--color-text);
   }
 </style>

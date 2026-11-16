@@ -39,6 +39,7 @@ export type TranslationKey =
   // Works
   | 'works.heading' | 'works.aiRatio' | 'works.tags' | 'works.detail' | 'works.more'
   | 'works.modal.period' | 'works.modal.github' | 'works.modal.close' | 'works.link'
+  | 'works.modal.ai' | 'works.modal.detail'
   // Footer
   | 'footer.email'
   | 'footer.github'
@@ -100,6 +101,8 @@ const ja: Translations = {
   'works.modal.period': '開発期間',
   'works.modal.github': 'GitHubでコードを見る',
   'works.modal.close': '閉じる',
+  'works.modal.ai': 'AI使用率',
+  'works.modal.detail': '詳細',
   'works.link': 'GitHub / Demo',
   'footer.email': '学校用メールアドレス',
   'footer.github': 'GitHubのプロフィールを開く',
@@ -158,6 +161,8 @@ const en: Translations = {
   'works.modal.period': 'Timeline',
   'works.modal.github': 'View code on GitHub',
   'works.modal.close': 'Close',
+  'works.modal.ai': 'AI usage',
+  'works.modal.detail': 'Details',
   'works.link': 'GitHub / Demo',
   'footer.email': 'School email',
   'footer.github': 'Open GitHub profile',
@@ -216,6 +221,8 @@ const zhCN: Translations = {
   'works.modal.period': '开发周期',
   'works.modal.github': '在 GitHub 上查看代码',
   'works.modal.close': '关闭',
+  'works.modal.ai': 'AI 使用率',
+  'works.modal.detail': '详情',
   'works.link': 'GitHub / Demo',
   'footer.email': '学校邮箱',
   'footer.github': '打开 GitHub 个人资料',
@@ -274,6 +281,8 @@ const zhTW: Translations = {
   'works.modal.period': '開發期間',
   'works.modal.github': '在 GitHub 上查看程式碼',
   'works.modal.close': '關閉',
+  'works.modal.ai': 'AI 使用率',
+  'works.modal.detail': '詳情',
   'works.link': 'GitHub / Demo',
   'footer.email': '學校信箱',
   'footer.github': '開啟 GitHub 個人資料',

@@ -8,11 +8,12 @@ import BackToTop from '../components/back-to-top.astro';
 import Footer from '../components/footer.astro';
 
 const iconMap = Object.fromEntries(
-  icons.map((icon) => [icon.name, icon.lightimage]),
+  icons.map((icon) => [icon.name, { light: icon.lightimage, dark: icon.darkimage }]),
 );
 
-function getIconUrl(tag: string): string | undefined {
-  return iconMap[tag];
+function getIconUrl(tag: string): { light: string | undefined; dark: string | undefined } {
+  const entry = iconMap[tag];
+  return entry ? { light: entry.light, dark: entry.dark } : { light: undefined, dark: undefined };
 }
 
 const normalizedWorks = works.map((work) => {
@@ -20,7 +21,10 @@ const normalizedWorks = works.map((work) => {
   return {
     ...work,
     tags,
-    tagDetails: tags.map((name) => ({ name, icon: getIconUrl(name) ?? null })),
+    tagDetails: tags.map((name) => {
+      const urls = getIconUrl(name);
+      return { name, icon: urls.light ?? null, darkIcon: urls.dark ?? null };
+    }),
     images: [work.image1, work.image2, work.image3, work.image4, work.image5].filter(
       (src): src is string => Boolean(src),
     ),
@@ -72,7 +76,13 @@ const normalizedWorks = works.map((work) => {
                 {work.tagDetails.map((tag) => (
                   <li class="tag-item">
                     {tag.icon ? (
-                      <img src={tag.icon} alt={tag.name} class="tag-icon" />
+                      <img
+                        src={tag.icon}
+                        alt={tag.name}
+                        class="tag-icon"
+                        data-light-src={tag.icon}
+                        data-dark-src={tag.darkIcon}
+                      />
                     ) : (
                       <span class="tag-text">{tag.name}</span>
                     )}
@@ -121,15 +131,18 @@ const normalizedWorks = works.map((work) => {
       </header>
 
       <div class="modal-meta">
+        <h4 class="modal-subheading" data-i18n="works.modal.period">期間</h4>
         <div>
-          <span class="meta-label" data-i18n="works.modal.period">期間</span>:
           <span id="work-modal-period"></span>
         </div>
       </div>
 
+      <h4 class="modal-subheading" data-i18n="works.modal.ai">AI使用率</h4>
       <p id="work-modal-ai-desc" class="modal-ai-desc"></p>
+      <h4 class="modal-subheading" data-i18n="works.modal.detail">詳細</h4>
       <p id="work-modal-detail" class="modal-text"></p>
 
+      <h4 class="modal-subheading" data-i18n="works.tags">使用技術</h4>
       <div id="work-modal-tags" class="modal-tags" aria-label="使用技術" data-i18n-aria="works.tags"></div>
 
       <a id="work-modal-link" href="#" target="_blank" rel="noopener noreferrer" class="github-link" data-i18n="works.modal.github">
@@ -178,12 +191,12 @@ const normalizedWorks = works.map((work) => {
 
   function renderTags(raw: string): void {
     if (!modalTags) return;
-    let tags: { name: string; icon: string | null }[] = [];
+    let tags: { name: string; icon: string | null; darkIcon: string | null }[] = [];
     try { tags = raw ? JSON.parse(raw) : []; } catch { tags = []; }
     modalTags.innerHTML = tags
       .map((tag) =>
         tag.icon
-          ? `<span class="tag-item"><img src="${tag.icon}" alt="${tag.name}" class="tag-icon" /></span>`
+          ? `<span class="tag-item"><img src="${tag.icon}" alt="${tag.name}" class="tag-icon" data-light-src="${tag.icon}" data-dark-src="${tag.darkIcon ?? tag.icon}" /></span>`
           : `<span class="tag-item"><span class="tag-text">${tag.name}</span></span>`,
       ).join('');
   }
@@ -206,6 +219,8 @@ const normalizedWorks = works.map((work) => {
     }
     renderGallery(card.dataset.images ? JSON.parse(card.dataset.images) : []);
     renderTags(card.dataset.tags ?? '');
+    // Ensure newly rendered tag icons match current theme
+    applyThemeImages();
   }
 
   const openBtns = root ? root.querySelectorAll<HTMLElement>('.open-modal-btn') : [];
@@ -269,6 +284,19 @@ const normalizedWorks = works.map((work) => {
   const locale = initLocale();
   applyTranslations(locale);
   updateCards();
+
+  // ── Theme-aware images (light/dark icons) ──
+  function applyThemeImages(): void {
+    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+    document.querySelectorAll<HTMLImageElement>('img[data-light-src][data-dark-src]').forEach((img) => {
+      const src = isDark ? img.dataset.darkSrc : img.dataset.lightSrc;
+      if (src && src !== img.src) img.src = src;
+    });
+  }
+  applyThemeImages();
+  new MutationObserver(applyThemeImages).observe(document.documentElement, {
+    attributes: true, attributeFilter: ['data-theme'],
+  });
 </script>
 
 <style>
@@ -502,8 +530,15 @@ const normalizedWorks = works.map((work) => {
     flex-shrink: 0;
   }
 
-  .modal-meta { display: flex; gap: 1.5rem; font-size: 0.85rem; color: var(--muted); flex-wrap: wrap; }
+  .modal-meta { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.85rem; color: var(--muted); }
   .meta-label { font-weight: 600; color: var(--muted); }
+
+  .modal-subheading {
+    margin: 0.75rem 0 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
 
   .modal-ai-desc {
     margin: 0.5rem 0;
@@ -528,7 +563,7 @@ const normalizedWorks = works.map((work) => {
     align-self: flex-start;
     margin-top: 0.5rem;
     padding: 0.625rem 1.25rem;
-    color: var(--modal-heading);
+    color: var(--color-white);
     text-decoration: none;
     background-color: var(--btn-bg);
     border-radius: 0.375rem;

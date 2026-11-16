@@ -53,17 +53,37 @@ const normalizedWorks = works.map((work) => {
         data-url={work.href}
         aria-label={`${work.title} の詳細を見る`}
       >
+        <div class="work-body">
+          <header class="work-header">
+            <h3>{work.title}</h3>
+            <span class="ai-ratio">AI使用率: {work.aiRatio}</span>
+          </header>
+          <p class="work-desc">{work.description}</p>
+          <div class="work-meta">
+            <time datetime={work.start}>{work.start.replace('-', '.')}</time>
+            <span aria-hidden="true">-</span>
+            <time datetime={work.finish}>{work.finish.replace('-', '.')}</time>
+          </div>
+          {work.tagDetails.length > 0 && (
+            <ul class="work-tags" aria-label="使用技術">
+              {work.tagDetails.map((tag) => (
+                <li class="tag-item">
+                  {tag.icon ? (
+                    <img src={tag.icon} alt={tag.name} class="tag-icon" />
+                  ) : (
+                    <span class="tag-text">{tag.name}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
         {work.hasImage && work.images.length > 0 ? (
           <div class="work-thumb">
-            {work.images.map((src, idx) => (
-              <img src={src} alt={`${work.title} image ${idx + 1}`} loading="lazy" data-light-src={src} data-dark-src={src} />
-            ))}
+            <img src={work.images[0]} alt={`${work.title} image 1`} loading="lazy" data-light-src={work.images[0]} data-dark-src={work.images[0]} />
           </div>
-        ) : (
-          <div class="work-thumb work-thumb--text">
-            <span class="work-name">{work.title}</span>
-          </div>
-        )}
+        ) : null}
       </article>
     ))}
   </div>
@@ -256,6 +276,7 @@ const normalizedWorks = works.map((work) => {
     flex-direction: column;
     gap: 0.5rem;
     background: var(--card-bg);
+    margin-top: auto;
   }
 
   .work-thumb img {
@@ -556,7 +577,7 @@ const normalizedWorks = works.map((work) => {
   }
 
   .github-link:hover {
-    background-color: var(--btn-bg-hover);
+    background-color: var(--accent);
   }
 
   .github-link:focus-visible {

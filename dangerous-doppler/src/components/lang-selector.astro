@@ -3,9 +3,8 @@ import { LOCALES } from '../i18n/translations';
 ---
 
 <div class="lang-selector" role="group" aria-label="言語選択 / Language">
-  <label for="locale-select" class="lang-label">🌐</label>
+  <span class="lang-icon" aria-hidden="true">🌐</span>
   <select
-    id="locale-select"
     class="lang-select"
     aria-label="言語選択 / Language"
   >
@@ -20,59 +19,80 @@ import { LOCALES } from '../i18n/translations';
   import { getSavedLocale, setLocale, applyTranslations } from '../i18n/lang-switcher';
   import type { Locale } from '../i18n/translations';
 
-  const select = document.querySelector<HTMLSelectElement>('#locale-select');
+  const selects = document.querySelectorAll<HTMLSelectElement>('.lang-select');
 
-  function updateSelect(locale: Locale) {
-    if (select) select.value = locale;
+  function updateSelects(locale: Locale) {
+    selects.forEach((select) => {
+      select.value = locale;
+    });
   }
 
   function handleChange(locale: Locale) {
     setLocale(locale);
     applyTranslations(locale);
-    updateSelect(locale);
+    updateSelects(locale);
     document.dispatchEvent(new CustomEvent('i18n:update', { detail: { locale } }));
   }
 
-  select?.addEventListener('change', () => {
-    const locale = select.value as Locale;
-    if (locale && LOCALES.some((l) => l.code === locale)) {
-      handleChange(locale);
-    }
+  selects.forEach((select) => {
+    select.addEventListener('change', () => {
+      const locale = select.value as Locale;
+      if (locale && LOCALES.some((l) => l.code === locale)) {
+        handleChange(locale);
+      }
+    });
   });
 
   const initial = getSavedLocale();
-  updateSelect(initial);
+  updateSelects(initial);
   applyTranslations(initial);
+
+  // 他のコンポーネントからの locale 変更時にもセレクトボックスを同期
+  document.addEventListener('i18n:update', () => {
+    updateSelects(getSavedLocale());
+  });
 </script>
 
 <style>
   .lang-selector {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 0.35rem;
+    position: relative;
   }
 
-  .lang-label {
-    font-size: 0.9rem;
-    opacity: 0.8;
+  .lang-icon {
+    font-size: 0.95rem;
+    line-height: 1;
     user-select: none;
+    display: inline-flex;
+    align-items: center;
+    opacity: 0.9;
   }
 
   .lang-select {
     appearance: none;
     -webkit-appearance: none;
-    padding: 0.3rem 1.6rem 0.3rem 0.6rem;
-    font-size: 0.75rem;
+    height: 32px;
+    padding: 0 1.8rem 0 0.75rem;
+    font-size: 0.8rem;
     font-weight: 500;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    line-height: 30px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 999px;
     color: var(--header-text);
     cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='currentColor' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23ffffff' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 0.5rem center;
-    transition: background 0.15s, border-color 0.15s;
+    background-position: right 0.65rem center;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    user-select: none;
+  }
+
+  .lang-select:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
   }
 
   .lang-select:focus-visible {
@@ -80,9 +100,38 @@ import { LOCALES } from '../i18n/translations';
     outline-offset: 2px;
   }
 
+  .lang-select option {
+    background-color: #1a1a1a;
+    color: #f1f5f9;
+    font-size: 0.85rem;
+  }
+
   [data-theme="light"] .lang-select {
-    background: rgba(0, 0, 0, 0.06);
-    border-color: rgba(0, 0, 0, 0.15);
-    color: var(--color-primary);
+    background-color: rgba(13, 9, 80, 0.05);
+    border-color: rgba(13, 9, 80, 0.12);
+    color: var(--header-text);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%230d0950' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+  }
+
+  [data-theme="light"] .lang-select:hover {
+    background-color: rgba(13, 9, 80, 0.09);
+    border-color: rgba(13, 9, 80, 0.2);
+  }
+
+  [data-theme="light"] .lang-select option {
+    background-color: #ffffff;
+    color: #0f172a;
+  }
+
+  /* モバイル用スタイル調整 */
+  .mobile-top-controls .lang-selector {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .mobile-top-controls .lang-select {
+    flex: 1;
+    width: 100%;
+    border-radius: 0.5rem;
   }
 </style>

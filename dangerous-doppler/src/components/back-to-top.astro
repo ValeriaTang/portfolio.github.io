@@ -57,21 +57,25 @@
   const btn = document.getElementById('back-to-top') as HTMLButtonElement | null;
 
   if (btn) {
-    const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        btn.classList.add('is-visible');
-      } else {
-        btn.classList.remove('is-visible');
-      }
-    };
+    // 300px 地点にセンチネルを置き、IntersectionObserver で表示切替（スクロール毎の判定を回避）
+    const sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    sentinel.style.cssText =
+      'position:absolute;top:300px;left:0;width:1px;height:1px;pointer-events:none;';
+    document.body.appendChild(sentinel);
 
-    window.addEventListener('scroll', toggleVisibility, { passive: true });
-    toggleVisibility(); // 初期状態もチェック
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        btn.classList.toggle('is-visible', !entry.isIntersecting);
+      },
+      { threshold: 0 },
+    );
+    observer.observe(sentinel);
 
     btn.addEventListener('click', () => {
       window.scrollTo({
         top: 0,
-        behavior: 'smooth',
+        behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
       });
     });
   }

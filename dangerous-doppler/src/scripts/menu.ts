@@ -10,12 +10,22 @@ const THEME_STORAGE_KEY = 'theme';
 
 const header = document.querySelector('.site-header');
 
+let scrollTicking = false;
+
 function updateScrollBackground(): void {
   if (!header) return;
   header.classList.toggle('scrolled', window.scrollY >= SCROLL_THRESHOLD);
+  scrollTicking = false;
 }
 
-window.addEventListener('scroll', updateScrollBackground, { passive: true });
+function onScroll(): void {
+  if (!scrollTicking) {
+    requestAnimationFrame(updateScrollBackground);
+    scrollTicking = true;
+  }
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
 updateScrollBackground();
 
 const toggleBtn = document.getElementById('menu-toggle');

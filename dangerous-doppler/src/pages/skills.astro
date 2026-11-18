@@ -1,5 +1,5 @@
 ---
-import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import LoadingSpinner from '../components/loading-spinner.astro';
 import { skills } from '../data/skill';
 import { icons } from '../data/icon';
@@ -42,33 +42,10 @@ const groupedSkills = genres.map((genre) => ({
 })).filter((g) => g.skills.length > 0);
 ---
 
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href={`${import.meta.env.BASE_URL}/icon.png`} />
-    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}/icon.png`} />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} >
-    <title>スキル</title>
-    <script>
-      (function () {
-        var saved = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = saved || (prefersDark ? 'dark' : 'light');
-        if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
-        var locale = localStorage.getItem('locale') || 'ja';
-        document.documentElement.setAttribute('data-locale', locale);
-        var langMap = { 'ja': 'ja', 'en': 'en', 'zh-CN': 'zh-Hans', 'zh-TW': 'zh-Hant' };
-        document.documentElement.setAttribute('lang', langMap[locale] || locale);
-      })();
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <LoadingSpinner />
-    <Header />
+<BaseLayout titleKey="skills.title" title="スキル" descriptionKey="meta.skills">
+  <LoadingSpinner />
+  <Header />
+  <main>
     <section id="skills" aria-labelledby="skills-heading">
       <h2 id="skills-heading" data-i18n="skills.heading">スキル</h2>
       {groupedSkills.map((group) => (
@@ -138,11 +115,11 @@ const groupedSkills = genres.map((genre) => ({
         </div>
       </dialog>
     </section>
+  </main>
 
-    <Footer />
-    <BackToTop />
-  </body>
-</html>
+  <Footer />
+  <BackToTop />
+</BaseLayout>
 
 <script>
   import { getSavedLocale, applyTranslations, initLocale } from '../i18n/lang-switcher';

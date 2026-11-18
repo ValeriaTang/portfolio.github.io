@@ -30,14 +30,14 @@ export type TranslationKey =
   | 'aboutme.kikkake.heading' | 'aboutme.kikkake.p1' | 'aboutme.kikkake.p2' | 'aboutme.kikkake.p3'
   | 'aboutme.career.heading'
   // Skills
-  | 'skills.heading' | 'skills.more'
+  | 'skills.title' | 'skills.heading' | 'skills.more'
   | 'skills.modal.what' | 'skills.modal.desc' | 'skills.modal.close'
   // Genres
   | 'genre.backend' | 'genre.frontend' | 'genre.framework' | 'genre.infra' | 'genre.other'
   // Skill levels
   | 'level.beginner' | 'level.intro'
   // Works
-  | 'works.heading' | 'works.aiRatio' | 'works.tags' | 'works.detail' | 'works.more'
+  | 'works.title' | 'works.heading' | 'works.aiRatio' | 'works.tags' | 'works.detail' | 'works.more'
   | 'works.modal.period' | 'works.modal.github' | 'works.modal.close' | 'works.link'
   | 'works.modal.ai' | 'works.modal.detail'
   | 'works.card.period' | 'works.card.aiLocation' | 'works.card.overview'
@@ -49,7 +49,10 @@ export type TranslationKey =
   // Back to top
   | 'backtotop'
   // Menu
-  | 'menu.open';
+  | 'menu.open'
+  // Page titles / meta
+  | 'notfound.title'
+  | 'meta.description' | 'meta.aboutme' | 'meta.skills' | 'meta.works' | 'meta.404';
 
 type Translations = Record<TranslationKey, string>;
 
@@ -116,6 +119,14 @@ const ja: Translations = {
   'footer.irasutoya': 'イラスト',
   'menu.open': 'メニュー',
   'backtotop': 'トップへ戻る',
+  'skills.title': 'スキル',
+  'works.title': '作品',
+  'notfound.title': '404 - ページが見つかりません',
+  'meta.description': 'Valeria のポートフォリオサイトです。スキルや制作作品、自己紹介を掲載しています。',
+  'meta.aboutme': 'Valeria のプロフィール、コーディングスタイル、経歴を紹介します。',
+  'meta.skills': 'Valeria が使えるプログラミング言語・フレームワーク・技術スタックを紹介します。',
+  'meta.works': 'Valeria が制作した作品・プロジェクトを一覧で紹介します。',
+  'meta.404': 'お探しのページは見つかりませんでした。',
 };
 
 const en: Translations = {
@@ -181,6 +192,14 @@ const en: Translations = {
   'footer.irasutoya': 'Illustrations',
   'menu.open': 'Menu',
   'backtotop': 'Back to top',
+  'skills.title': 'Skills',
+  'works.title': 'Works',
+  'notfound.title': '404 - Page Not Found',
+  'meta.description': "Valeria's portfolio site featuring skills, projects, and profile.",
+  'meta.aboutme': "About Valeria: profile, coding style, and career history.",
+  'meta.skills': "Programming languages, frameworks, and tech stack Valeria works with.",
+  'meta.works': "A list of projects and works created by Valeria.",
+  'meta.404': "The page you are looking for could not be found.",
 };
 
 const zhCN: Translations = {
@@ -246,6 +265,14 @@ const zhCN: Translations = {
   'footer.irasutoya': '插画来源',
   'menu.open': '菜单',
   'backtotop': '回到顶部',
+  'skills.title': '技术栈',
+  'works.title': '项目作品',
+  'notfound.title': '404 - 页面不存在',
+  'meta.description': 'Valeria 的个人作品集网站，展示技能、项目作品与自我介绍。',
+  'meta.aboutme': '了解 Valeria 的个人简介、编码风格与成长经历。',
+  'meta.skills': 'Valeria 掌握的编程语言、框架与技术栈。',
+  'meta.works': 'Valeria 制作的项目与作品列表。',
+  'meta.404': '您查找的页面不存在。',
 };
 
 const zhTW: Translations = {
@@ -311,6 +338,14 @@ const zhTW: Translations = {
   'footer.irasutoya': '插畫來源',
   'menu.open': '選單',
   'backtotop': '回到頂部',
+  'skills.title': '技術棧',
+  'works.title': '作品集',
+  'notfound.title': '404 - 頁面不存在',
+  'meta.description': 'Valeria 的個人作品集網站，展示技能、專案作品與自我介紹。',
+  'meta.aboutme': '了解 Valeria 的個人簡介、開發風格與成長經歷。',
+  'meta.skills': 'Valeria 掌握的程式語言、框架與技術棧。',
+  'meta.works': 'Valeria 製作的專案與作品列表。',
+  'meta.404': '您尋找的頁面不存在。',
 };
 
 export const translations: Record<Locale, Translations> = { ja, en, 'zh-CN': zhCN, 'zh-TW': zhTW };

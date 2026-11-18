@@ -1,5 +1,5 @@
 ---
-import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from '../components/header.astro';
 import BackToTop from '../components/back-to-top.astro';
 import Footer from '../components/footer.astro';
@@ -9,37 +9,10 @@ import { careerLocales } from '../i18n/multilingual-data';
 const base = import.meta.env.BASE_URL;
 ---
 
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href={`${base}/icon.png`} />
-    <link rel="apple-touch-icon" href={`${base}/icon.png`} />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} >
-    <title data-i18n="aboutme.title">私について</title>
-    <script>
-      (function () {
-        var saved = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = saved || (prefersDark ? 'dark' : 'light');
-        if (theme === 'light') {
-          document.documentElement.setAttribute('data-theme', 'light');
-        }
-        // Also restore locale early to avoid flash
-        var locale = localStorage.getItem('locale') || 'ja';
-        document.documentElement.setAttribute('data-locale', locale);
-        var langMap = { 'ja': 'ja', 'en': 'en', 'zh-CN': 'zh-Hans', 'zh-TW': 'zh-Hant' };
-        document.documentElement.setAttribute('lang', langMap[locale] || locale);
-      })();
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <LoadingSpinner />
-<Header />
-    <main class="container">
+<BaseLayout titleKey="aboutme.title" title="Valeria のポートフォリオ" descriptionKey="meta.aboutme">
+  <LoadingSpinner />
+  <Header />
+  <main class="container">
       <section id="profile" class="section">
         <h2 data-i18n="aboutme.profile.heading">プロフィール</h2>
         <div>
@@ -94,45 +67,7 @@ const base = import.meta.env.BASE_URL;
     </main>
     <Footer />
     <BackToTop />
-  </body>
-</html>
-
-<script>
-  import { getSavedLocale, applyTranslations, initLocale } from '../i18n/lang-switcher';
-  import type { Locale } from '../i18n/translations';
-
-  function updateCareers(): void {
-    const locale = getSavedLocale();
-    document.querySelectorAll<HTMLElement>('[data-career-id]').forEach((item) => {
-      let locales: Record<Locale, { title: string; texts: string[] }> | null = null;
-      try { locales = item.dataset.locales ? JSON.parse(item.dataset.locales) : null; } catch {}
-      const loc = locales?.[locale] ?? locales?.['ja'] ?? null;
-      if (!loc) return;
-
-      const titleEl = item.querySelector<HTMLElement>('.career-title');
-      if (titleEl) titleEl.textContent = loc.title;
-
-      // Remove old text paragraphs and re-render
-      item.querySelectorAll<HTMLElement>('.career-text').forEach((p) => p.remove());
-      const timelineTitle = item.querySelector('.timeline-title');
-      loc.texts.forEach((text) => {
-        const p = document.createElement('p');
-        p.className = 'timeline-text career-text';
-        p.textContent = text;
-        item.appendChild(p);
-      });
-    });
-  }
-
-  document.addEventListener('i18n:update', () => {
-    updateCareers();
-  });
-
-  // Init
-  const locale = initLocale();
-  applyTranslations(locale);
-  updateCareers();
-</script>
+</BaseLayout>
 
 <style>
   .container {

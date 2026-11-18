@@ -1,5 +1,5 @@
 ---
-import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from '../components/header.astro';
 import Footer from '../components/footer.astro';
 import LoadingSpinner from '../components/loading-spinner.astro';
@@ -7,36 +7,10 @@ import BackToTop from '../components/back-to-top.astro';
 const base = import.meta.env.BASE_URL;
 ---
 
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href={`${base}/icon.png`} />
-    <link rel="apple-touch-icon" href={`${base}/icon.png`} />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} >
-    <title>404 - Not Found</title>
-    <script>
-      (function () {
-        var saved = localStorage.getItem("theme");
-        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        var theme = saved || (prefersDark ? "dark" : "light");
-        if (theme === "light") {
-          document.documentElement.setAttribute("data-theme", "light");
-        }
-        var locale = localStorage.getItem("locale") || "ja";
-        document.documentElement.setAttribute("data-locale", locale);
-        var langMap = { "ja": "ja", "en": "en", "zh-CN": "zh-Hans", "zh-TW": "zh-Hant" };
-        document.documentElement.setAttribute("lang", langMap[locale] || locale);
-      })();
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <LoadingSpinner />
-    <Header />
-    <main class="not-found-container">
+<BaseLayout titleKey="notfound.title" title="404 - Not Found" descriptionKey="meta.404">
+  <LoadingSpinner />
+  <Header />
+  <main class="not-found-container">
       <div class="not-found-content">
         <div class="error-code">404</div>
         <h1 class="error-title">Page Not Found</h1>
@@ -49,8 +23,7 @@ const base = import.meta.env.BASE_URL;
     </main>
     <Footer />
     <BackToTop />
-  </body>
-</html>
+</BaseLayout>
 
 <style>
   .not-found-container {

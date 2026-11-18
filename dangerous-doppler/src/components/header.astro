@@ -29,7 +29,7 @@ function getNavI18nKey(href: string): string {
     </button>
   </div>
 
-  <button class="mobile-menu-btn" id="menu-toggle" aria-label="メニューを開く" aria-expanded="false">
+  <button class="mobile-menu-btn" id="menu-toggle" data-i18n-aria="menu.open" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobile-menu">
     <span class="line"></span>
     <span class="line"></span>
     <span class="line"></span>
@@ -49,77 +49,5 @@ function getNavI18nKey(href: string): string {
 </header>
 
 <script>
-  import { getSavedLocale, applyTranslations, initLocale } from '../i18n/lang-switcher';
-
-  const header = document.querySelector('.site-header');
-  const toggle = document.getElementById('menu-toggle');
-  const menu = document.getElementById('mobile-menu');
-
-  // スクロール時にヘッダーのスタイルを変更
-  const onScroll = () => {
-    header?.classList.toggle('scrolled', window.scrollY > 10);
-  };
-  window.addEventListener('scroll', onScroll);
-  onScroll();
-
-  if (toggle && menu) {
-    // ボタンでメニューを開閉
-    toggle.addEventListener('click', () => {
-      const isOpen = toggle.classList.toggle('is-active');
-      menu.classList.toggle('is-active', isOpen);
-      toggle.setAttribute('aria-expanded', String(isOpen));
-    });
-
-    // リンクを押したらメニューを閉じる
-    menu.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        toggle.classList.remove('is-active');
-        menu.classList.remove('is-active');
-        toggle.setAttribute('aria-expanded', 'false');
-      });
-    });
-  }
-
-  // テーマ切り替え
-  const themeBtn = document.getElementById('theme-toggle');
-  const mobileThemeBtn = document.getElementById('theme-toggle-mobile');
-  const html = document.documentElement;
-
-  function setTheme(theme: string) {
-    const isLight = theme === 'light';
-    if (isLight) {
-      html.setAttribute('data-theme', 'light');
-      themeBtn?.setAttribute('aria-label', 'ダークモードに切り替える');
-      mobileThemeBtn?.setAttribute('aria-label', 'ダークモードに切り替える');
-      document.querySelectorAll<HTMLElement>('[data-i18n="theme.dark"], [data-i18n="theme.light"]').forEach((el) => {
-        el.dataset.i18n = 'theme.light';
-      });
-    } else {
-      html.removeAttribute('data-theme');
-      themeBtn?.setAttribute('aria-label', 'ライトモードに切り替える');
-      mobileThemeBtn?.setAttribute('aria-label', 'ライトモードに切り替える');
-      document.querySelectorAll<HTMLElement>('[data-i18n="theme.dark"], [data-i18n="theme.light"]').forEach((el) => {
-        el.dataset.i18n = 'theme.dark';
-      });
-    }
-    localStorage.setItem('theme', theme);
-    applyTranslations(getSavedLocale());
-  }
-
-  const saved = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const initialTheme = saved || (prefersDark ? 'dark' : 'light');
-  setTheme(initialTheme);
-
-  themeBtn?.addEventListener('click', () => {
-    const current = html.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-    setTheme(current === 'light' ? 'dark' : 'light');
-  });
-
-  mobileThemeBtn?.addEventListener('click', () => {
-    themeBtn?.click();
-  });
-
-  // 言語初期化と翻訳適用
-  initLocale();
+  import '../scripts/menu';
 </script>

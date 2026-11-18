@@ -1,60 +1,31 @@
 ---
-import Navigation from '../components/navigation.astro';
-import About from '../components/about.astro';
-import Footer from '../components/footer.astro';
-import Skills from '../components/skill.astro';
-import Works from '../components/work.astro';
-import BackToTop from '../components/back-to-top.astro';
-import LoadingSpinner from '../components/loading-spinner.astro';
-import "../styles/global.css";
-const base = import.meta.env.BASE_URL;
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navigation from "../components/navigation.astro";
+import About from "../components/about.astro";
+import Footer from "../components/footer.astro";
+import Skills from "../components/skill.astro";
+import Works from "../components/work.astro";
+import BackToTop from "../components/back-to-top.astro";
+import LoadingSpinner from "../components/loading-spinner.astro";
 ---
 
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href={`${base}/icon.png`} />
-    <link rel="apple-touch-icon" href={`${base}/icon.png`} />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} >
-    <title>Portfolio</title>
-    <script>
-      (function () {
-        var saved = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = saved || (prefersDark ? 'dark' : 'light');
-        if (theme === 'light') {
-          document.documentElement.setAttribute('data-theme', 'light');
-        }
-        // Restore locale early to prevent flash
-        var locale = localStorage.getItem('locale') || 'ja';
-        document.documentElement.setAttribute('data-locale', locale);
-        var langMap = { 'ja': 'ja', 'en': 'en', 'zh-CN': 'zh-Hans', 'zh-TW': 'zh-Hant' };
-        document.documentElement.setAttribute('lang', langMap[locale] || locale);
-      })();
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <LoadingSpinner />
-    <Navigation />
+<BaseLayout titleKey="home.title" title="Welcome to My Portfolio" descriptionKey="meta.description">
+  <LoadingSpinner />
+  <Navigation />
 
-    <main>
-      <section id="home">
-        <h1 data-i18n="home.title">Welcome to My Portfolio</h1>
-      </section>
+  <main>
+    <section id="home">
+      <h1 data-i18n="home.title">Welcome to My Portfolio</h1>
+    </section>
 
-      <About />
+    <About />
 
-      <Skills />
+    <Skills />
 
-      <Works />
-    </main>
+    <Works />
+  </main>
 
-    <Footer />
+  <Footer />
 
-    <BackToTop />
-  </body>
-</html>
+  <BackToTop />
+</BaseLayout>

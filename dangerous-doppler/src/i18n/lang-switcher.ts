@@ -50,6 +50,10 @@ export function applyTranslations(locale: Locale): void {
     const key = el.dataset.i18nPlaceholder as keyof typeof dict;
     if (key && key in dict) (el as HTMLInputElement).placeholder = dict[key];
   });
+  document.querySelectorAll<HTMLElement>('[data-i18n-content]').forEach((el) => {
+    const key = el.dataset.i18nContent as keyof typeof dict;
+    if (key && key in dict) el.setAttribute('content', dict[key]);
+  });
 }
 
 /** Boot: restore locale on page load. */

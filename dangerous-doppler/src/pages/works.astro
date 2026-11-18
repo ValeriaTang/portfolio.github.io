@@ -1,5 +1,5 @@
 ---
-import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import { works } from '../data/work';
 import { icons } from '../data/icon';
 import { workLocales } from '../i18n/multilingual-data';
@@ -34,10 +34,12 @@ const normalizedWorks = works.map((work) => {
 });
 ---
 
-<LoadingSpinner />
-<Header />
-<section id="works" aria-labelledby="works-heading">
-  <h2 id="works-heading" data-i18n="works.heading">作品</h2>
+<BaseLayout titleKey="works.title" title="作品" descriptionKey="meta.works">
+  <LoadingSpinner />
+  <Header />
+  <main>
+    <section id="works" aria-labelledby="works-heading">
+      <h2 id="works-heading" data-i18n="works.heading">作品</h2>
   <div class="works-grid">
     {normalizedWorks.map((work) => {
       const ja = work.locales?.ja;
@@ -171,173 +173,17 @@ const normalizedWorks = works.map((work) => {
       </a>
     </div>
   </dialog>
-</section>
+    </section>
+  </main>
 
-<Footer />
-<BackToTop />
+  <Footer />
+  <BackToTop />
+</BaseLayout>
 
-<script>
-  import { getSavedLocale, applyTranslations, initLocale } from '../i18n/lang-switcher';
-  import { translations } from '../i18n/translations';
-  import type { Locale } from '../i18n/translations';
-
-  const root     = document.getElementById('works');
-  const modal    = document.getElementById('work-modal') as HTMLDialogElement | null;
-  const closeBtn = document.getElementById('work-modal-close-btn');
-  const gallery  = document.getElementById('work-modal-gallery');
-  const modalTitle  = document.getElementById('work-modal-title');
-  const modalAi     = document.getElementById('work-modal-ai');
-  const modalAiDesc = document.getElementById('work-modal-ai-desc');
-  const modalDetail = document.getElementById('work-modal-detail');
-  const modalPeriod = document.getElementById('work-modal-period');
-  const modalTags   = document.getElementById('work-modal-tags');
-  const modalLink   = document.getElementById('work-modal-link') as HTMLAnchorElement | null;
-
-  let lastCard: HTMLElement | null = null;
-
-  function getLocale(): Locale { return getSavedLocale(); }
-
-  function formatPeriod(start: string, finish: string): string {
-    return `${start.replace('-', '.')} 〜 ${finish.replace('-', '.')}`;
-  }
-
-  function renderGallery(images: string[]): void {
-    if (!gallery) return;
-    if (!images.length) { gallery.innerHTML = ''; gallery.style.display = 'none'; return; }
-    gallery.style.display = 'flex';
-    gallery.innerHTML = images
-      .map((src, i) => `<img src="${src}" alt="Work image ${i + 1}" loading="lazy" />`)
-      .join('');
-  }
-
-  function renderTags(raw: string): void {
-    if (!modalTags) return;
-    let tags: { name: string; icon: string | null; darkIcon: string | null }[] = [];
-    try { tags = raw ? JSON.parse(raw) : []; } catch { tags = []; }
-    modalTags.innerHTML = tags
-      .map((tag) =>
-        tag.icon
-          ? `<span class="tag-item"><img src="${tag.icon}" alt="${tag.name}" class="tag-icon" data-light-src="${tag.icon}" data-dark-src="${tag.darkIcon ?? tag.icon}" /></span>`
-          : `<span class="tag-item"><span class="tag-text">${tag.name}</span></span>`,
-      ).join('');
-  }
-
-  function populateModal(card: HTMLElement): void {
-    const locale = getLocale();
-    const dict   = translations[locale];
-    let locales: Record<string, { title: string; description: string; AI: string }> | null = null;
-    try { locales = card.dataset.locales ? JSON.parse(card.dataset.locales) : null; } catch {}
-    const loc = locales?.[locale] ?? locales?.['ja'] ?? null;
-
-    if (modalTitle)  modalTitle.textContent = loc?.title ?? '';
-    if (modalAi)     modalAi.textContent = `${dict['works.aiRatio']}: ${card.dataset.ai ?? ''}`;
-    if (modalAiDesc) modalAiDesc.textContent = loc?.AI ?? '';
-    if (modalDetail) modalDetail.textContent = loc?.description ?? '';
-    if (modalPeriod) modalPeriod.textContent = formatPeriod(card.dataset.start ?? '', card.dataset.finish ?? '');
-    if (modalLink) {
-      modalLink.href = card.dataset.url ?? '#';
-      modalLink.textContent = dict['works.modal.github'];
-    }
-    renderGallery(card.dataset.images ? JSON.parse(card.dataset.images) : []);
-    renderTags(card.dataset.tags ?? '');
-    applyThemeImages();
-  }
-
-  // ── カード全体クリック（内部ボタンやリンクのクリック時はスルー） ──
-  const cards = root ? root.querySelectorAll<HTMLElement>('.work-card') : [];
-  cards.forEach((card) => {
-    card.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      if (target.closest('a') || target.closest('button')) {
-        return;
-      }
-      lastCard = card;
-      populateModal(card);
-      modal?.showModal();
-    });
-  });
-
-  // ── 「詳しく見る」ボタンクリック ──
-  const openBtns = root ? root.querySelectorAll<HTMLElement>('.open-modal-btn') : [];
-  openBtns.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const card = btn.closest<HTMLElement>('.work-card') ?? btn;
-      lastCard = card;
-      populateModal(card);
-      modal?.showModal();
-    });
-  });
-
-  closeBtn?.addEventListener('click', () => modal?.close());
-  modal?.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal?.open) modal.close(); });
-
-  // Locale change: update card texts
-  function updateCards(): void {
-    const locale = getLocale();
-    const dict   = translations[locale];
-
-    cards.forEach((card) => {
-      let locales: Record<string, { title: string; description: string; AI: string }> | null = null;
-      try { locales = card.dataset.locales ? JSON.parse(card.dataset.locales) : null; } catch {}
-      const loc = locales?.[locale] ?? locales?.['ja'] ?? null;
-
-      const titleEl    = card.querySelector<HTMLElement>('.work-title');
-      const descEl     = card.querySelector<HTMLElement>('.work-desc');
-      const aiNoteEl   = card.querySelector<HTMLElement>('.work-ai-note-text');
-      const aiEl       = card.querySelector<HTMLElement>('.ai-ratio');
-      const tagsAria   = card.querySelector<HTMLElement>('.work-tags');
-      const btnDetail  = card.querySelector<HTMLElement>('.open-modal-btn');
-
-      if (titleEl && loc) titleEl.textContent = loc.title;
-      if (descEl  && loc) descEl.textContent  = loc.description;
-      if (aiNoteEl && loc) aiNoteEl.textContent = loc.AI;
-
-      if (aiEl) {
-        aiEl.innerHTML = `<span data-i18n="works.aiRatio">${dict['works.aiRatio']}</span>: ${card.dataset.ai ?? ''}`;
-      }
-      if (tagsAria) tagsAria.setAttribute('aria-label', dict['works.tags']);
-      if (btnDetail && loc) {
-        btnDetail.setAttribute('aria-label', `${loc.title} の詳細を見る`);
-        const detailSpan = btnDetail.querySelector<HTMLElement>('[data-i18n="works.detail"]');
-        if (detailSpan) detailSpan.textContent = dict['works.detail'];
-      }
-    });
-
-    if (modal?.open && lastCard) populateModal(lastCard);
-
-    // 見出しテキストの翻訳更新
-    document.querySelectorAll<HTMLElement>('[data-i18n="works.card.period"]').forEach((el) => { el.textContent = dict['works.card.period']; });
-    document.querySelectorAll<HTMLElement>('[data-i18n="works.card.aiLocation"]').forEach((el) => { el.textContent = dict['works.card.aiLocation']; });
-    document.querySelectorAll<HTMLElement>('[data-i18n="works.card.overview"]').forEach((el) => { el.textContent = dict['works.card.overview']; });
-    document.querySelectorAll<HTMLElement>('[data-i18n="works.modal.period"]').forEach((el) => { el.textContent = dict['works.modal.period']; });
-    document.querySelectorAll<HTMLElement>('[data-i18n="works.modal.ai"]').forEach((el) => { el.textContent = dict['works.modal.ai']; });
-    document.querySelectorAll<HTMLElement>('[data-i18n="works.modal.detail"]').forEach((el) => { el.textContent = dict['works.modal.detail']; });
-    document.querySelectorAll<HTMLElement>('[data-i18n="works.tags"]').forEach((el) => { el.textContent = dict['works.tags']; });
-  }
-
-  document.addEventListener('i18n:update', updateCards);
-
-  // Init
-  const locale = initLocale();
-  applyTranslations(locale);
-  updateCards();
-
-  // ── Theme-aware images (light/dark icons) ──
-  function applyThemeImages(): void {
-    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-    document.querySelectorAll<HTMLImageElement>('img[data-light-src][data-dark-src]').forEach((img) => {
-      const src = isDark ? img.dataset.darkSrc : img.dataset.lightSrc;
-      if (src && src !== img.src) img.src = src;
-    });
-  }
-  applyThemeImages();
-  new MutationObserver(applyThemeImages).observe(document.documentElement, {
-    attributes: true, attributeFilter: ['data-theme'],
-  });
+<script type="module">
+  import { initWorkModal } from '../scripts/work-modal';
+  initWorkModal();
 </script>
-
 <style>
   /* 作品セクション */
   #works { margin-block: 2rem; }

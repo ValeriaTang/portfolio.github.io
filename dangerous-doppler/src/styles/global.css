@@ -94,11 +94,6 @@
   background: var(--card-bg);
 }
 
-[data-theme="light"] .work-thumb--text {
-  background: var(--card-bg);
-  color: var(--card-title);
-}
-
 
 /****************************
    Theme Toggle Button & Controls
@@ -274,50 +269,6 @@ h6 {
 }
 
 /* ========================================
-   Navigation / ナビゲーション（メニューボタン・リンク）
-   ======================================== */
-.menu {
-  background-color: var(--color-primary);
-  border: none;
-  color: var(--color-white);
-  font-size: 1.2rem;
-  font-weight: bold;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.menu:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-.nav-links {
-  width: 100%;
-  display: none;
-  margin: 0;
-}
-
-.nav-links a {
-  display: block;
-  text-align: center;
-  padding: 10px 0;
-  text-decoration: none;
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: var(--color-primary);
-}
-
-.nav-links a:hover,
-.nav-links a:focus {
-  background-color: var(--color-accent);
-}
-
-:has(.menu[aria-expanded="true"]) .nav-links {
-  display: unset;
-}
-
-/* ========================================
    Site Header / サイトヘッダー
    （header.astro / navigation.astro 共通）
    ======================================== */
@@ -337,7 +288,6 @@ h6 {
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid transparent;
   z-index: 100;
-  box-sizing: border-box;
   transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -407,25 +357,6 @@ h6 {
 /* ========================================
    Media Queries / メディアクエリ
    ======================================== */
-@media screen and (min-width: 40em) {
-  .nav-links {
-    margin-left: 5em;
-    display: block;
-    position: static;
-    width: auto;
-    background: none;
-  }
-
-  .nav-links a {
-    display: inline-block;
-    padding: 15px 20px;
-  }
-
-  .menu {
-    display: none;
-  }
-}
-
 @media (max-width: 800px) {
   .pc-menu {
     display: none;
@@ -449,7 +380,6 @@ h6 {
     width: 230px;
     max-width: calc(100vw - 2rem);
     padding: 1rem;
-    box-sizing: border-box;
     background-color: var(--header-bg-scrolled);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -505,17 +435,6 @@ h6 {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
 /* Loading Spinner / ローディングスピナー */
 .spinner-overlay {
   position: fixed;
@@ -541,7 +460,6 @@ h6 {
   content: "";
   position: absolute;
   border-radius: 50%;
-  box-sizing: border-box;
 }
 
 .spinner::before {
@@ -567,6 +485,15 @@ h6 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
   .spinner::before,
   .spinner::after {
     animation-duration: 0.01ms !important;
@@ -576,5 +503,60 @@ h6 {
   .spinner-overlay,
   .spinner {
     display: none;
+  }
+}
+/* ========================================
+   JS 演出 / JS animations (reveal, tilt, ripple)
+   ======================================== */
+.js-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s var(--transition-cubic, cubic-bezier(0.22, 1, 0.36, 1)),
+              transform 0.6s var(--transition-cubic, cubic-bezier(0.22, 1, 0.36, 1));
+  will-change: opacity, transform;
+}
+
+.js-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* カード 3D チルト（ホバー時のみ） */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.25s var(--transition-cubic, cubic-bezier(0.22, 1, 0.36, 1));
+  will-change: transform;
+}
+
+/* クリック時のリップル波紋 */
+.ripple-host {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-ink {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  background: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  animation: ripple-anim 0.6s ease-out forwards;
+}
+
+@keyframes ripple-anim {
+  to { transform: scale(2.5); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal,
+  .js-reveal.is-visible,
+  .tilt-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .ripple-ink {
+    display: none !important;
   }
 }

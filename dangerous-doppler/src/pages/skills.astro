@@ -1,5 +1,5 @@
 ---
-import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import LoadingSpinner from '../components/loading-spinner.astro';
 import { skills } from '../data/skill';
 import { icons } from '../data/icon';
@@ -42,33 +42,10 @@ const groupedSkills = genres.map((genre) => ({
 })).filter((g) => g.skills.length > 0);
 ---
 
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href={`${import.meta.env.BASE_URL}/icon.png`} />
-    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}/icon.png`} />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} >
-    <title>スキル</title>
-    <script>
-      (function () {
-        var saved = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = saved || (prefersDark ? 'dark' : 'light');
-        if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
-        var locale = localStorage.getItem('locale') || 'ja';
-        document.documentElement.setAttribute('data-locale', locale);
-        var langMap = { 'ja': 'ja', 'en': 'en', 'zh-CN': 'zh-Hans', 'zh-TW': 'zh-Hant' };
-        document.documentElement.setAttribute('lang', langMap[locale] || locale);
-      })();
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <LoadingSpinner />
-    <Header />
+<BaseLayout titleKey="skills.title" title="スキル" descriptionKey="meta.skills">
+  <LoadingSpinner />
+  <Header />
+  <main>
     <section id="skills" aria-labelledby="skills-heading">
       <h2 id="skills-heading" data-i18n="skills.heading">スキル</h2>
       {groupedSkills.map((group) => (
@@ -138,104 +115,16 @@ const groupedSkills = genres.map((genre) => ({
         </div>
       </dialog>
     </section>
+  </main>
 
-    <Footer />
-    <BackToTop />
-  </body>
-</html>
+  <Footer />
+  <BackToTop />
+</BaseLayout>
 
-<script>
-  import { getSavedLocale, applyTranslations, initLocale } from '../i18n/lang-switcher';
-  import { translations } from '../i18n/translations';
-  import type { Locale } from '../i18n/translations';
-
-  const root     = document.getElementById('skills');
-  const modal    = document.getElementById('skill-modal') as HTMLDialogElement | null;
-  const closeBtn = document.getElementById('skill-modal-close-btn');
-  const openBtns = root ? root.querySelectorAll<HTMLButtonElement>('.open-modal-btn') : [];
-  const imageWrap  = document.getElementById('skill-modal-image');
-  const modalTitle = document.getElementById('skill-modal-title');
-  const modalLevel = document.getElementById('skill-modal-level');
-  const modalSkill = document.getElementById('skill-modal-skill');
-  const modalDesc  = document.getElementById('skill-modal-desc');
-
-  let lastCard: HTMLElement | null = null;
-
-  function renderImage(src: string): void {
-    if (!imageWrap) return;
-    if (!src) { imageWrap.innerHTML = ''; imageWrap.style.display = 'none'; return; }
-    imageWrap.style.display = 'block';
-    imageWrap.innerHTML = `<img src="${src}" alt="" loading="lazy" />`;
-  }
-
-  function populateModal(card: HTMLElement): void {
-    const locale = getSavedLocale();
-    let locales: Record<string, { level: string; genre: string; skill: string; description: string }> | null = null;
-    try { locales = card.dataset.locales ? JSON.parse(card.dataset.locales) : null; } catch {}
-    const loc = locales?.[locale] ?? locales?.['ja'] ?? null;
-
-    if (modalTitle) modalTitle.textContent = card.dataset.name ?? '';
-    if (modalLevel) modalLevel.textContent = loc?.level ?? '';
-    if (modalSkill) modalSkill.textContent = loc?.skill ?? '';
-    if (modalDesc)  modalDesc.textContent  = loc?.description ?? '';
-    renderImage(card.dataset.image ?? '');
-  }
-
-  openBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      lastCard = btn;
-      populateModal(btn);
-      modal?.showModal();
-    });
-  });
-
-  closeBtn?.addEventListener('click', () => modal?.close());
-  modal?.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal?.open) modal.close(); });
-
-  function updateSkillCards() {
-    const locale = getSavedLocale();
-    openBtns.forEach((btn) => {
-      let locales: Record<string, { level: string; genre: string; skill: string; description: string }> | null = null;
-      try { locales = btn.dataset.locales ? JSON.parse(btn.dataset.locales) : null; } catch {}
-      const loc = locales?.[locale] ?? locales?.['ja'] ?? null;
-      const levelEl = btn.querySelector<HTMLElement>('.skill-level');
-      if (levelEl && loc) {
-        levelEl.textContent = loc.level;
-      }
-      btn.setAttribute('aria-label', `${btn.dataset.name ?? ''} (${loc?.level ?? ''}) の詳細を見る`);
-    });
-
-    if (modal?.open && lastCard) populateModal(lastCard);
-
-    const dict = translations[locale];
-    document.querySelectorAll<HTMLElement>('[data-i18n="skills.modal.what"]').forEach((el) => { el.textContent = dict['skills.modal.what']; });
-    document.querySelectorAll<HTMLElement>('[data-i18n="skills.modal.desc"]').forEach((el) => { el.textContent = dict['skills.modal.desc']; });
-  }
-
-  document.addEventListener('i18n:update', () => {
-    updateSkillCards();
-  });
-
-  // Theme-aware images
-  function applyThemeImages() {
-    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-    document.querySelectorAll<HTMLImageElement>('img[data-light-src][data-dark-src]').forEach((img) => {
-      const src = isDark ? img.dataset.darkSrc : img.dataset.lightSrc;
-      if (src && src !== img.src) img.src = src;
-    });
-  }
-  applyThemeImages();
-  new MutationObserver(applyThemeImages).observe(document.documentElement, {
-    attributes: true, attributeFilter: ['data-theme'],
-  });
-
-  // Init
-  const locale = initLocale();
-  applyTranslations(locale);
-  updateSkillCards();
+<script type="module">
+  import { initSkillModal } from '../scripts/skill-modal';
+  initSkillModal();
 </script>
-
 <style>
   #skills { margin-block: 2rem; }
 

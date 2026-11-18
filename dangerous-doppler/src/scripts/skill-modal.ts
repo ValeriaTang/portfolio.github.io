@@ -19,6 +19,18 @@ const ROOT_ID = 'skills';
 const MODAL_ID = 'skill-modal';
 const OPEN_BTN_SELECTOR = '.open-modal-btn';
 
+/** 画像 / アイコン src を安全化（javascript: 等を除外） */
+function sanitizeUrl(src: string): string | null {
+  if (!src) return null;
+  try {
+    const url = new URL(src, window.location.origin);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
+  } catch {
+    return null;
+  }
+  return src;
+}
+
 let lastCard: HTMLElement | null = null;
 
 function $<T extends HTMLElement>(id: string): T | null {
@@ -54,13 +66,17 @@ function populateModal(btn: HTMLElement): void {
 
 function renderImage(imageWrap: HTMLElement | null, src: string): void {
   if (!imageWrap) return;
+  imageWrap.innerHTML = '';
   if (!src) {
-    imageWrap.innerHTML = '';
     imageWrap.style.display = 'none';
     return;
   }
   imageWrap.style.display = 'block';
-  imageWrap.innerHTML = `<img src="${src}" alt="" loading="lazy" />`;
+  const img = document.createElement('img');
+  img.src = sanitizeUrl(src) ?? '#';
+  img.alt = '';
+  img.loading = 'lazy';
+  imageWrap.appendChild(img);
 }
 
 /** 言語変更時のボタンテキスト更新 */

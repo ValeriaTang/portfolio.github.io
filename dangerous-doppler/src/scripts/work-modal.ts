@@ -47,30 +47,59 @@ function observeTheme(): void {
   });
 }
 
+/** 画像 / アイコン src を安全化（javascript: 等を除外） */
+function sanitizeUrl(src: string): string | null {
+  if (!src) return null;
+  try {
+    const url = new URL(src, window.location.origin);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
+  } catch {
+    return null;
+  }
+  return src;
+}
+
 function renderGallery(gallery: HTMLElement | null, images: string[]): void {
   if (!gallery) return;
+  gallery.innerHTML = '';
   if (!images.length) {
-    gallery.innerHTML = '';
     gallery.style.display = 'none';
     return;
   }
   gallery.style.display = 'flex';
-  gallery.innerHTML = images
-    .map((src, i) => `<img src="${src}" alt="Work image ${i + 1}" loading="lazy" />`)
-    .join('');
+  images.forEach((src) => {
+    const img = document.createElement('img');
+    img.src = sanitizeUrl(src) ?? '#';
+    img.alt = 'Work image';
+    img.loading = 'lazy';
+    gallery.appendChild(img);
+  });
 }
 
 function renderTags(tagsEl: HTMLElement | null, raw: string): void {
   if (!tagsEl) return;
   let tags: { name: string; icon: string | null; darkIcon: string | null }[] = [];
   try { tags = raw ? JSON.parse(raw) : []; } catch { tags = []; }
-  tagsEl.innerHTML = tags
-    .map((tag) =>
-      tag.icon
-        ? `<span class="tag-item"><img src="${tag.icon}" alt="${tag.name}" class="tag-icon" data-light-src="${tag.icon}" data-dark-src="${tag.darkIcon ?? tag.icon}" /></span>`
-        : `<span class="tag-item"><span class="tag-text">${tag.name}</span></span>`,
-    )
-    .join('');
+  tagsEl.innerHTML = '';
+  tags.forEach((tag) => {
+    const item = document.createElement('span');
+    item.className = 'tag-item';
+    if (tag.icon) {
+      const img = document.createElement('img');
+      img.className = 'tag-icon';
+      img.src = sanitizeUrl(tag.icon) ?? '#';
+      img.alt = tag.name;
+      img.setAttribute('data-light-src', tag.icon);
+      img.setAttribute('data-dark-src', tag.darkIcon ?? tag.icon);
+      item.appendChild(img);
+    } else {
+      const text = document.createElement('span');
+      text.className = 'tag-text';
+      text.textContent = tag.name;
+      item.appendChild(text);
+    }
+    tagsEl.appendChild(item);
+  });
 }
 
 
@@ -97,7 +126,12 @@ function populateModal(card: HTMLElement): void {
   if (modalDetail) modalDetail.textContent = loc?.description ?? '';
   if (modalPeriod) modalPeriod.textContent = formatPeriod(card.dataset.start ?? '', card.dataset.finish ?? '');
   if (modalLink) {
-    modalLink.href = card.dataset.url ?? '#';
+    const url = card.dataset.url ?? '#';
+    if (!sanitizeUrl(url)) {
+      modalLink.href = '#';
+    } else {
+      modalLink.href = url;
+    }
     modalLink.textContent = d['works.modal.github'];
   }
   renderGallery(gallery, card.dataset.images ? JSON.parse(card.dataset.images) : []);
@@ -152,7 +186,7 @@ function updateCards(): void {
     if (aiNoteEl && loc) aiNoteEl.textContent = loc.AI;
 
     if (aiEl) {
-      aiEl.innerHTML = `<span data-i18n="works.aiRatio">${d['works.aiRatio']}</span>: ${card.dataset.ai ?? ''}`;
+      aiEl.textContent = `${d['works.aiRatio']}: ${card.dataset.ai ?? ''}`;
     }
     if (tagsAria) tagsAria.setAttribute('aria-label', d['works.tags']);
     if (btnDetail && loc) {
